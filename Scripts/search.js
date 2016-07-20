@@ -8,16 +8,16 @@ function toHome() {
 
 
 /**
- * returns string array of country names form sql query
+ * returns string array of country names from sql query
  * @returns {string[]}
  */
 function getCountryNames() {
-    //TODO use sql
+    //TODO use sql: SELECT Name FROM COUNTRY;
     return ["1","2","3","4","5"];
 }
 
 /**
- * Takes in list of names and adds it to the drop down menu
+ * Autopopulates the country name drop down menu
  */
 function populateCountryNames() {
 
@@ -39,7 +39,7 @@ function populateCountryNames() {
 * @returns {string[]}
 */
 function getCityNames() {
-    //TODO use sql
+    //TODO use sql: SELECT City, Country FROM CITY;
     return ["1","2","3","4","5"];
 }
 
@@ -62,11 +62,11 @@ function populateCityNames() {
 }
 
 /**
- * returns string array of Languages form sql query
+ * returns string array of Languages from sql query
  * @returns {string[]}
  */
 function getLanguages() {
-    //TODO use sql
+    //TODO use sql: SELECT Language FROM CITY_LANGUAGE;
     return ["a","b","c","d","e"];
 }
 
@@ -119,19 +119,19 @@ function populateLanguages() {
 }
 
 /**
- * returns string array of Languages form sql query
+ * returns string array of event categories from sql query
  * @returns {string[]}
  */
-function getCategoriesE() {
-    //TODO use sql
+function getEventCategories() {
+    //TODO use sql: SELECT Category FROM EVENT_CATEGORIES;
     return ["a","b","c","d","e"];
 }
 
 /**
- * Auto populates checkboxes for languages
+ * Auto populates checkboxes for event categories
  */
-function populateCategoriesE() {
-    var list = getCategoriesE();
+function populateEventCategories() {
+    var list = getEventCategories();
 
     for (var i = 0; i < list.length; i++) {
 
@@ -157,19 +157,19 @@ function populateCategoriesE() {
 }
 
 /**
- * returns string array of Languages form sql query
+ * returns string array of location types from sql query
  * @returns {string[]}
  */
-function getCategoriesL() {
-    //TODO use sql
+function getLocationTypes() {
+    //TODO use sql: SELECT Type FROM LOCATION_TYPES;
     return ["a","b","c","d","e"];
 }
 
 /**
- * Auto populates checkboxes for languages
+ * Auto populates checkboxes for location types
  */
-function populateCategoriesL() {
-    var list = getCategoriesL();
+function populateLocationTypes() {
+    var list = getLocationTypes();
 
     for (var i = 0; i < list.length; i++) {
 
