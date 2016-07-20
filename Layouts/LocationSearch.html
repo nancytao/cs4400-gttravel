@@ -2,9 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <title>Location Search</title>
+    <script src="../Scripts/location.js"></script>
 </head>
 <body>
+<div style="padding: 3% 5% 5% 5%; width: 80%">
+    <h1> Location Search</h1>
+    <!--use tables to align everything-->
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" id="city">
+        </div>
+        <div class="range-inline">
+            <label> Cost: <input type="range"> </label>
+        </div>
 
+        <div class="form-group">
+            <label for="cat">Select list:</label>
+            <select class="form-control" id="cat">
+                <option>Museum</option>
+                <option>Stadium</option>
+                <option>Restaurant</option>
+                <option>Plaza</option>
+                <option>Park</option>
+                <option>Memorial</option>
+                <option>Church</option>
+            </select>
+        </div>
+        <div>
+            Categories:
+            <div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Museum</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Stadium</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Restaurant</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Plaza</label>
+                    </div>
+                </div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Park</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Memorial</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Church</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--type="button" class="btn btn-default"-->
+    <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>
+    <button type="button" class="btn btn-default">Search</button>
+</div>
 </body>
 </html>

@@ -2,9 +2,106 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <title>City Search</title>
+    <script src="../Scripts/city.js"></script>
 </head>
 <body>
+<div style="padding: 3% 5% 5% 5%; width: 80%">
+    <h1> City Search</h1>
+    <!--use tables to align everything-->
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" id="country">
+        </div>
+        <div class="range-inline">
+            <label> Population: <input type="range"> </label>
+        </div>
+        <div class="form-group">
+            <label for="lang">Select list (hold ctl to select multiple):</label>
+            <select multiple class="form-control" id="lang">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>Catalan</option>
+                <option>German</option>
+                <option>Italian</option>
+                <option>French</option>
+                <option>Flemish</option>
+                <option>Dutch</option>
+                <option>Greek</option>
+                <option>Valencian</option>
+                <option>Galician</option>
+                <option>Basque (Euskara)</option>
+                <option>Gaelic</option>
+                <option>Portuguese</option>
+            </select>
+        </div>
+        <div>
+            Languages:
+            <div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> English</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Spanish</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Catalan</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> German</label>
+                    </div>
+                </div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Italian</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> French</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Flemish</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Dutch</label>
+                    </div>
+                </div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Greek</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Valencian</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Galician</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Basque(Euskara)</label>
+                    </div>
+                </div>
+                <div style="display: inline-block; vertical-align: top; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Gaelic</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Portuguese</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+        <!--type="button" class="btn btn-default"-->
+        <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>
+        <button type="button" class="btn btn-default">Search</button>
+    </div>
 </body>
 </html>

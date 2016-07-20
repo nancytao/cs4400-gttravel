@@ -2,9 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <title>Event Search</title>
+    <script src="../Scripts/event.js"></script>
 </head>
 <body>
+<div style="padding: 3% 5% 5% 5%; width: 80%">
+    <h1> Event Search</h1>
+    <!--use tables to align everything-->
+    <div class="container-fluid">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" id="city">
+        </div>
+        <!--make good!!!-->
+        <div class="form-group">
+            <label>Date: <input type="date"></label>
+        </div>
+        <div class="form-group">
+            <label> Cost: <input type="range"> </label>
+        </div>
 
+        <div class="form-group">
+            <label for="cat">Select list:</label>
+            <select class="form-control" id="cat">
+                <option>Concert</option>
+                <option>Sports match</option>
+                <option>Race</option>
+                <option>Festival</option>
+                <option>Presentation</option>
+            </select>
+        </div>
+        <div>
+            Categories:
+            <div>
+                <div style="display: inline-block; padding-right: 7px">
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Concert</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Sports Match</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Race</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Festival</label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Presentation</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--type="button" class="btn btn-default"-->
+    <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>
+    <button type="button" class="btn btn-default">Search</button>
+</div>
 </body>
 </html>
