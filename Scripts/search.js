@@ -11,7 +11,7 @@ function toHome() {
  * returns string array of country names form sql query
  * @returns {string[]}
  */
-function getNames() {
+function getCountryNames() {
     //TODO use sql
     return ["1","2","3","4","5"];
 }
@@ -19,9 +19,9 @@ function getNames() {
 /**
  * Takes in list of names and adds it to the drop down menu
  */
-function populateNames() {
+function populateCountryNames() {
 
-    var list = getNames();
+    var list = getCountryNames();
 
     var sel = document.getElementById('names');
     for(var i = 0; i < list.length; i++) {
@@ -50,25 +50,25 @@ function populateLanguages() {
     var list = getLanguages();
 
     for (var i = 0; i < list.length; i++) {
-            /*
-            <div class="checkbox">
-            <label><input type="checkbox"> Dutch</label>
-            </div>
-            */
+        /*
+         <div class="checkbox">
+         <label><input type="checkbox"> Dutch</label>
+         </div>
+         */
         //TODO Need to add IDs
         /*
-        var div = document.createElement("div");
-        div.class = "checkbox-inline";
-        var label = document.createElement("label");
-        var input = document.createElement("input");
-        input.type = "checkbox";
-        label.innerHTML = list[i];
-        label.appendChild(input);
-        div.appendChild(label);
+         var div = document.createElement("div");
+         div.class = "checkbox-inline";
+         var label = document.createElement("label");
+         var input = document.createElement("input");
+         input.type = "checkbox";
+         label.innerHTML = list[i];
+         label.appendChild(input);
+         div.appendChild(label);
 
-        // add the label element to your div
-        document.getElementById('languages').appendChild(div);
-        */
+         // add the label element to your div
+         document.getElementById('languages').appendChild(div);
+         */
 
         //TODO fix spacing try inner html from other code
         var checkbox = document.createElement('input');
@@ -87,9 +87,6 @@ function populateLanguages() {
         div.appendChild(label);
 
         document.getElementById('languages').appendChild(div);
-
-
-
     }
 
 }
