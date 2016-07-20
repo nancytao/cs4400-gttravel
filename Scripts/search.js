@@ -23,7 +23,34 @@ function populateCountryNames() {
 
     var list = getCountryNames();
 
-    var sel = document.getElementById('names');
+    var sel = document.getElementById('country');
+    for(var i = 0; i < list.length; i++) {
+        var opt = document.createElement('option');
+        opt.innerHTML = list[i];
+        opt.value = list[i];
+        opt.id = list[i];
+        sel.appendChild(opt);
+    }
+
+}
+
+/**
+* returns string array of country names form sql query
+* @returns {string[]}
+*/
+function getCityNames() {
+    //TODO use sql
+    return ["1","2","3","4","5"];
+}
+
+/**
+ * Takes in list of names and adds it to the drop down menu
+ */
+function populateCityNames() {
+
+    var list = getCityNames();
+
+    var sel = document.getElementById('city');
     for(var i = 0; i < list.length; i++) {
         var opt = document.createElement('option');
         opt.innerHTML = list[i];
@@ -87,6 +114,82 @@ function populateLanguages() {
         div.appendChild(label);
 
         document.getElementById('languages').appendChild(div);
+    }
+
+}
+
+/**
+ * returns string array of Languages form sql query
+ * @returns {string[]}
+ */
+function getCategoriesE() {
+    //TODO use sql
+    return ["a","b","c","d","e"];
+}
+
+/**
+ * Auto populates checkboxes for languages
+ */
+function populateCategoriesE() {
+    var list = getCategoriesE();
+
+    for (var i = 0; i < list.length; i++) {
+
+        //TODO fix spacing try inner html from other code
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.name = "name";
+        checkbox.value = "value";
+        checkbox.id = list[i];
+
+        var label = document.createElement('label');
+        label.htmlFor = list[i];
+        label.appendChild(document.createTextNode(list[i]));
+
+        var div = document.createElement("div");
+        div.class = "checkbox-inline";
+        div.appendChild(checkbox);
+        div.appendChild(label);
+
+        document.getElementById('categoriesE').appendChild(div);
+    }
+
+}
+
+/**
+ * returns string array of Languages form sql query
+ * @returns {string[]}
+ */
+function getCategoriesL() {
+    //TODO use sql
+    return ["a","b","c","d","e"];
+}
+
+/**
+ * Auto populates checkboxes for languages
+ */
+function populateCategoriesL() {
+    var list = getCategoriesL();
+
+    for (var i = 0; i < list.length; i++) {
+
+        //TODO fix spacing try inner html from other code
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.name = "name";
+        checkbox.value = "value";
+        checkbox.id = list[i];
+
+        var label = document.createElement('label');
+        label.htmlFor = list[i];
+        label.appendChild(document.createTextNode(list[i]));
+
+        var div = document.createElement("div");
+        div.class = "checkbox-inline";
+        div.appendChild(checkbox);
+        div.appendChild(label);
+
+        document.getElementById('categoriesL').appendChild(div);
     }
 
 }

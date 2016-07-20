@@ -6,23 +6,40 @@
     <title>Location Search</title>
     <script src="../Scripts/search.js"></script>
 </head>
-<body>
+<body onLoad ="populateCategoriesL(); populateCityNames()">
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Location Search</h1>
     <!--use tables to align everything-->
     <div class="container-fluid">
         <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
+            <label for="location">Name:</label>
+            <input type="text" class="form-control" id="location">
         </div>
         <div class="form-group">
             <label for="city">City:</label>
-            <input type="text" class="form-control" id="city">
-        </div>
-        <div class="range-inline">
-            <label> Cost: <input type="range"> </label>
+            <select class="form-control" id="city">
+                <!--auto filled-->
+            </select>
         </div>
 
+        <div>
+            <b>Cost:</b>
+            <br>
+            Min: $<input type="number" min='0' step='.01'>
+            <br><br>
+            Max: $<input type="number" min='0' step='.01'>
+            <br>
+        </div>
+
+        <div>
+            Categories:
+            <div id="categoriesL">
+                <!--Auto populate-->
+            </div>
+
+        </div>
+
+        <!--
         <div class="form-group">
             <label for="cat">Select list:</label>
             <select class="form-control" id="cat">
@@ -65,6 +82,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 
 

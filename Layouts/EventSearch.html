@@ -6,27 +6,43 @@
     <title>Event Search</title>
     <script src="../Scripts/search.js"></script>
 </head>
-<body>
+<body onLoad ="populateCategoriesE(); populateCityNames()">
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Event Search</h1>
     <!--use tables to align everything-->
     <div class="container-fluid">
         <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
+            <label for="location">Name:</label>
+            <input type="text" class="form-control" id="location">
         </div>
         <div class="form-group">
             <label for="city">City:</label>
-            <input type="text" class="form-control" id="city">
+            <select class="form-control" id="city">
+                <!--auto filled-->
+            </select>
         </div>
         <!--make good!!!-->
         <div class="form-group">
             <label>Date: <input type="date"></label>
         </div>
-        <div class="form-group">
-            <label> Cost: <input type="range"> </label>
+
+        <div>
+            <b>Cost:</b>
+            <br>
+            Min: $<input type="number" min='0' step='.01'>
+            <br><br>
+            Max: $<input type="number" min='0' step='.01'>
+            <br>
         </div>
 
+        <div>
+            Categories:
+            <div id="categoriesE">
+                <!--Auto populate-->
+            </div>
+
+        </div>
+        <!--
         <div class="form-group">
             <label for="cat">Select list:</label>
             <select class="form-control" id="cat">
@@ -60,7 +76,9 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
+
 
 
     <!--type="button" class="btn btn-default"-->
