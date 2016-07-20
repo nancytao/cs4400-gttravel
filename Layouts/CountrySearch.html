@@ -6,14 +6,23 @@
     <title>Country Search</title>
     <script src="../Scripts/country.js"></script>
 </head>
-<body>
+<body onLoad ="populateNames()">
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Country Search</h1>
     <!--use tables to align everything-->
     <div class="container-fluid">
+        <!--
         <div class="form-group">
             <label for="usr">Name:</label>
             <input type="text" class="form-control" id="usr">
+        </div>
+        -->
+        <p id="test"></p>
+        <div class="form-group">
+            <label for="names">Country:</label>
+            <select class="form-control" id="names">
+                <!--auto filled-->
+            </select>
         </div>
         <div class="range-inline">
             <label> Population: <input type="range"> </label>
