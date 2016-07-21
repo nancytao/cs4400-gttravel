@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `gttravel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gttravel
@@ -131,6 +129,20 @@ INSERT INTO `city_review` VALUES ('cole','Paris','France','2016-07-18',3,'Could 
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `city_scores`
+--
+
+DROP TABLE IF EXISTS `city_scores`;
+/*!50001 DROP VIEW IF EXISTS `city_scores`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `city_scores` AS SELECT 
+ 1 AS `City`,
+ 1 AS `Country`,
+ 1 AS `Average_score`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `country`
 --
 
@@ -250,19 +262,19 @@ DROP TABLE IF EXISTS `event_review`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_review` (
   `Username` varchar(16) NOT NULL,
-  `Event_name` varchar(32) NOT NULL,
-  `Event_date` date NOT NULL,
+  `Name` varchar(32) NOT NULL,
+  `Date` date NOT NULL,
   `Start_time` time NOT NULL,
   `Address` varchar(64) NOT NULL,
   `City` varchar(32) NOT NULL,
   `Country` varchar(32) NOT NULL,
   `Review_date` date NOT NULL,
   `Score` int(11) NOT NULL,
-  `Description` varchar(5000) NOT NULL,
-  PRIMARY KEY (`Username`,`Event_name`,`Event_date`,`Start_time`,`Address`,`City`,`Country`,`Review_date`),
-  KEY `Event_name` (`Event_name`,`Event_date`,`Start_time`,`Address`,`City`,`Country`),
+  `Review` varchar(5000) NOT NULL,
+  PRIMARY KEY (`Username`,`Name`,`Date`,`Start_time`,`Address`,`City`,`Country`,`Review_date`),
+  KEY `Event_name` (`Name`,`Date`,`Start_time`,`Address`,`City`,`Country`),
   CONSTRAINT `event_review_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`),
-  CONSTRAINT `event_review_ibfk_2` FOREIGN KEY (`Event_name`, `Event_date`, `Start_time`, `Address`, `City`, `Country`) REFERENCES `event` (`Name`, `Date`, `Start_time`, `Address`, `City`, `Country`) ON UPDATE CASCADE
+  CONSTRAINT `event_review_ibfk_2` FOREIGN KEY (`Name`, `Date`, `Start_time`, `Address`, `City`, `Country`) REFERENCES `event` (`Name`, `Date`, `Start_time`, `Address`, `City`, `Country`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -275,6 +287,23 @@ LOCK TABLES `event_review` WRITE;
 INSERT INTO `event_review` VALUES ('cole','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Event 2','2016-12-01','13:00:00','118 Disney Way','Paris','France','2016-07-13',5,'It was ok'),('mehul','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',2,'Finding Dory is a treasure honestly.'),('nancy','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',5,'Finding Dory is a treasure honestly.'),('varun','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',3,'Finding Dory is a treasure honestly.'),('varun','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',2,'Finding Dory is a treasure honestly.');
 /*!40000 ALTER TABLE `event_review` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `event_scores`
+--
+
+DROP TABLE IF EXISTS `event_scores`;
+/*!50001 DROP VIEW IF EXISTS `event_scores`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `event_scores` AS SELECT 
+ 1 AS `Name`,
+ 1 AS `Date`,
+ 1 AS `Address`,
+ 1 AS `City`,
+ 1 AS `Country`,
+ 1 AS `Average_score`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `language`
@@ -365,6 +394,21 @@ INSERT INTO `location_review` VALUES ('cole','118 Disney Way','Paris','France','
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `location_scores`
+--
+
+DROP TABLE IF EXISTS `location_scores`;
+/*!50001 DROP VIEW IF EXISTS `location_scores`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `location_scores` AS SELECT 
+ 1 AS `Address`,
+ 1 AS `City`,
+ 1 AS `Country`,
+ 1 AS `Average_score`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `location_types`
 --
 
@@ -413,6 +457,60 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES ('cole','cole.a.bowers@gmail.com','password',0),('manager','thebossman@gttravel.com','password',1),('mehul','mehulm@gmail.com','password',0),('nancy','nancy.tao42@gmail.com','password',0),('varun','varungupt-a@gmail.com','password',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `city_scores`
+--
+
+/*!50001 DROP VIEW IF EXISTS `city_scores`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `city_scores` AS (select `city`.`City` AS `City`,`city`.`Country` AS `Country`,avg(`city_review`.`Score`) AS `Average_score` from (`city` join `city_review` on(((`city`.`City` = `city_review`.`City`) and (`city`.`Country` = `city_review`.`Country`)))) group by `city`.`City`,`city`.`Country` order by `Average_score` desc) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `event_scores`
+--
+
+/*!50001 DROP VIEW IF EXISTS `event_scores`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `event_scores` AS (select `event`.`Name` AS `Name`,`event`.`Date` AS `Date`,`event`.`Address` AS `Address`,`event`.`City` AS `City`,`event`.`Country` AS `Country`,avg(`event_review`.`Score`) AS `Average_score` from (`event` join `event_review` on(((`event`.`Name` = `event_review`.`Name`) and (`event`.`Date` = `event_review`.`Date`) and (`event`.`Start_time` = `event_review`.`Start_time`) and (`event`.`Address` = `event_review`.`Address`) and (`event`.`City` = `event_review`.`City`) and (`event`.`Country` = `event_review`.`Country`)))) group by `event`.`Name`,`event`.`Date`,`event`.`Address`,`event`.`City`,`event`.`Country` order by `Average_score` desc) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `location_scores`
+--
+
+/*!50001 DROP VIEW IF EXISTS `location_scores`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `location_scores` AS (select `location`.`Address` AS `Address`,`location`.`City` AS `City`,`location`.`Country` AS `Country`,avg(`location_review`.`Score`) AS `Average_score` from (`location` join `location_review` on(((`location`.`Address` = `location_review`.`Address`) and (`location`.`City` = `location_review`.`City`) and (`location`.`Country` = `location_review`.`Country`)))) group by `location`.`Address`,`location`.`City`,`location`.`Country` order by `Average_score` desc) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -423,4 +521,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-20 23:01:32
+-- Dump completed on 2016-07-21 10:33:26
