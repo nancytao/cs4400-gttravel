@@ -10,13 +10,13 @@ function login () {
     if(password === null || email === null) {
         document.getElementById("feedback").innerHTML = "One of the fields left blank";
     } else if(storedPass.isEqual(password)) { //TODO how to compare strings in javascript!
-        var newUrl = "../Layouts/Homepage.html";
+        var newUrl = "../templates/Homepage.html";
         window.location.replace(newUrl);
     } else {
         document.getElementById("feedback").innerHTML = "Passwords did not match";
     }
 
-    
+
 }
 
 function getPasswordFromDatabase(email) {
@@ -27,10 +27,10 @@ function getPasswordFromDatabase(email) {
 }
 
 function register() {
-    var newUrl = "../Layouts/Register.html";
+    var newUrl = "../templates/Register.html";
     window.location.replace(newUrl);
 }
 
 function forgot() {
-    
+
 }

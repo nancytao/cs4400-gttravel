@@ -2,7 +2,7 @@
  * Created by coleb_000 on 7/21/2016.
  */
 function toHome() {
-    var newUrl = "../Layouts/HomePage.html";
+    var newUrl = "../templates/HomePage.html";
     window.location.replace(newUrl);
 }
 
@@ -12,7 +12,7 @@ function makeReview(){
     var date = document.getElementById("date").value;
     var score = document.getElementById("score").value;
     var description = document.getElementById("description").value;
-    
+
     if(subject != null && date != null && score != null && description != null) {
         //add pop up the review has been made
         //TODO sql query with data above
@@ -20,10 +20,10 @@ function makeReview(){
         document.getElementById("feedback").innerHTML = "One of the fields is empty";
         document.getElementById("feedback").setAttribute("Style","color: red");
     }
-    
-    
-    
-    window.location.replace("..Layouts/PastReviews.html")
-    
+
+
+
+    window.location.replace("..templates/PastReviews.html")
+
 }
 
