@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `gttravel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gttravel
@@ -521,4 +523,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-21 10:33:26
+-- Dump completed on 2016-07-21 11:51:51
