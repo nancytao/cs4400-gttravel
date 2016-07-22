@@ -16,7 +16,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
-    <script src="../Scripts/login.js"></script>
+    <script src="../static/js/login.js"></script>
+
+    <!--<script src="../Scripts/login.js"></script>-->
     <title>Login</title>
 </head>
 <body>
@@ -31,7 +33,7 @@
         <input type="password" class="form-control" id="pwd" style="width:20%">
     </div>
 
-    <button type="button" class="btn btn-default" onClick="login()">Login</button>
+    <button type="button" class="btn btn-default" onClick="login()" id=login_btn>Login</button>
     <button type="button" class="btn btn-default" onClick="register()">Register</button>
     <button type="button" class="btn btn-default" onClick="forgot()">Forgot Password</button>
 
