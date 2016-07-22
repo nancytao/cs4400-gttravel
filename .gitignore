@@ -1,0 +1,5 @@
+config.py
+*.pyc
+.idea/cs4400-gttravel.iml
+.idea/modules.xml
+.idea/workspace.xml
