@@ -11,14 +11,6 @@ function logout() {
     window.location.replace(newUrl);
 }
 
-function databaseCoolness() {
-    document.getElementById("test").innerHTML = "hi";
-    $.ajax({
-        url: "../test.py",
-        type: 'POST',
-        success: function(response){
-            //here you do whatever you want with the response variable
-            document.getElementById("test").innerHTML = response;
-        }
-    });
+function test() {
+        
 }

@@ -8,9 +8,9 @@ def main():
     return render_template('homepage.html')
 
 
-@app.route("/login")
-def login():
-    return render_template('homepage.html')
+@app.route("/testing")
+def test():
+    return render_template('test.html')
 
 
 if __name__ == '__main__':
