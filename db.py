@@ -85,7 +85,6 @@ def login(username, password):
             return 2
 
 
-# force adding languages for cities handled in GUI
 # does not error handle lmao
 def addCity(city, country, latitude, longitude, population, languages):
     query = 'INSERT INTO city(City, Country, latitude, longitude, population) VALUES (%s, %s, %s, %s, %s)'
@@ -99,7 +98,7 @@ def addCity(city, country, latitude, longitude, population, languages):
 
 
 def getCountries():
-    _cursor.execute("SELECT Name FROM country;")
+    _cursor.execute("SELECT Country FROM country;")
     return tupleListToList(_cursor.fetchall())
 
 
@@ -129,39 +128,6 @@ def tupleListToList(tuplelist):
         list.append(item[0])
 
     return list
-
-
-def citySearch(city, lang_list):
-    if city != None:
-        query = "SELECT * FROM city WHERE City = %s;"
-        response = _cursor.execute(query, (city,))
-        result = list(_cursor.fetchone())
-
-        query = "SELECT * FROM capitals WHERE Capital = %s;"
-        response = _cursor.execute(query, (city,))
-        if response > 0:
-            result.append(True)
-        else:
-            result.append(False)
-
-        query = "SELECT * FROM city_language WHERE City = %s;"
-        response = _cursor.execute(query, (city,))
-
-        languages = []
-        for row in _cursor.fetchall():
-            languages.append(row[2])
-
-        result.append(languages)
-        return result
-
-    if lang_list != None:
-        languages = '\' OR Language = \''.join(lang_list)
-        langquery = 'Language = \'' + languages + '\''
-        query = "SELECT * FROM city_language WHERE " + langquery
-        response = _cursor.execute(query)
-
-        for row in _cursor.fetchall():
-            print row[0]
 
 
 # returns list in format [reviewed_item, review_date, score, text]
@@ -201,8 +167,64 @@ def pastReviews(username):
     return reviews
 
 
-# 'SELECT * FROM location_reviews WHERE Username = %s'
-# 'SELECT * FROM event_reviews WHERE Username = %s'
+def countrySearch(country, population_min, population_max):
+    if country != None:
+        query = "SELECT * FROM country WHERE Country = %s"
+        response = _cursor.execute(query, (country,))
+        result = list(_cursor.fetchone())
+
+        query = "SELECT Capital FROM capitals WHERE Country = %s;"
+        response = _cursor.execute(query, (country,))
+        capitals = []
+        for row in _cursor.fetchall():
+            capitals.append(row[0])
+        result.append(capitals)
+
+        query = "SELECT Language FROM country_language WHERE Country = %s;"
+        response = _cursor.execute(query, (country,))
+
+        languages = []
+        for row in _cursor.fetchall():
+            languages.append(row[0])
+
+        result.append(languages)
+        return result
+
+
+# returns specific city in format [city, country, latitude, longitude,
+#       population, is_capital, [languages]]
+# returns
+def citySearch(city, lang_list):
+    if city != None:  # searching by city, returns just info about that city
+        query = "SELECT * FROM city WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+        result = list(_cursor.fetchone())
+
+        query = "SELECT * FROM capitals WHERE Capital = %s;"
+        response = _cursor.execute(query, (city,))
+        if response > 0:
+            result.append(True)
+        else:
+            result.append(False)
+
+        query = "SELECT Language FROM city_language WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+
+        languages = []
+        for row in _cursor.fetchall():
+            languages.append(row[0])
+
+        result.append(languages)
+        return result
+    if lang_list != None:
+        languages = '\' OR Language = \''.join(lang_list)
+        langquery = 'Language = \'' + languages + '\''
+        query = "SELECT * FROM city_language WHERE " + langquery
+        response = _cursor.execute(query)
+
+        for row in _cursor.fetchall():
+            print row[0]
+
 
 ## testing
 setupConnection()
@@ -211,16 +233,9 @@ setupConnection()
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():
 #     print row
-# citySearch(None, ['Spanish', 'French'])
-for item in pastReviews('nancy'):
-    print item
+
+# citySearch(None, ['Spanish', 'French', 'Catalan'])
+# print citySearch('Barcelona', None)
+print countrySearch('France', None, None)
 
 closeConnection()
-
-
-# SQL Statements that may be required
-# see past reviews
-# 'SELECT * FROM city_reviews WHERE Username = %s'
-# 'SELECT * FROM location_reviews WHERE Username = %s'
-# 'SELECT * FROM event_reviews WHERE Username = %s'
-#
