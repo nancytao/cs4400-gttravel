@@ -11,7 +11,7 @@ def sign_in():
         _name = request.form['usr']
         _password = request.form['pwd']
         # print request.form
-        #TODO SQL code here
+        # TODO SQL code here
 
         return render_template('homepage.html')
 
