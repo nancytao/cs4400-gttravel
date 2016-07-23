@@ -5,19 +5,39 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <title>GT Travel Home</title>
     <script src="../Scripts/homepage.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 </head>
 <body>
+
 <h1 align="center">Select Operation</h1>
 <p align="center">
     <!--Making buttons might be nice-->
-    <a href="CountrySearch.html">Country Search</a><br>
-    <a href="CitySearch.html">City Search</a><br>
-    <a href="LocationSearch.html">Location Search</a><br>
-    <a href="EventSearch.html">Event Search</a><br>
-    <a href="WriteReviews.html">Write a Review</a><br>
-    <a href="PastReviews.html">See Past Reviews</a><br>
+    <a href="countrySearch.html">Country Search</a><br>
+    <a href="citySearch.html">City Search</a><br>
+    <a href="locationSearch.html">Location Search</a><br>
+    <a href="eventSearch.html">Event Search</a><br>
+    <a href="writeReviews.html">Write a Review</a><br>
+    <a href="pastReviews.html">See Past Reviews</a><br>
     <button type="button" class="btn btn-default" onClick="logout()">Sign out</button>
 </p>
+<button type="button" class="btn btn-default" onclick="databaseCoolness()" id="testing123">Click me Please!</button>
+<p id="test">
+
+</p>
+<!--
+<script>
+    $('#testing123').click(function(){
+        $.ajax({
+            url: "../test.py",
+            success: function(response){
+                //here you do whatever you want with the response variable
+                document.getElementById("test").innerHTML = response;
+            }
+        });
+
+    });
+</script>
+-->
 
 </body>
 </html>

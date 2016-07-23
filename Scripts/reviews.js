@@ -2,7 +2,7 @@
  * Created by coleb_000 on 7/21/2016.
  */
 function toHome() {
-    var newUrl = "../templates/HomePage.html";
+    var newUrl = "../templates/homepage.html";
     window.location.replace(newUrl);
 }
 
@@ -23,7 +23,7 @@ function makeReview(){
 
 
 
-    window.location.replace("..templates/PastReviews.html")
+    window.location.replace("..templates/pastReviews.html")
 
 }
 

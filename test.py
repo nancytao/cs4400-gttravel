@@ -1,9 +1,10 @@
-import config
+
+#import config
 import MySQLdb
 
 db = MySQLdb.connect(host="localhost",
                      user="root",
-                     passwd=config.password,
+                     passwd="",
                      db="gttravel")
 
 cur = db.cursor()

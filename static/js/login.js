@@ -1,9 +1,12 @@
 
 $(function(){
 	$('#login_btn').click(function(){
-        $.ajax({
-			url: '/login',
+		/*
+
+		$.ajax({
+			url: '/Login',
 			type: 'POST',
         });
+        */
 	});
 });
