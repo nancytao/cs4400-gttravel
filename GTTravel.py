@@ -17,18 +17,18 @@ def sign_in():
 
         _name = request.form['usr']
         _password = request.form['pwd']
+        num = db.login(_name,_password)
 
-        # print request.form
-        # TODO SQL code here
-
-        isManager = True
-        if isManager:
+        if num == 1:
             # todo sql to get language/country
-            countries = ["A", "B"]
-            languages = ["X", "Y"]
+            countries = db.getCountries()
+            languages = db.getLanguages()
             return render_template('managerpage.html', countries=countries, languages=languages)
-        else:
+        elif num == 2:
             return render_template('homepage.html')
+        else:
+            print "Credentials Incorrect"
+            return
 
 
 @app.route('/')
