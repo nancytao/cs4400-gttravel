@@ -21,7 +21,6 @@ def sign_in():
         num = db.login(_name,_password)
 
         if num == 1:
-            # todo sql to get language/country
             countries = db.getCountries()
             languages = db.getLanguages()
             return render_template('managerpage.html', countries=countries, languages=languages)
@@ -168,7 +167,6 @@ def to_location_search():
     Takes users to location search page
     Dynamically auto fills forms from data base
     """
-    # TODO get sql list of cities/location catagories
     cities = db.getCities()
     loc_cat = db.getLocTypes()
     """
