@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, render_template, json, request, Response
 
 app = Flask(__name__)
 
@@ -53,7 +53,15 @@ def to_home():
 
 @app.route("/to_country_search")
 def to_country_search():
-    return render_template('countrysearch.html')
+    # return render_template('countrysearch.html')
+    # TODO get sql list of countries/languages
+    countries = ["A", "B", "C", "D"]
+    languages = ["a", "b", "c", "d"]
+    #if request.form['submit'] == 'Select':
+    #    resp = 'You chose: ', countries
+    #    return Response(resp)
+
+    return render_template('countrysearchtemplate.html', option_list=countries, option_list2=languages)
 
 
 @app.route("/to_city_search")
