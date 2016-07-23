@@ -62,7 +62,7 @@ def register():
     """
 
     if request.method == "POST":
-        print request.form
+        # print request.form
         name = request.form['username']
         email = request.form['email']
         p1 = request.form['p1']
