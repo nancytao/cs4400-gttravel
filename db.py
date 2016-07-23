@@ -37,6 +37,15 @@ def closeConnection():
         _connected = False
 
 
+def register(username, email, password, ismanager):
+    query = "INSERT INTO users(Username, Email, Password, Is_manager)"\
+            "VALUES (%s, %s, %s, %s);"
+    try:
+        response = _cursor.execute(query, (username, email, password, ismanager))
+    except Exception as e:
+        print e[1]
+
+
 # returns True if credentials are valid, else returns False
 def login(username, password):
     query = "SELECT * FROM users WHERE Username = %s AND Password = %s;"
@@ -48,6 +57,7 @@ def login(username, password):
     return response > 0
 
 
+# returns True if user is a manager
 def is_manager(username):
     query = "SELECT Is_manager FROM users WHERE Username = %s;"
     response = _cursor.execute(query, (username,))
@@ -63,9 +73,7 @@ def is_manager(username):
 # main method for testing
 setupConnection()
 
-# change here to test
-print is_manager('nancy')
-print is_manager('manager')
+print "change this to test!!"
 
 closeConnection()
 
