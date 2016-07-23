@@ -36,17 +36,31 @@ def closeConnection():
         _database.close()
         _connected = False
 
-
+# ismanager must be a 0 (false) or 1 (true)
+# returns 1 if username is taken
+# returns 2 if email is taken
+# returns 0 if insert was valid
+# returns 3 if everything is screwed
 def register(username, email, password, ismanager):
     query = "INSERT INTO users(Username, Email, Password, Is_manager)"\
             "VALUES (%s, %s, %s, %s);"
     try:
         response = _cursor.execute(query, (username, email, password, ismanager))
+        _database.commit()
+
+        return 0
     except Exception as e:
-        print e[1]
+        if e[1][-2:] == 'Y\'': # violates primary key constraint, username
+            return 1
+        elif e[1][-2:] == 'l\'': # violates email uniqueness constraint
+            return 2
+        else: # don't get here
+            return 3
 
 
-# returns True if credentials are valid, else returns False
+# returns False if credentials are invalid
+# returns 1 if user is a manager
+# returns 2 if user is NOT a manager
 def login(username, password):
     query = "SELECT * FROM users WHERE Username = %s AND Password = %s;"
     response = _cursor.execute(query, (username, password))
@@ -54,20 +68,21 @@ def login(username, password):
     # clear cursor
     _cursor.fetchall()
 
-    return response > 0
+    if response == 0:
+        return False
+    else:
+        query = "SELECT Is_manager FROM users WHERE Username = %s;"
+        response = _cursor.execute(query, (username,))
 
+        result = _cursor.fetchone()
 
-# returns True if user is a manager
-def is_manager(username):
-    query = "SELECT Is_manager FROM users WHERE Username = %s;"
-    response = _cursor.execute(query, (username,))
+        # sanity check
+        _cursor.fetchall()
 
-    result = _cursor.fetchone()
-
-    # sanity check
-    _cursor.fetchall()
-
-    return result[0] == 1
+        if result[0] == 1: # if Is_manager
+            return 1
+        else:
+            return 2
 
 
 # main method for testing
