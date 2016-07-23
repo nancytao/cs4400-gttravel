@@ -167,8 +167,8 @@ def pastReviews(username):
     return reviews
 
 
-def countrySearch(country, population_min, population_max):
-    if country != None:
+def countrySearch(country, population_min, population_max, lang_list):
+    if country != "":
         query = "SELECT * FROM country WHERE Country = %s"
         response = _cursor.execute(query, (country,))
         result = list(_cursor.fetchone())
@@ -189,6 +189,29 @@ def countrySearch(country, population_min, population_max):
 
         result.append(languages)
         return result
+
+    if population_min != "" or population_max != "":
+        query = "SELECT Country, Population FROM country WHERE "
+        response = ""
+        if population_min != "" and population_max != "":
+            query = query + "Population > %s AND Population < %s"
+            response = _cursor.execute(query, (population_min, population_max))
+        elif population_min == "" and population_max != "":
+            query = query + "Population < %s"
+            response = _cursor.execute(query, (population_max,))
+        elif population_min != "" and population_max == "":
+            query = query + "Population > %s"
+            response = _cursor.execute(query, (population_min,))
+
+        return _cursor.fetchall()
+
+    if lang_list != "":
+        languages = '\' OR Language = \''.join(lang_list)
+        langquery = 'Language = \'' + languages + '\''
+        query = "SELECT Country FROM country_language WHERE " + langquery
+        response = _cursor.execute(query)
+
+        return _cursor.fetchall()
 
 
 # returns specific city in format [city, country, latitude, longitude,
