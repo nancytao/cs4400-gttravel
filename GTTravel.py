@@ -87,6 +87,7 @@ def search_events():
 def search_locations():
     return render_template('locationresults.html')
 
+
 @app.route("/make_review")
 def make_review():
     return render_template('pastreviews.html')
