@@ -2,6 +2,7 @@ from flask import Flask, render_template, json, request, Response
 import db
 
 app = Flask(__name__)
+logged_user = ""
 
 
 @app.route('/sign_in', methods=['POST', 'GET'])
@@ -25,6 +26,8 @@ def sign_in():
             languages = db.getLanguages()
             return render_template('managerpage.html', countries=countries, languages=languages)
         elif num == 2:
+            global logged_user
+            logged_user = _name
             return render_template('homepage.html')
         else:
             return render_template("login.html", error="Credentials Incorrect")
@@ -78,6 +81,8 @@ def register():
             if reg == 0 and is_man:
                 return render_template("managerpage.html")
             elif reg == 0:
+                global logged_user
+                logged_user = name
                 return render_template("homepage.html")
             elif reg == 1:
                 error = "Username already taken"
@@ -94,6 +99,8 @@ def to_login():
     """
     Takes user to login page
     """
+    global logged_user
+    logged_user = ""
     return render_template("login.html")
 
 
