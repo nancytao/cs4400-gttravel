@@ -36,6 +36,7 @@ def closeConnection():
         _database.close()
         _connected = False
 
+
 # ismanager must be a 0 (false) or 1 (true)
 # returns 1 if username is taken
 # returns 2 if email is taken
@@ -50,11 +51,11 @@ def register(username, email, password, ismanager):
 
         return 0
     except Exception as e:
-        if e[1][-2:] == 'Y\'': # violates primary key constraint, username
+        if e[1][-2:] == 'Y\'':  # violates primary key constraint, username
             return 1
-        elif e[1][-2:] == 'l\'': # violates email uniqueness constraint
+        elif e[1][-2:] == 'l\'':  # violates email uniqueness constraint
             return 2
-        else: # don't get here
+        else:  # don't get here
             return 3
 
 
@@ -79,7 +80,7 @@ def login(username, password):
         # sanity check
         _cursor.fetchall()
 
-        if result[0] == 1: # if Is_manager
+        if result[0] == 1:  # if Is_manager
             return 1
         else:
             return 2
