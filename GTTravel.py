@@ -69,23 +69,27 @@ def to_past_reviews():
 
 
 @app.route("/to_country_results")
-def to_country_results():
+def search_country():
     return render_template('countryresults.html')
 
 
 @app.route("/to_city_results")
-def to_city_results():
+def search_city():
     return render_template('cityresults.html')
 
 
 @app.route("/to_event_results")
-def to_event_results():
+def search_events():
     return render_template('eventresults.html')
 
 
 @app.route("/to_location_results")
-def to_location_results():
+def search_locations():
     return render_template('locationresults.html')
+
+@app.route("/make_review")
+def make_review():
+    return render_template('pastreviews.html')
 
 
 if __name__ == '__main__':
