@@ -1,39 +1,35 @@
 {% extends "countrysearch.html" %}
 {% block content %}
 <!--use tables to align everything-->
-    <div class="container-fluid">
+    <form class="form-group" action="to_country_results" method="post">
 
-        <div class="form-group">
-            <label for="country">Country:</label>
-            <select class="form-control" id="country">
-                {% for o in option_list %}
-                    <option value="{{ o }}" SELECTED>{{ o }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        <label for="country">Country:</label>
+        <select name="country" class="form-control" id="country">
+            {% for o in option_list %}
+                <option name = "{{ o }}" value="{{ o }}" SELECTED>{{ o }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <b>Population:</b>
+        <br>
+        Min: <input name="minPop" type="number" min='0' step='100'>
+        <br><br>
+        Max: <input name="maxPop" type="number" min='0' step='100'>
+        <br>
+        <br>
 
-        <div>
-            <b>Population:</b>
-            <br>
-            Min: <input type="number" min='0' step='100'>
-            <br><br>
-            Max: <input type="number" min='0' step='100'>
-            <br>
+        <b>Languages:</b>
+        <div id="languages">
+        {% for o in option_list2 %}
+                <input name="languages" type="checkbox"  value="{{ o }}">  {{ o }} <br>
+        {% endfor %}
         </div>
         <br>
-        <div>
-            <b>Languages:</b>
-            <div id="languages">
-            {% for o in option_list2 %}
-                    <input type="checkbox"  value="{{ o }}">  {{ o }} <br>
-            {% endfor %}
-            </div>
-
-        </div>
-
         <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
-        <a class=" btn btn-default" href="to_country_results" role="button">Search</a>
-    </div>
+        <button id = "searchCountry" class=" btn btn-default"  type="submit">Search</button>
+
+
+    </form>
 
 
 

@@ -15,7 +15,7 @@ def sign_in():
 
     # read the posted values from the UI
     if request.method == "POST":
-
+        print request.form
         _name = request.form['usr']
         _password = request.form['pwd']
         num = db.login(_name,_password)
@@ -169,6 +169,7 @@ def to_location_search():
     """
     cities = db.getCities()
     loc_cat = db.getLocTypes()
+
     """
      if request.form['submit'] == 'Select':
         resp = 'You chose: ', countries
@@ -211,14 +212,31 @@ def to_past_reviews():
     return render_template('pastreviews.html')
 
 
-@app.route("/to_country_results")
+@app.route("/to_country_results", methods=["POST", "GET"])
 def search_country():
     """
     takes user to country results
     gets data from html form
     gets and loads table from database
     """
-    return render_template('countryresults.html')
+
+    if request.method == "POST":
+        print request.form
+        name = request.form["country"]
+        maxPop = request.form["maxPop"]
+        minPop = request.form["minPop"]
+
+        languages = request.form.getlist("languages")
+
+        #todo sql queries
+        #todo turn nulls into None maybe
+
+        print name
+        print maxPop
+        print minPop
+        print languages
+
+        return render_template('countryresults.html')
 
 
 @app.route("/to_city_results")
