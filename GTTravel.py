@@ -1,6 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, json, request
 
 app = Flask(__name__)
+
+
+@app.route('/sign_in', methods=['POST', 'GET'])
+def sign_in():
+    # read the posted values from the UI
+    if request.method == "POST":
+
+        _name = request.form['usr']
+        _password = request.form['pwd']
+        # print request.form
+        #TODO SQL code here
+
+        return render_template('homepage.html')
 
 
 @app.route('/')
