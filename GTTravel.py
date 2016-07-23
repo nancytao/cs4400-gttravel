@@ -66,7 +66,16 @@ def to_country_search():
 
 @app.route("/to_city_search")
 def to_city_search():
-    return render_template('citysearch.html')
+    # return render_template('countrysearch.html')
+    # TODO get sql list of countries/languages
+    countries = ["A", "B", "C", "D"]
+    cities = ["W", "x", "Y", "Z"]
+    languages = ["a", "b", "c", "d"]
+    # if request.form['submit'] == 'Select':
+    #    resp = 'You chose: ', countries
+    #    return Response(resp)
+
+    return render_template('citysearch.html', cities=cities, countries=countries, languages=languages)
 
 
 @app.route("/to_location_search")
