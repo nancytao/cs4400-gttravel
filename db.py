@@ -37,7 +37,6 @@ def closeConnection():
         _connected = False
 
 
-# ismanager must be a 0 (false) or 1 (true)
 # returns 1 if username is taken
 # returns 2 if email is taken
 # returns 0 if insert was valid
@@ -86,10 +85,28 @@ def login(username, password):
             return 2
 
 
-# main method for testing
+# force adding languages for cities handled in GUI
+def addCity(city, country, latitude, longitude, population, languages):
+    try:
+        query = 'INSERT INTO city(City, Country, latitude, longitude, population) VALUES (%s, %s, %s, %s, %s)'
+        response = _cursor.execute(query, (city, country, latitude, longitude, population))
+
+        query = 'INSERT INTO city_language(City, Country, Language) VALUES (%s, %s, %s)'
+        for lang in languages:
+            response = _cursor.execute(query, (city, country, lang))
+
+        _database.commit()
+    except:
+        return 0
+
+
 setupConnection()
 
 print "change this to test!!"
+# code for SELECT for testing :)
+# _cursor.execute("SELECT * FROM city_language")
+# for row in _cursor.fetchall():
+#     print row
 
 closeConnection()
 
