@@ -130,9 +130,28 @@ def citySearch(city, lang_list):
             print row
 
 
+def getCountries():
+    _cursor.execute("SELECT Name FROM country;")
+    return tupleListToList(_cursor.fetchall())
+
+
+def getLanguages():
+    _cursor.execute("SELECT Language FROM language;")
+    return tupleListToList(_cursor.fetchall())
+
+
+def tupleListToList(tuplelist):
+    list = []
+    for item in tuplelist:
+        list.append(item[0])
+
+    return list
+
+
 setupConnection()
 
 print "change this to test!!"
+
 # code for SELECT for testing :)
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():

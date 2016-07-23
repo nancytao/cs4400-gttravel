@@ -1,4 +1,5 @@
 from flask import Flask, render_template, json, request, Response
+import db
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ def main():
     """
     Starts app at login screen
     """
+    db.setupConnection()
     return render_template('login.html')
 
 
@@ -91,8 +93,8 @@ def to_country_search():
 
     # return render_template('countrysearch.html')
     # TODO get sql list of countries/languages
-    countries = ["A", "B", "C", "D"]
-    languages = ["a", "b", "c", "d"]
+    countries = db.getCountries()
+    languages = db.getLanguages()
     """
     if request.form['submit'] == 'Select':
         resp = 'You chose: ', countries
@@ -110,7 +112,7 @@ def to_city_search():
     """
     # return render_template('countrysearch.html')
     # TODO get sql list of cities/countries/languages
-    countries = ["A", "B", "C", "D"]
+    countries = db.getCountries
     cities = ["W", "x", "Y", "Z"]
     languages = ["a", "b", "c", "d"]
     """
