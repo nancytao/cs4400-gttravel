@@ -26,8 +26,7 @@ def sign_in():
         elif num == 2:
             return render_template('homepage.html')
         else:
-            print "Credentials Incorrect"
-            return
+            return render_template("login.html", error="Credentials Incorrect")
 
 
 @app.route('/')
@@ -52,16 +51,41 @@ def to_register():
     """
     Takes user to register page
     """
-
     return render_template('register.html')
 
 
-@app.route("/register")
+@app.route("/register", methods=["POST", "GET"])
 def register():
     """
     Registers user then takes them to the home page
     """
-    return render_template('homepage.html')
+
+    if request.method == "POST":
+        # print request.form
+        name = request.form['username']
+        email = request.form['email']
+        p1 = request.form['p1']
+        p2 = request.form['p2']
+
+        error = "Passwords do not match"
+        if p1 != p2:
+            return render_template("register.html", error=error)
+        else:
+            is_man = len(email) > 13 and email[-13:] == "@gttravel.com"
+            reg = db.register(name, email, p1, is_man)
+
+            if reg == 0 and is_man:
+                return render_template("managerpage.html")
+            elif reg == 0:
+                return render_template("homepage.html")
+            elif reg == 1:
+                error = "Username already taken"
+            elif reg == 2:
+                error = "Email already taken"
+            else:
+                error = "Unknown error occurred"
+
+            return render_template("register.html", error=error)
 
 
 @app.route("/to_login")
