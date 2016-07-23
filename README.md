@@ -5,3 +5,4 @@
 # change step on population forms
 # check long lat with prof
 # Add more searches ie location by country, event by location
+# add to homescreen a message box that says register successful and such
