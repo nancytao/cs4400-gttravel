@@ -86,18 +86,48 @@ def login(username, password):
 
 
 # force adding languages for cities handled in GUI
+# does not error handle lmao
 def addCity(city, country, latitude, longitude, population, languages):
-    try:
-        query = 'INSERT INTO city(City, Country, latitude, longitude, population) VALUES (%s, %s, %s, %s, %s)'
-        response = _cursor.execute(query, (city, country, latitude, longitude, population))
+    query = 'INSERT INTO city(City, Country, latitude, longitude, population) VALUES (%s, %s, %s, %s, %s)'
+    response = _cursor.execute(query, (city, country, latitude, longitude, population))
 
-        query = 'INSERT INTO city_language(City, Country, Language) VALUES (%s, %s, %s)'
-        for lang in languages:
-            response = _cursor.execute(query, (city, country, lang))
+    query = 'INSERT INTO city_language(City, Country, Language) VALUES (%s, %s, %s)'
+    for lang in languages:
+        response = _cursor.execute(query, (city, country, lang))
 
-        _database.commit()
-    except:
-        return 0
+    _database.commit()
+
+
+def citySearch(city, lang_list):
+    if city != None:
+        query = "SELECT * FROM city WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+        result = list(_cursor.fetchone())
+
+        query = "SELECT * FROM capitals WHERE Capital = %s;"
+        response = _cursor.execute(query, (city,))
+        if response > 0:
+            result.append(True)
+        else:
+            result.append(False)
+
+        query = "SELECT * FROM city_language WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+
+        languages = []
+        for row in _cursor.fetchall():
+            languages.append(row[2])
+
+        result.append(languages)
+        return result
+
+    if lang_list != None:
+        languages = '\' OR Language = \''.join(lang_list)
+        langquery = 'Language = \'' + languages + '\''
+        query = "SELECT * FROM city_language WHERE " + langquery
+        response = _cursor.execute(query)
+        for row in _cursor.fetchall():
+            print row
 
 
 setupConnection()
@@ -112,21 +142,10 @@ closeConnection()
 
 
 # SQL Statements that may be required
-# login
-# 'SELECT * FROM USERS WHERE Username = %s AND Password = %s'
-#
-# register
-# 'INSERT INTO users(Username, Email, Password, Is_manager) VALUES (%s, %s, %s, %s);'
-#
 # see past reviews
 # 'SELECT * FROM city_reviews WHERE Username = %s'
 # 'SELECT * FROM location_reviews WHERE Username = %s'
 # 'SELECT * FROM event_reviews WHERE Username = %s'
-#
-# add city (as a manager)
-# 'INSERT INTO city(City, Country, latitude, longitude, population) VALUES (%s, %s, %s, %s, %s)'
-# for lang in languages_selected:
-# 'INSERT INTO city_language(City, Country, Language) VALUES (%s, %s, lang)'
 #
 # city search
 # query = ''
