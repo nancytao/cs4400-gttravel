@@ -47,5 +47,26 @@ def to_write_reviews():
 def to_past_reviews():
     return render_template('pastreviews.html')
 
+
+@app.route("/to_country_results")
+def to_country_results():
+    return render_template('countryresults.html')
+
+
+@app.route("/to_city_results")
+def to_city_results():
+    return render_template('cityresults.html')
+
+
+@app.route("/to_event_results")
+def to_event_results():
+    return render_template('eventresults.html')
+
+
+@app.route("/to_location_results")
+def to_location_results():
+    return render_template('locationresults.html')
+
+
 if __name__ == '__main__':
     app.run()
