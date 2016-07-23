@@ -4,3 +4,4 @@
 # <form> tags for manager to force selection of data fields - see sign up page
 # change step on population forms
 # check long lat with prof
+# Add more searches ie location by country, event by location

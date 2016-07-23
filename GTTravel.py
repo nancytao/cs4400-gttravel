@@ -27,8 +27,7 @@ def sign_in():
         elif num == 2:
             return render_template('homepage.html')
         else:
-            print "Credentials Incorrect"
-            return
+            return render_template("login.html", error="Credentials Incorrect")
 
 
 @app.route('/')
