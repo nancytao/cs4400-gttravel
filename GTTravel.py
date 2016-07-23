@@ -100,7 +100,6 @@ def to_country_search():
     """
 
     # return render_template('countrysearch.html')
-    # TODO get sql list of countries/languages
     countries = db.getCountries()
     languages = db.getLanguages()
     """
@@ -119,10 +118,9 @@ def to_city_search():
     Dynamically auto fills forms from data base
     """
     # return render_template('countrysearch.html')
-    # TODO get sql list of cities/countries/languages
-    countries = db.getCountries
-    cities = ["W", "x", "Y", "Z"]
-    languages = ["a", "b", "c", "d"]
+    countries = db.getCountries()
+    cities = db.getCities()
+    languages = db.getLanguages()
     """
     if request.form['submit'] == 'Select':
         resp = 'You chose: ', countries
@@ -139,8 +137,8 @@ def to_location_search():
     Dynamically auto fills forms from data base
     """
     # TODO get sql list of cities/location catagories
-    cities = ["W", "x", "Y", "Z"]
-    loc_cat = ["a", "b", "c", "d"]
+    cities = db.getCities()
+    loc_cat = db.getLocTypes()
     """
      if request.form['submit'] == 'Select':
         resp = 'You chose: ', countries
@@ -156,9 +154,8 @@ def to_event_search():
     Takes users to event search page
     Dynamically auto fills forms from data base
     """
-    # TODO get sql list of cities/event catagories
-    cities = ["W", "x", "Y", "Z"]
-    event_cat = ["a", "b", "c", "d"]
+    cities = db.getCities()
+    event_cat = db.getEventCategories()
     """
     if request.form['submit'] == 'Select':
         resp = 'You chose: ', countries
