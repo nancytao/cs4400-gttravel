@@ -67,7 +67,7 @@ def to_country_search():
 @app.route("/to_city_search")
 def to_city_search():
     # return render_template('countrysearch.html')
-    # TODO get sql list of countries/languages
+    # TODO get sql list of cities/countries/languages
     countries = ["A", "B", "C", "D"]
     cities = ["W", "x", "Y", "Z"]
     languages = ["a", "b", "c", "d"]
@@ -80,12 +80,26 @@ def to_city_search():
 
 @app.route("/to_location_search")
 def to_location_search():
-    return render_template('locationsearch.html')
+    # TODO get sql list of cities/location catagories
+    cities = ["W", "x", "Y", "Z"]
+    loc_cat = ["a", "b", "c", "d"]
+    # if request.form['submit'] == 'Select':
+    #    resp = 'You chose: ', countries
+    #    return Response(resp)
+
+    return render_template('locationsearch.html', cities=cities, loc_cat=loc_cat)
 
 
 @app.route("/to_event_search")
 def to_event_search():
-    return render_template('eventsearch.html')
+    # TODO get sql list of cities/event catagories
+    cities = ["W", "x", "Y", "Z"]
+    event_cat = ["a", "b", "c", "d"]
+    # if request.form['submit'] == 'Select':
+    #    resp = 'You chose: ', countries
+    #    return Response(resp)
+
+    return render_template('eventsearch.html', cities=cities, event_cat=event_cat)
 
 
 @app.route("/to_write_reviews")
