@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <title>Manager Home Page</title>
+</head>
+<body>
+<div style="padding: 3% 5% 5% 5%; width: 80%">
+    <h1>Add Cities</h1>
+    <div class="container-fluid">
+        <form class="form-group">
+            <label for="city">Name:</label>
+            <input type="text" class="form-control" id="city">
+
+            <label for="country">Country:</label>
+            <select class="form-control" id="country">
+                {% for o in countries %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
+            </select>
+
+            <br>
+            <label for="pop">Population:</label>
+            <input type="number" id="pop" min="1">
+
+            <br>
+
+            <label for="lon">Longitude:</label>
+            <input type="number" id="lon" min="0" max="180">
+            <br><b>Direction</b>
+            <label for="E" class="radio-inline"><input type="radio"  name="EW" value="E" id="E"> E</label>
+            <label for="W" class="radio-inline"><input type="radio"  name="EW" value="W" id="W"> W</label>
+
+            <br>
+
+            <label for="lat">Latitude:</label>
+            <input type="number" id="lat" min="0" max="90">
+            <br><b>Direction</b>
+            <label for="N" class="radio-inline"><input type="radio"  name="NS" value="N" id="N"> N</label>
+            <label for="S" class="radio-inline"><input type="radio"  name="NS" value="S" id="S"> S</label>
+
+
+
+        </form>
+
+        <div>
+            <b>Languages:</b>
+            <div id="languages">
+                {% for o in languages %}
+                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+    <a class=" btn btn-default" href="to_login" role="button">Sign out</a>
+</div>
+
+</body>
+</html>

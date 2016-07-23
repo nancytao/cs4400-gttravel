@@ -58,7 +58,7 @@ def register(username, email, password, ismanager):
             return 3
 
 
-# returns False if credentials are invalid
+# returns 0 if credentials are invalid
 # returns 1 if user is a manager
 # returns 2 if user is NOT a manager
 def login(username, password):
@@ -69,7 +69,7 @@ def login(username, password):
     _cursor.fetchall()
 
     if response == 0:
-        return False
+        return 0
     else:
         query = "SELECT Is_manager FROM users WHERE Username = %s;"
         response = _cursor.execute(query, (username,))

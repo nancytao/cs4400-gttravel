@@ -17,10 +17,18 @@ def sign_in():
 
         _name = request.form['usr']
         _password = request.form['pwd']
-        # print request.form
-        # TODO SQL code here
+        num = db.login(_name,_password)
 
-        return render_template('homepage.html')
+        if num == 1:
+            # todo sql to get language/country
+            countries = db.getCountries()
+            languages = db.getLanguages()
+            return render_template('managerpage.html', countries=countries, languages=languages)
+        elif num == 2:
+            return render_template('homepage.html')
+        else:
+            print "Credentials Incorrect"
+            return
 
 
 @app.route('/')
@@ -62,7 +70,7 @@ def to_login():
     """
     Takes user to login page
     """
-    return render_template('login.html')
+    return render_template("login.html")
 
 
 @app.route("/login")
@@ -71,7 +79,8 @@ def login():
     Login the user
     can replace or be replaced sign_up()
     """
-    return render_template('homepage.html')
+
+    return render_template("homepage.html")
 
 
 @app.route("/to_home")

@@ -20,13 +20,12 @@
             Max: <input type="number" min='0' step='100'>
             <br>
         </div>
-
+        <br>
         <div>
-            Languages:
+            <b>Languages:</b>
             <div id="languages">
             {% for o in option_list2 %}
-
-                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                    <input type="checkbox"  value="{{ o }}">  {{ o }} <br>
             {% endfor %}
             </div>
 
