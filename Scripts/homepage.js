@@ -7,7 +7,7 @@
  */
 
 function logout() {
-    var newUrl = "../templates/login.html";
+    var newUrl = "../templates/LoGiN.html";
     window.location.replace(newUrl);
 }
 

@@ -27,7 +27,7 @@ function getPasswordFromDatabase(email) {
 }
 
 function register() {
-    var newUrl = "../templates/register.html";
+    var newUrl = "../templates/ReGiStEr.html";
     window.location.replace(newUrl);
 }
 

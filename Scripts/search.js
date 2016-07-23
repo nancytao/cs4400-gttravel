@@ -2,7 +2,7 @@
  * Created by coleb_000 on 7/20/2016.
  */
 function toHome() {
-    var newUrl = "../templates/homepage.html";
+    var newUrl = "../templates/hOmEpAge.html";
     window.location.replace(newUrl);
 }
 
