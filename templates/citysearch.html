@@ -16,11 +16,15 @@
         <div class="form-group">
             <label for="city">Name:</label>
             <select class="form-control" id="city">
-                <!--auto filled-->
+                {% for o in cities %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
             </select>
             <label for="country">Country:</label>
             <select class="form-control" id="country">
-                <!--auto filled-->
+                {% for o in countries %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
             </select>
         </div>
 
@@ -37,7 +41,9 @@
         <div>
             Languages:
             <div id="languages">
-                <!--Auto populate-->
+                {% for o in languages %}
+                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                {% endfor %}
             </div>
 
         </div>

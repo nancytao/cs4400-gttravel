@@ -18,7 +18,9 @@
         <div class="form-group">
             <label for="city">City:</label>
             <select class="form-control" id="city">
-                <!--auto filled-->
+                {% for o in cities %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
             </select>
         </div>
 
@@ -34,7 +36,9 @@
         <div>
             Categories:
             <div id="categoriesL">
-                <!--Auto populate-->
+                {% for o in loc_cat %}
+                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                {% endfor %}
             </div>
 
         </div>
