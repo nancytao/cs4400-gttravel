@@ -1,10 +1,10 @@
-CREATE DATABASE IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE  IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `gttravel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: gttravel
 -- ------------------------------------------------------
--- Server version 5.7.13-log
+-- Server version	5.7.13-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -57,7 +57,7 @@ CREATE TABLE `city` (
   `population` int(11) NOT NULL,
   PRIMARY KEY (`City`,`Country`),
   KEY `Country` (`Country`),
-  CONSTRAINT `city_ibfk_1` FOREIGN KEY (`Country`) REFERENCES `country` (`Name`) ON UPDATE CASCADE
+  CONSTRAINT `city_ibfk_1` FOREIGN KEY (`Country`) REFERENCES `country` (`Country`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `city_scores`;
 /*!50001 DROP VIEW IF EXISTS `city_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `city_scores` AS SELECT
+/*!50001 CREATE VIEW `city_scores` AS SELECT 
  1 AS `City`,
  1 AS `Country`,
  1 AS `Average_score`*/;
@@ -152,9 +152,9 @@ DROP TABLE IF EXISTS `country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `country` (
-  `Name` varchar(32) NOT NULL,
+  `Country` varchar(32) NOT NULL,
   `Population` int(11) NOT NULL,
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`Country`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -180,7 +180,7 @@ CREATE TABLE `country_language` (
   `Language` varchar(16) NOT NULL,
   PRIMARY KEY (`Country`,`Language`),
   KEY `Language` (`Language`),
-  CONSTRAINT `country_language_ibfk_1` FOREIGN KEY (`Country`) REFERENCES `country` (`Name`) ON UPDATE CASCADE,
+  CONSTRAINT `country_language_ibfk_1` FOREIGN KEY (`Country`) REFERENCES `country` (`Country`) ON UPDATE CASCADE,
   CONSTRAINT `country_language_ibfk_2` FOREIGN KEY (`Language`) REFERENCES `language` (`Language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -298,7 +298,7 @@ DROP TABLE IF EXISTS `event_scores`;
 /*!50001 DROP VIEW IF EXISTS `event_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `event_scores` AS SELECT
+/*!50001 CREATE VIEW `event_scores` AS SELECT 
  1 AS `Name`,
  1 AS `Date`,
  1 AS `Address`,
@@ -403,7 +403,7 @@ DROP TABLE IF EXISTS `location_scores`;
 /*!50001 DROP VIEW IF EXISTS `location_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `location_scores` AS SELECT
+/*!50001 CREATE VIEW `location_scores` AS SELECT 
  1 AS `Address`,
  1 AS `City`,
  1 AS `Country`,
@@ -523,4 +523,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-21 11:51:51
+-- Dump completed on 2016-07-24  0:26:28
