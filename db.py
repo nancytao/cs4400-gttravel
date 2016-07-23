@@ -140,6 +140,21 @@ def getLanguages():
     return tupleListToList(_cursor.fetchall())
 
 
+def getCities():
+    _cursor.execute("SELECT City FROM city;")
+    return tupleListToList(_cursor.fetchall())
+
+
+def getLocTypes():
+    _cursor.execute("SELECT Type FROM location_types;")
+    return tupleListToList(_cursor.fetchall())
+
+
+def getEventCategories():
+    _cursor.execute("SELECT Category FROM event_categories;")
+    return tupleListToList(_cursor.fetchall())
+
+
 def tupleListToList(tuplelist):
     list = []
     for item in tuplelist:
