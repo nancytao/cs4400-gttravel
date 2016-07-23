@@ -10,6 +10,7 @@ _cursor = None
 # setupConnection() must be called before anything else for this to work
 # closeConnection() should be called after finishing
 
+
 def setupConnection():
     global _connected
     global _database
@@ -18,14 +19,15 @@ def setupConnection():
     if not _connected:
         try:
             _database = MySQLdb.connect(host="localhost",
-                                          user="root",
-                                          passwd=config.password,
-                                          db="gttravel")
+                                        user="root",
+                                        passwd=config.password,
+                                        db="gttravel")
             _cursor = _database.cursor()
             _connected = True
         except Exception as e:
             _connected = False
             traceback.print_exc()
+
 
 def closeConnection():
     global _connected
@@ -34,15 +36,38 @@ def closeConnection():
         _database.close()
         _connected = False
 
-def test():
-    _cursor.execute("INSERT INTO users(Username, Email, Password, Is_manager) VALUES"\
-        "('name','filler@gmail.com','password',FALSE)")
 
-    _cursor.execute("SELECT * FROM USERS")
-    for row in _cursor.fetchall():
-        print row[0]
+# returns True if credentials are valid, else returns False
+def login(username, password):
+    query = "SELECT * FROM users WHERE Username = %s AND Password = %s;"
+    response = _cursor.execute(query, (username, password))
 
-    _database.commit()
+    # clear cursor
+    _cursor.fetchall()
+
+    return response > 0
+
+
+def is_manager(username):
+    query = "SELECT Is_manager FROM users WHERE Username = %s;"
+    response = _cursor.execute(query, (username,))
+
+    result = _cursor.fetchone()
+
+    # sanity check
+    _cursor.fetchall()
+
+    return result[0] == 1
+
+
+# main method for testing
+setupConnection()
+
+# change here to test
+print is_manager('nancy')
+print is_manager('manager')
+
+closeConnection()
 
 
 # SQL Statements that may be required
