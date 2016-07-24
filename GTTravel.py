@@ -73,6 +73,9 @@ def register():
         error = "Passwords do not match"
         if p1 != p2:
             return render_template("register.html", error=error)
+        elif len(p1) < 6:
+            error = "Password must be six or more characters"
+            return render_template("register.html", error=error)
         else:
             is_man = len(email) > 13 and email[-13:] == "@gttravel.com"
             reg = db.register(name, email, p1, is_man)
