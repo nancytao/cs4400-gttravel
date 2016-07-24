@@ -179,13 +179,16 @@ def pastReviews(username):
 
 def countrySearch(country, population_min, population_max, lang_list):
     population = population_max or population_min
-
-    result = {}
+    cri = False
+    if "Any additional language" in lang_list:
+        cri = True
+        lang_list.remove('Any additional language')
 
     if country:
         query = "SELECT * FROM country WHERE Country = %s;"
         response = _cursor.execute(query, (country,))
         fetch = _cursor.fetchone()
+        result = {}
         result['name'] = fetch[0]
         result['population'] = fetch[1]
 
@@ -196,33 +199,40 @@ def countrySearch(country, population_min, population_max, lang_list):
     elif population and lang_list:
         languages = '\' OR Language = \''.join(lang_list)
         langquery = 'Language = \'' + languages + '\''
-        innerquery = "(SELECT Country FROM country_language WHERE " + langquery + ") q "
+        innerquery = "(SELECT * FROM country_language WHERE " + langquery + ") q "
 
-        query = "SELECT * FROM (" + innerquery + "NATURAL JOIN country) WHERE "
+        query = "SELECT * FROM " + innerquery + "NATURAL JOIN country) "
+        if cri:
+            query += "p "
+            query = "SELECT * FROM multlangcountries NATURAL JOIN (" + query
+        query += "WHERE "
+
         if population_min and population_max:
-            query = query + "Population > %s AND Population < %s ORDER BY Population DESC;"
+            query += "Population > %s AND Population < %s ORDER BY Population DESC"
             response = _cursor.execute(query, (population_min, population_max))
         elif population_max:
-            query = query + "Population < %s ORDER BY Population DESC;"
+            query = query + "Population < %s ORDER BY Population DESC"
+            print query
             response = _cursor.execute(query, (population_max,))
         elif population_min:
-            query = query + "Population > %s ORDER BY Population DESC;"
+            query = query + "Population > %s ORDER BY Population DESC"
             response = _cursor.execute(query, (population_min,))
         else:
             print "shouldn't get here"  # sanity check
 
-        my_list = []
+        result = []
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
-            my_list.append(put)
+            result.append(put)
 
-        return my_list
+        return result
     elif population:
         query = "SELECT Country, Population FROM country WHERE "
+
         response = ""
 
         if population_min != "" and population_max != "":
@@ -235,46 +245,52 @@ def countrySearch(country, population_min, population_max, lang_list):
             query = query + "Population > %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_min,))
 
-        my_list = []
+        result = []
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
-            my_list.append(put)
+            result.append(put)
 
-        return my_list
+        return result
     elif lang_list:
         languages = '\' OR Language = \''.join(lang_list)
         langquery = 'Language = \'' + languages + '\''
-        query = "SELECT * FROM (SELECT Country FROM country_language WHERE " + langquery + ") q NATURAL JOIN country;"
+        if cri:
+            query = "SELECT * FROM multlangcountries NATURAL JOIN "\
+            "(SELECT * FROM (SELECT Country FROM country_language WHERE "
+            query += langquery + ") q NATURAL JOIN country) p;"
+        else:
+            query = "SELECT * FROM (SELECT Country FROM country_language WHERE "
+            query += langquery + ") q NATURAL JOIN country;"
         response = _cursor.execute(query)
 
-        my_list = []
+        result = []
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
-            my_list.append(put)
+            result.append(put)
 
-        return my_list
+        return result
     else:
         query = "SELECT * FROM country;"
         response = _cursor.execute(query)
 
-        my_list = []
+        result = []
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
-            my_list.append(put)
+            result.append(put)
 
-        return my_list
+        return result
 
 
 # returns a country's capitals in a string
@@ -303,7 +319,7 @@ def getLanguagesCountry(country):
 #       population, is_capital, [languages]]
 # returns
 def citySearch(city, lang_list):
-    if city != None:  # searching by city, returns just info about that city
+    if city:  # searching by city, returns just info about that city
         query = "SELECT * FROM city WHERE City = %s;"
         response = _cursor.execute(query, (city,))
         result = list(_cursor.fetchone())
@@ -344,9 +360,6 @@ setupConnection()
 
 # citySearch(None, ['Spanish', 'French', 'Catalan'])
 # print citySearch('Barcelona', None)
-print countrySearch("France", "", "", "")
-print countrySearch("", 0, 100000000, ['French'])
-print countrySearch("", 10, 100000000, "")
-print countrySearch("", "", "", ['Spanish', 'French'])
+print countrySearch("", "", "", ['French', 'Any additional language'])
 
 closeConnection()
