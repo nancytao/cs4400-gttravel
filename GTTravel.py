@@ -291,7 +291,7 @@ def search_events():
 @app.route("/to_location_results", methods=["POST", "GET"])
 def search_locations():
     """
-    takes user to location results
+    takes user  to location results
     gets data from html form
     gets and loads table from database
     """
