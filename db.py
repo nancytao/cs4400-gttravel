@@ -147,7 +147,11 @@ def getEventCategories():
 
 
 def getEvents():
-    return []
+    _cursor.execute("SELECT Name, Date, Address, City, Country FROM event;")
+    my_list = []
+    for item in _cursor.fetchall():
+        my_list.append(item[0] + " at " + item[2] + ", " + item[3] + ", " + item[4] + " on " + str(item[1]))
+    return my_list
 
 
 def tupleListToList(tuplelist):
@@ -357,7 +361,8 @@ def isCapital(city):
 def getCityScore(city):
     query = "SELECT Average_score FROM city_scores WHERE City = %s;"
     response = _cursor.execute(query, (city,))
-    return tupleListToList(_cursor.fetchall())
+    fetch = _cursor.fetchone()
+    return fetch[0] if fetch else "no reviews"
 
 
 # returns specific city in format [city, country, latitude, longitude,
@@ -434,26 +439,26 @@ def locationSearch(name, address, city, country, cost_min, cost_max, type_list):
             dicti['score'] = getLocScore()
     elif name and city and cost and type_list:
         print 1
-    elif name and country and cost and type_list:
-        print 2
+    # elif name and country and cost and type_list:
+    #     print 2
     elif name and city and cost:
         print 3
     elif name and city and type_list:
         print 3
-    elif name and country and cost:
-        print 3
-    elif name and country and type_list:
-        print 4
+    # elif name and country and cost:
+    #     print 3
+    # elif name and country and type_list:
+    #     print 4
     elif name and cost and type_list:
         print 3
     elif city and cost and type_list:
         print 3
-    elif country and cost and type_list:
-        print 3
+    # elif country and cost and type_list:
+    #     print 3
     elif name and city:
         print 3
-    elif name and country:
-        print 3
+    # elif name and country:
+    #     print 3
     elif name and cost:
         print 3
     elif name and type_list:
@@ -462,18 +467,18 @@ def locationSearch(name, address, city, country, cost_min, cost_max, type_list):
         print 3
     elif city and type_list:
         print 3
-    elif country and cost:
-        print 3
-    elif country and type_list:
-        print 3
+    # elif country and cost:
+    #     print 3
+    # elif country and type_list:
+    #     print 3
     elif cost and type_list:
         print 3
     elif name:
         print 2
     elif city:
         print 3
-    elif country:
-        print 2
+    # elif country:
+    #     print 2
     elif cost:
         print 3
     elif type_list:
@@ -505,8 +510,10 @@ def getLocScore(address, city, country):
 
 
 def eventSearch(name, city, date, cost_min, cost_max, std_discount, cat_list):
+    cost =  cost_max or cost_min
+
     if name:
-        query = ""
+        query = "SELECT * FROM Event WHERE Name = %s AND City = %s AND Date = %s;"
 
 
 
@@ -519,6 +526,7 @@ setupConnection()
 #     print row
 
 # print citySearch(None, None, None, None, None)
-# print countrySearch(None, None, None, ['Dutch', 'French', 'Any additional language'])
-print getCityScore('Paris')
+
+print getCityScore('Barcelona')
+print getEvents()
 closeConnection()
