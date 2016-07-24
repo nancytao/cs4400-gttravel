@@ -179,8 +179,8 @@ def countrySearch(country, population_min, population_max, lang_list):
         query = "SELECT * FROM country WHERE Country = %s"
         response = _cursor.execute(query, (country,))
         fetch = _cursor.fetchone()
-        result['name'] = fetch[0][0]
-        result['population'] = fetch[0][1]
+        result['name'] = fetch[0]
+        result['population'] = fetch[1]
 
         query = "SELECT Capital FROM capitals WHERE Country = %s;"
         response = _cursor.execute(query, (country,))
@@ -268,8 +268,6 @@ setupConnection()
 
 # citySearch(None, ['Spanish', 'French', 'Catalan'])
 # print citySearch('Barcelona', None)
-# print countrySearch('France', None, None)
-#
-print getCountries()
+print countrySearch('France', None, None, None)
 
 closeConnection()
