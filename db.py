@@ -99,17 +99,23 @@ def addCity(city, country, latitude, longitude, population, languages):
 
 def getCountries():
     _cursor.execute("SELECT Country FROM country;")
-    return tupleListToList(_cursor.fetchall())
+    my_list = tupleListToList(_cursor.fetchall())
+    my_list.append("")
+    return my_list
 
 
 def getLanguages():
     _cursor.execute("SELECT Language FROM language;")
-    return tupleListToList(_cursor.fetchall())
+    my_list = tupleListToList(_cursor.fetchall())
+    my_list.append("Any")
+    return my_list
 
 
 def getCities():
     _cursor.execute("SELECT City FROM city;")
-    return tupleListToList(_cursor.fetchall())
+    my_list = tupleListToList(_cursor.fetchall())
+    my_list.append("")
+    return my_list
 
 
 def getLocTypes():
@@ -169,25 +175,28 @@ def pastReviews(username):
 
 def countrySearch(country, population_min, population_max, lang_list):
     if country != "":
+        result = {}
         query = "SELECT * FROM country WHERE Country = %s"
         response = _cursor.execute(query, (country,))
-        result = list(_cursor.fetchone())
+        fetch = _cursor.fetchone()
+        result['name'] = fetch[0][0]
+        result['population'] = fetch[0][1]
 
         query = "SELECT Capital FROM capitals WHERE Country = %s;"
         response = _cursor.execute(query, (country,))
         capitals = []
         for row in _cursor.fetchall():
             capitals.append(row[0])
-        result.append(capitals)
+        capitals = ' ,'.join(capitals)
+        result['capitals'] = capitals
 
         query = "SELECT Language FROM country_language WHERE Country = %s;"
         response = _cursor.execute(query, (country,))
-
         languages = []
         for row in _cursor.fetchall():
             languages.append(row[0])
-
-        result.append(languages)
+        languages = ' ,'.join(languages)
+        result['languages'] = languages
         return result
 
     if population_min != "" or population_max != "":
@@ -259,6 +268,8 @@ setupConnection()
 
 # citySearch(None, ['Spanish', 'French', 'Catalan'])
 # print citySearch('Barcelona', None)
-print countrySearch('France', None, None)
+# print countrySearch('France', None, None)
+#
+print getCountries()
 
 closeConnection()
