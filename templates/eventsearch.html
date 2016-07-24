@@ -10,42 +10,40 @@
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Event Search</h1>
     <!--use tables to align everything-->
-    <form class="form-group" action="to_city_results" method="post">
+    <form class="form-group" action="to_event_results" method="post">
         <div class="form-group">
-            <label for="location">Name:</label>
-            <select class="form-control" name="location" id="location">
+            <label for="event">Name:</label>
+            <select class="form-control" name="event" id="event">
                 {% for o in events %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
 
             <label for="city">City:</label>
-            <select class="form-control" id="city">
+            <select name = "city" class="form-control" id="city">
                 {% for o in cities %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
             <br>
-            <label>Date: <input type="date"></label>
+            <label>Date: <input name="date" type="date"></label>
             <br>
             <b>Cost:</b>
             <br>
-            Min: $<input type="number" min='0' step='.01'>
+            Min: $<input name="minCost" type="number" min='0' step='.01'>
             <br><br>
-            Max: $<input type="number" min='0' step='.01'>
+            Max: $<input name="maxCost" type="number" min='0' step='.01'>
             <br>
             <br>
             <b>Student Discount?</b>
-            <label class="radio-inline"><input type="radio" name="discount">Yes</label>
-            <label class="radio-inline"><input type="radio" name="discount">No</label>
-        </div>
+            <label class="radio-inline"><input value="Yes" type="radio" name="discount">Yes</label>
+            <label class="radio-inline"><input value="No" type="radio" name="discount">No</label>
 
-        <div>
             <br>
             <b>Categories:</b>
             <div id="categoriesE">
                 {% for o in event_cat %}
-                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                    <input name="catagoriesE" type="checkbox" value="{{ o }}">  {{ o }} <br>
                 {% endfor %}
             </div>
 
@@ -85,15 +83,10 @@
             </div>
         </div>
         -->
+        <button id = "searchEvents" class=" btn btn-default"  type="submit">Search</button>
+        <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
     </form>
 
-
-
-    <!--type="button" class="btn btn-default"-->
-   <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>-->
-    <!--<button type="button" class="btn btn-default">Search</button>-->
-    <a class=" btn btn-default" href="to_event_results" role="button">Search</a>
-    <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
 
 </div>
 </body>

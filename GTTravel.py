@@ -225,7 +225,6 @@ def search_country():
     """
 
     if request.method == "POST":
-        print request.form
         name = request.form["country"]
         maxPop = request.form["maxPop"]
         minPop = request.form["minPop"]
@@ -246,7 +245,6 @@ def search_city():
     """
 
     if request.method == "POST":
-        print request.form
         city = request.form["city"]
         country = request.form["country"]
         maxPop = request.form["maxPop"]
@@ -259,14 +257,27 @@ def search_city():
         return render_template('cityresults.html', cities=results)
 
 
-@app.route("/to_event_results")
+@app.route("/to_event_results", methods=["POST", "GET"])
 def search_events():
     """
     takes user to event results
     gets data from html form
     gets and loads table from database
     """
-    return render_template('eventresults.html')
+
+    if request.method == "POST":
+        print request.form
+        event = request.form["event"]
+        city = request.form["city"]
+        date = request.form["date"]
+        maxCost = request.form["maxCost"]
+        minCost = request.form["minCost"]
+        discount = request.form["discount"]
+        catagory = request.form.getlist("catagoriesE")
+
+        results = db.eventSearch(event, city, date, minCost, maxCost, discount == "Yes", catagory)
+
+        return render_template('eventresults.html', events=results)
 
 
 @app.route("/to_location_results")

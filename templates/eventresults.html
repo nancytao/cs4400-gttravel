@@ -6,6 +6,49 @@
     <title>Event Results</title>
 </head>
 <body>
+<div class="container">
+      <h2>Cities</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+              <td>Name</td>
+              <td>Date</td>
+              <td>Start Time</td>
+              <td>End Time</td>
+              <td>Address</td>
+              <td>City</td>
+              <td>Country</td>
+              <td>Category</td>
+              <td>Student Discount</td>
+              <td>Cost</td>
+              <td>Description</td>
+              <td>Score</td>
+              <td>Review</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for o in events %}
+          <tr>
+                <td>{{ o["name"] }}</td>
+                <td>{{ o["date"] }}</td>
+                <td>{{ o["starttime"] }}</td>
+                <td>{{ o["endtime"] }}</td>
+                <td>{{ o["address"] }}</td>
+                <td>{{ o["city"] }}</td>
+                <td>{{ o["country"] }}</td>
+                <td>{{ o["category"] }}</td>
+                <td>{{ o["std_discount"] }}</td>
+                <td>{{ o["cost"] }}</td>
+                <td>{{ o["description"] }}</td>
+                <td>{{ o["score"] }}</td>
+                <td>Button</td>
+
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
     <a class=" btn btn-default" href="to_event_search" role="button">Go Back</a>
+</div>
+
 </body>
 </html>
