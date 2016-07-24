@@ -304,7 +304,7 @@ def search_locations():
         type = request.form.getlist("catagoriesL")
 
         results = db.locationSearch(loc, address, city, minCost, maxCost, type);
-        return render_template('locationresults.html', events=results)
+        return render_template('locationresults.html', locations=results)
 
 
 @app.route("/make_review")
