@@ -197,7 +197,7 @@ def countrySearch(country, population_min, population_max, lang_list):
             languages.append(row[0])
         languages = ' ,'.join(languages)
         result['languages'] = languages
-        return result
+        return [result]
 
     if population_min != "" or population_max != "":
         query = "SELECT Country, Population FROM country WHERE "
