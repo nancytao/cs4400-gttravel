@@ -42,18 +42,19 @@
 
 
 
-        </form>
 
-        <div>
-            <b>Languages:</b>
-            <div id="languages">
-                {% for o in languages %}
-                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
-                {% endfor %}
+
+            <div>
+                <b>Languages:</b>
+                <div id="languages">
+                    {% for o in languages %}
+                        <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                    {% endfor %}
+                </div>
+
             </div>
 
-        </div>
-
+        </form>
     </div>
     <a class=" btn btn-default" href="to_login" role="button">Sign out</a>
 </div>
