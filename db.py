@@ -123,6 +123,19 @@ def getCities():
     return my_list
 
 
+def getAddresses():
+    _cursor.execute("SELECT Address, City, Country FROM location;")
+    my_list = []
+    for item in _cursor.fetchall():
+        my_list.append(item[0] + ", " + item[1] + ", " + item[2])
+    return my_list
+
+
+def getLocNames():
+    _cursor.execute("SELECT Name FROM location;")
+    return tupleListToList(_cursor.fetchall())
+
+
 def getLocTypes():
     _cursor.execute("SELECT Type FROM location_types;")
     return tupleListToList(_cursor.fetchall())
@@ -201,21 +214,21 @@ def countrySearch(country, population_min, population_max, lang_list):
         langquery = 'Language = \'' + languages + '\''
         innerquery = "(SELECT * FROM country_language WHERE " + langquery + ") q "
 
-        query = "SELECT * FROM " + innerquery + "NATURAL JOIN country) "
+        query = "SELECT * FROM " + innerquery + "NATURAL JOIN country"
         if cri:
-            query += "p "
+            query += ") p"
             query = "SELECT * FROM multlangcountries NATURAL JOIN (" + query
-        query += "WHERE "
+        query += " WHERE "
 
         if population_min and population_max:
-            query += "Population > %s AND Population < %s ORDER BY Population DESC"
+            query += "Population >= %s AND Population <= %s ORDER BY Population DESC"
             response = _cursor.execute(query, (population_min, population_max))
         elif population_max:
-            query = query + "Population < %s ORDER BY Population DESC"
+            query = query + "Population <= %s ORDER BY Population DESC"
             print query
             response = _cursor.execute(query, (population_max,))
         elif population_min:
-            query = query + "Population > %s ORDER BY Population DESC"
+            query = query + "Population >= %s ORDER BY Population DESC"
             response = _cursor.execute(query, (population_min,))
         else:
             print "shouldn't get here"  # sanity check
@@ -236,13 +249,13 @@ def countrySearch(country, population_min, population_max, lang_list):
         response = ""
 
         if population_min != "" and population_max != "":
-            query = query + "Population > %s AND Population < %s ORDER BY Population DESC;"
+            query = query + "Population >= %s AND Population <= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_min, population_max))
         elif population_min == "" and population_max != "":
-            query = query + "Population < %s ORDER BY Population DESC;"
+            query = query + "Population <= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_max,))
         elif population_min != "" and population_max == "":
-            query = query + "Population > %s ORDER BY Population DESC;"
+            query = query + "Population >= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_min,))
 
         result = []
@@ -315,39 +328,82 @@ def getLanguagesCountry(country):
     return languages
 
 
+# returns a city's languages in a string
+def getLanguagesCity(city):
+    query = "SELECT Language FROM city_language WHERE City = %s;"
+    response = _cursor.execute(query, (city,))
+    languages = []
+    for row in _cursor.fetchall():
+        languages.append(row[0])
+    languages = ', '.join(languages)
+    return languages
+
+
+def isCapital(city):
+    query = "SELECT * FROM capitals WHERE Capital = %s;"
+    response = _cursor.execute(query, (city,))
+    return response > 0
+
+
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
-def citySearch(city, lang_list):
+def citySearch(city, country, population_min, population_max, lang_list):
+    population = population_max or population_min
+
     if city:  # searching by city, returns just info about that city
+        dicti = {}
         query = "SELECT * FROM city WHERE City = %s;"
         response = _cursor.execute(query, (city,))
-        result = list(_cursor.fetchone())
+        result = _cursor.fetchone()
+        dicti['city'] = result[0]
+        dicti['country'] = result[1]
+        dicti['latitude'] = result[2]
+        dicti['longitude'] = result[3]
+        dicti['population'] = result[4]
+        dicti['iscapital'] = isCapital(city)
+        dicti['languages'] = getLanguagesCity(city)
 
-        query = "SELECT * FROM capitals WHERE Capital = %s;"
-        response = _cursor.execute(query, (city,))
-        if response > 0:
-            result.append(True)
-        else:
-            result.append(False)
-
-        query = "SELECT Language FROM city_language WHERE City = %s;"
-        response = _cursor.execute(query, (city,))
-
-        languages = []
-        for row in _cursor.fetchall():
-            languages.append(row[0])
-
-        result.append(languages)
-        return result
-    if lang_list != None:
-        languages = '\' OR Language = \''.join(lang_list)
-        langquery = 'Language = \'' + languages + '\''
-        query = "SELECT * FROM city_language WHERE " + langquery
+        return [dicti]
+    elif country and population and lang_list:
+        print 1
+    elif country and population:
+        print 2
+    elif country and lang_list:
+        print 3
+    elif population and lang_list:
+        print 4
+    elif country:
+        print 5
+    elif population:
+        print 6
+    elif lang_list:
+        print 7
+    else:
+        query = "SELECT * FROM city;"
         response = _cursor.execute(query)
 
-        for row in _cursor.fetchall():
-            print row[0]
+        result = []
+        for item in _cursor.fetchall():
+            dicti = {}
+            dicti['city'] = item[0]
+            dicti['country'] = item[1]
+            dicti['latitude'] = item[2]
+            dicti['longitude'] = item[3]
+            dicti['population'] = item[4]
+            dicti['iscapital'] = isCapital(item[0])
+            dicti['languages'] = getLanguagesCity(item[0])
+            result.append(dicti)
+        return result
+
+
+def locationSearch(name, address, city, country, cost_min, cost_max, cat_list):
+    cost = cost_min or cost_max
+
+    if address:
+        print 1
+    elif name and city and country and cost and cat_list:
+        print 2
 
 
 ## testing
@@ -358,8 +414,7 @@ setupConnection()
 # for row in _cursor.fetchall():
 #     print row
 
-# citySearch(None, ['Spanish', 'French', 'Catalan'])
-# print citySearch('Barcelona', None)
-print countrySearch("", "", "", ['French', 'Any additional language'])
+# print citySearch(None, None, None, None, None)
+print countrySearch(None, None, 100000000000, ['German', 'English', 'Any additional language'])
 
 closeConnection()
