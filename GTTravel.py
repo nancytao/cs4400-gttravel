@@ -22,7 +22,7 @@ def sign_in():
 
         if num == 1:
             countries = db.getCountries()
-            languages = db.getLanguages()
+            languages = db.getLanguagesMgr()
             return render_template('managerpage.html', countries=countries, languages=languages)
         elif num == 2:
             global logged_user
