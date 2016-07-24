@@ -23,7 +23,8 @@ def sign_in():
         if num == 1:
             countries = db.getCountries()
             languages = db.getLanguagesMgr()
-            return render_template('managerpage.html', countries=countries, languages=languages)
+            message = ["green", ""]
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages)
         elif num == 2:
             global logged_user
             logged_user = _name
@@ -303,7 +304,7 @@ def search_locations():
         minCost = request.form["minCost"]
         type = request.form.getlist("catagoriesL")
 
-        results = db.locationSearch(loc, address, city, minCost, maxCost, type);
+        results = db.locationSearch(loc, address, city, minCost, maxCost, type)
         return render_template('locationresults.html', locations=results)
 
 
@@ -317,6 +318,28 @@ def make_review():
     """
     return render_template('pastreviews.html')
 
+
+@app.route("/add_city", methods=["POST", "GET"])
+def add_city():
+    if request.method == "POST":
+        city = request.form["city"]
+        country = request.form["country"]
+        pop = request.form["pop"]
+        lon = request.form["lon"]
+        ew = request.form["EW"]
+        lat = request.form["lat"]
+        ns = request.form["NS"]
+        languages = request.form.getlist("languages")
+
+        if len(languages) != 0:
+
+            db.addCity(city, country, lat + " " + ns, lon + " " + ew, pop, languages)
+
+            message = ["green", "City added"]
+            return render_template('managerpage.html', message=message)
+        else:
+            message = ["red", "Select a Language"]
+            return render_template('managerpage.html', message=message)
 
 if __name__ == '__main__':
     app.run()
