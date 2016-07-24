@@ -1,4 +1,5 @@
 import config
+from datetime import datetime
 import MySQLdb
 import traceback
 
@@ -128,6 +129,7 @@ def getAddresses():
     my_list = []
     for item in _cursor.fetchall():
         my_list.append(item[0] + ", " + item[1] + ", " + item[2])
+    my_list.append[""]
     return my_list
 
 
@@ -151,6 +153,7 @@ def getEvents():
     my_list = []
     for item in _cursor.fetchall():
         my_list.append(item[0] + " at " + item[2] + ", " + item[3] + ", " + item[4] + " on " + str(item[1]))
+    my_list.append("")
     return my_list
 
 
@@ -419,7 +422,7 @@ def citySearch(city, country, population_min, population_max, lang_list):
         return result
 
 
-def locationSearch(name, address, city, country, cost_min, cost_max, type_list):
+def locationSearch(name, address, city, cost_min, cost_max, type_list):
     cost = cost_min or cost_max
 
     if address:
@@ -509,13 +512,25 @@ def getLocScore(address, city, country):
     return tupleListToList(_cursor.fetchall())
 
 
-def eventSearch(name, city, date, cost_min, cost_max, std_discount, cat_list):
+# param std_discount is None if not selected, True if yes, and False if no
+def eventSearch(event, city, d8, cost_min, cost_max, std_discount, cat_list):
     cost =  cost_max or cost_min
 
-    if name:
+    if event:
+        # TODO make this work
         query = "SELECT * FROM Event WHERE Name = %s AND City = %s AND Date = %s;"
-
-
+    elif city:
+        # TODO make this work with multiple returned cities
+        # TODO return all the attributes
+        query = "SELECT * FROM Event WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+        return [{'name': _cursor.fetchone()[0]}]
+    elif d8:
+        # TODO make this work with multiple returned cities
+        # TODO return all the attributes
+        query = "SELECT * FROM Event WHERE Date = %s;"
+        response = _cursor.execute(query, (d8,))
+        return [{'name': _cursor.fetchone()[0]}]
 
 ## testing
 setupConnection()
@@ -527,6 +542,5 @@ setupConnection()
 
 # print citySearch(None, None, None, None, None)
 
-print getCityScore('Barcelona')
-print getEvents()
+print eventSearch(None, 'Barcelona', '08/01/2016', None, None, None, None)
 closeConnection()
