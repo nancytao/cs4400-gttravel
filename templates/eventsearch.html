@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <title>Event Search</title>
     <script src="../Scripts/search.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 </head>
 <body onLoad ="populateEventCategories(); populateCityNames()">
 <div style="padding: 3% 5% 5% 5%; width: 80%">
@@ -26,6 +27,17 @@
                 {% endfor %}
             </select>
             <br>
+
+
+
+            <script>
+            $(function() {
+                $( "#calendar" ).datepicker();
+            });
+            </script>
+
+            <p>Calendar: <input type="text" id="calendar" /></p>
+
             <label>Date: <input name="date" type="date"></label>
             <br>
             <b>Cost:</b>
