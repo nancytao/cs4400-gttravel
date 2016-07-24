@@ -225,7 +225,6 @@ def countrySearch(country, population_min, population_max, lang_list):
             response = _cursor.execute(query, (population_min, population_max))
         elif population_max:
             query = query + "Population <= %s ORDER BY Population DESC"
-            print query
             response = _cursor.execute(query, (population_max,))
         elif population_min:
             query = query + "Population >= %s ORDER BY Population DESC"
@@ -242,7 +241,10 @@ def countrySearch(country, population_min, population_max, lang_list):
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
 
-        return result
+        if cri:
+            return [dict(t) for t in set([tuple(d.items()) for d in result])]
+        else:
+            return result
     elif population:
         query = "SELECT Country, Population FROM country WHERE "
 
@@ -289,7 +291,10 @@ def countrySearch(country, population_min, population_max, lang_list):
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
 
-        return result
+        if cri:
+            return [dict(t) for t in set([tuple(d.items()) for d in result])]
+        else:
+            return result
     else:
         query = "SELECT * FROM country;"
         response = _cursor.execute(query)
@@ -415,6 +420,6 @@ setupConnection()
 #     print row
 
 # print citySearch(None, None, None, None, None)
-print countrySearch(None, None, 100000000000, ['German', 'English', 'Any additional language'])
+print countrySearch(None, None, None, ['Dutch', 'French', 'Any additional language'])
 
 closeConnection()
