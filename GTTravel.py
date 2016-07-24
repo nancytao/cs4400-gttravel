@@ -272,10 +272,16 @@ def search_events():
         date = request.form["date"]
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
-        discount = request.form["discount"]
         catagory = request.form.getlist("catagoriesE")
 
-        results = db.eventSearch(event, city, date, minCost, maxCost, discount == "Yes", catagory)
+        discount = None
+
+        if "discount" in request.form:
+            discount = request.form["discount"]
+            discount = discount == "Yes"
+        print discount
+
+        results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory)
 
         return render_template('eventresults.html', events=results)
 
