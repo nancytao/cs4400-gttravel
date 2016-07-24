@@ -506,7 +506,7 @@ def getLocScore(address, city, country):
 
 def eventSearch(name, city, date, cost_min, cost_max, std_discount, cat_list):
     if name:
-        query =
+        query = ""
 
 
 
