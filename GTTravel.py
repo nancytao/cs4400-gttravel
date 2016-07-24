@@ -2,6 +2,7 @@ from flask import Flask, render_template, json, request, Response
 import db
 
 app = Flask(__name__)
+app.debug = True
 logged_user = ""
 
 
