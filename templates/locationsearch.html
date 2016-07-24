@@ -10,93 +10,53 @@
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Location Search</h1>
     <!--use tables to align everything-->
-    <div class="container-fluid">
+    <form class="form-group" action="to_location_results" method="post">
         <div class="form-group">
             <label for="location">Name:</label>
-            <input type="text" class="form-control" id="location">
-        </div>
-        <div class="form-group">
+            <select name="location" class="form-control" id="location">
+                {% for o in locations %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
+            </select>
+        <br>
             <label for="city">City:</label>
-            <select class="form-control" id="city">
+            <select name="city" class="form-control" id="city">
                 {% for o in cities %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
-        </div>
+            <br>
+            <label for="city">Address:</label>
+            <select name="address" class="form-control" id="address">
+                {% for o in address %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
+            </select>
 
-        <div>
+            <br>
+
             <b>Cost:</b>
             <br>
-            Min: $<input type="number" min='0' step='.01'>
+            Min: $<input name="minCost" type="number" min='0' step='.01'>
             <br><br>
-            Max: $<input type="number" min='0' step='.01'>
+            Max: $<input name="maxCost" type="number" min='0' step='.01'>
             <br>
-        </div>
-        <br>
-        <div>
-            <b>Categories:</b>
+
+            <br>
+
+            <b>Type:</b>
             <div id="categoriesL">
                 {% for o in loc_cat %}
-                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                    <input name="categoriesL" type="checkbox" value="{{ o }}">  {{ o }} <br>
                 {% endfor %}
             </div>
 
         </div>
-
-        <!--
-        <div class="form-group">
-            <label for="cat">Select list:</label>
-            <select class="form-control" id="cat">
-                <option>Museum</option>
-                <option>Stadium</option>
-                <option>Restaurant</option>
-                <option>Plaza</option>
-                <option>Park</option>
-                <option>Memorial</option>
-                <option>Church</option>
-            </select>
-        </div>
-        <div>
-            Categories:
-            <div>
-                <div style="display: inline-block; padding-right: 7px">
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Museum</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Stadium</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Restaurant</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Plaza</label>
-                    </div>
-                </div>
-                <div style="display: inline-block; padding-right: 7px; vertical-align: top">
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Park</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Memorial</label>
-                    </div>
-                    <div class="checkbox">
-                        <label><input type="checkbox"> Church</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-    </div>
+        <button id = "searchLocs" class=" btn btn-default"  type="submit">Search</button>
+        <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
+    </form>
 
 
-    <!--type="button" class="btn btn-default"-->
-
-    <!--<button type="button" class="btn btn-default">Search</button>-->
-    <a class=" btn btn-default" href="to_location_results" role="button">Search</a>
-
-    <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>-->
-    <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
 </div>
 </body>
 </html>
