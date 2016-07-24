@@ -22,3 +22,6 @@ force mgr to pick a lang etc: see login
 make sure minPop <= MaxPop same wiht cost
 can you search by multiple categories - do it - adding any category ie language- one mandatory part. others not
 ~~search on the left~~
+make single country search go straight to special country page
+tables to alight stuff in search maybe
+make is capital in city search a check mark or a yes no not truee false

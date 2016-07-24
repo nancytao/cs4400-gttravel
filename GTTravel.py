@@ -233,14 +233,26 @@ def search_country():
         return render_template('countryresults.html', countries=results)
 
 
-@app.route("/to_city_results")
+@app.route("/to_city_results", methods=["POST", "GET"])
 def search_city():
     """
     takes user to city results
     gets data from html form
     gets and loads table from database
     """
-    return render_template('cityresults.html')
+
+    if request.method == "POST":
+        print request.form
+        city = request.form["city"]
+        country = request.form["country"]
+        maxPop = request.form["maxPop"]
+        minPop = request.form["minPop"]
+
+        languages = request.form.getlist("languages")
+
+        results = db.citySearch(city, country, minPop, maxPop, languages)
+
+        return render_template('cityresults.html', cities=results)
 
 
 @app.route("/to_event_results")

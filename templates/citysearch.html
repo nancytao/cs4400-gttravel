@@ -10,40 +10,37 @@
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1>City Search</h1>
     <!--use tables to align everything-->
-    <div class="container-fluid">
+    <form class="form-group" action="to_city_results" method="post">
 
 
         <div class="form-group">
             <label for="city">Name:</label>
-            <select class="form-control" id="city">
+            <select name="city" class="form-control" id="city">
                 {% for o in cities %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
             <label for="country">Country:</label>
-            <select class="form-control" id="country">
+            <select name= "country" class="form-control" id="country">
                 {% for o in countries %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
-        </div>
 
-        <div>
+            <br>
+
             <b>Population:</b>
             <br>
-            Min: <input type="number" min='0' step='100'>
+            Min: <input name="minPop" type="number" min='0' step='1'>
             <br><br>
-            Max: <input type="number" min='0' step='100'>
+            Max: <input name="maxPop" type="number" min='0' step='1'>
             <br>
-        </div>
 
-
-        <div>
             <br>
             <b>Languages:</b>
             <div id="languages">
                 {% for o in languages %}
-                    <input type="checkbox" value="{{ o }}">  {{ o }} <br>
+                    <input name="languages" type="checkbox" value="{{ o }}">  {{ o }} <br>
                 {% endfor %}
             </div>
 
@@ -54,9 +51,9 @@
 
         <!--<button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>-->
         <!--<button type="button" class="btn btn-default">Search</button>-->
-        <a class=" btn btn-default" href="to_city_results" role="button">Search</a>
+        <button id = "searchCity" class=" btn btn-default"  type="submit">Search</button>
         <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
-    </div>
+    </form>
 </div>
 
 
