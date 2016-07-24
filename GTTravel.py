@@ -188,6 +188,7 @@ def to_event_search():
     Takes users to event search page
     Dynamically auto fills forms from data base
     """
+    events = db.getEvents()
     cities = db.getCities()
     event_cat = db.getEventCategories()
     """
@@ -196,7 +197,7 @@ def to_event_search():
         return Response(resp)
     """
 
-    return render_template('eventsearch.html', cities=cities, event_cat=event_cat)
+    return render_template('eventsearch.html', events=events, cities=cities, event_cat=event_cat)
 
 
 @app.route("/to_write_reviews")

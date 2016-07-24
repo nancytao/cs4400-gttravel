@@ -10,10 +10,14 @@
 <div style="padding: 3% 5% 5% 5%; width: 80%">
     <h1> Event Search</h1>
     <!--use tables to align everything-->
-    <div class="container-fluid">
+    <form class="form-group" action="to_city_results" method="post">
         <div class="form-group">
             <label for="location">Name:</label>
-            <input type="text" class="form-control" id="location">
+            <select class="form-control" name="location" id="location">
+                {% for o in events %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
+            </select>
 
             <label for="city">City:</label>
             <select class="form-control" id="city">
@@ -81,7 +85,7 @@
             </div>
         </div>
         -->
-    </div>
+    </form>
 
 
 
