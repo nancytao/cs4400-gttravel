@@ -146,6 +146,10 @@ def getEventCategories():
     return tupleListToList(_cursor.fetchall())
 
 
+def getEvents():
+    return []
+
+
 def tupleListToList(tuplelist):
     my_list = []
     for item in tuplelist:
@@ -350,6 +354,12 @@ def isCapital(city):
     return response > 0
 
 
+def getCityScore(city):
+    query = "SELECT Average_score FROM city_scores WHERE City = %s;"
+    response = _cursor.execute(query, (city,))
+    return tupleListToList(_cursor.fetchall())
+
+
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
@@ -368,6 +378,7 @@ def citySearch(city, country, population_min, population_max, lang_list):
         dicti['population'] = result[4]
         dicti['iscapital'] = isCapital(city)
         dicti['languages'] = getLanguagesCity(city)
+        dicti['score'] = getCityScore(city)
 
         return [dicti]
     elif country and population and lang_list:
@@ -398,17 +409,105 @@ def citySearch(city, country, population_min, population_max, lang_list):
             dicti['population'] = item[4]
             dicti['iscapital'] = isCapital(item[0])
             dicti['languages'] = getLanguagesCity(item[0])
+            dicti['score'] = getCityScore(item[0])
             result.append(dicti)
         return result
 
 
-def locationSearch(name, address, city, country, cost_min, cost_max, cat_list):
+def locationSearch(name, address, city, country, cost_min, cost_max, type_list):
     cost = cost_min or cost_max
 
     if address:
+        addressarr = [x.strip() for x in address.split(',')]
+        query = "SELECT * FROM location WHERE Address = %s AND City = %s AND Country = %s"
+        response = _cursor.execute(query, tuple(addressarr))
+
+        dicti = {}
+        for item in _cursor.fetchall():
+            dicti['name'] = item[6]
+            dicti['address'] = item[0]
+            dicti['city'] = item[1]
+            dicti['country'] = item[2]
+            dicti['cost'] = item[3]
+            dicti['type'] = item[4]
+            dicti['std_discount'] = item[5]
+            dicti['score'] = getLocScore()
+    elif name and city and cost and type_list:
         print 1
-    elif name and city and country and cost and cat_list:
+    elif name and country and cost and type_list:
         print 2
+    elif name and city and cost:
+        print 3
+    elif name and city and type_list:
+        print 3
+    elif name and country and cost:
+        print 3
+    elif name and country and type_list:
+        print 4
+    elif name and cost and type_list:
+        print 3
+    elif city and cost and type_list:
+        print 3
+    elif country and cost and type_list:
+        print 3
+    elif name and city:
+        print 3
+    elif name and country:
+        print 3
+    elif name and cost:
+        print 3
+    elif name and type_list:
+        print 3
+    elif city and cost:
+        print 3
+    elif city and type_list:
+        print 3
+    elif country and cost:
+        print 3
+    elif country and type_list:
+        print 3
+    elif cost and type_list:
+        print 3
+    elif name:
+        print 2
+    elif city:
+        print 3
+    elif country:
+        print 2
+    elif cost:
+        print 3
+    elif type_list:
+        print 3
+    else:
+        query = "SELECT * FROM location;"
+        response = _cursor.execute(query)
+
+        result = []
+        for item in _cursor.fetchall():
+            dicti = {}
+            dicti['name'] = item[6]
+            dicti['address'] = item[0]
+            dicti['city'] = item[1]
+            dicti['country'] = item[2]
+            dicti['cost'] = item[3]
+            dicti['type'] = item[4]
+            dicti['std_discount'] = item[5]
+            dicti['score'] = getLocScore()
+            result.append(dicti)
+        return result
+
+
+def getLocScore(address, city, country):
+    query = "SELECT Average_score FROM location_scores WHERE Address = %s "\
+            "AND City = %s AND Country = %s;"
+    response = _cursor.execute(query, (address, city, country))
+    return tupleListToList(_cursor.fetchall())
+
+
+def eventSearch(name, city, date, cost_min, cost_max, std_discount, cat_list):
+    if name:
+        query =
+
 
 
 ## testing
@@ -420,6 +519,6 @@ setupConnection()
 #     print row
 
 # print citySearch(None, None, None, None, None)
-print countrySearch(None, None, None, ['Dutch', 'French', 'Any additional language'])
-
+# print countrySearch(None, None, None, ['Dutch', 'French', 'Any additional language'])
+print getCityScore('Paris')
 closeConnection()
