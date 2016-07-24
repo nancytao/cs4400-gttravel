@@ -10,5 +10,5 @@
 # make location and event search a drop down
 # force mgr to pick a lang etc ssee login
 # make sure minPop <= MaxPop same wiht cost
-# append other to language and catagory list
-# add none option to country
+# can you search by multiple catagories - do it - adding any catagory ie language- one madnatory part. others not
+# search on the left

@@ -228,15 +228,9 @@ def search_country():
 
         languages = request.form.getlist("languages")
 
-        #todo sql queries
-        #todo turn nulls into None maybe
+        results = db.countrySearch(name, minPop, maxPop, languages)
 
-        print name
-        print maxPop
-        print minPop
-        print languages
-
-        return render_template('countryresults.html')
+        return render_template('countryresults.html', countries=results)
 
 
 @app.route("/to_city_results")
