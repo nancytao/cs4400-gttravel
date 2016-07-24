@@ -172,6 +172,8 @@ def to_location_search():
     """
     cities = db.getCities()
     loc_cat = db.getLocTypes()
+    locations = db.getLocNames()
+    address = db.getAddresses()
 
     """
      if request.form['submit'] == 'Select':
@@ -179,7 +181,7 @@ def to_location_search():
         return Response(resp)
     """
 
-    return render_template('locationsearch.html', cities=cities, loc_cat=loc_cat)
+    return render_template('locationsearch.html', locations=locations, address=address, cities=cities, loc_cat=loc_cat)
 
 
 @app.route("/to_event_search")
@@ -286,14 +288,23 @@ def search_events():
         return render_template('eventresults.html', events=results)
 
 
-@app.route("/to_location_results")
+@app.route("/to_location_results", methods=["POST", "GET"])
 def search_locations():
     """
     takes user to location results
     gets data from html form
     gets and loads table from database
     """
-    return render_template('locationresults.html')
+    if request.method == "POST":
+        loc = request.form["location"]
+        address = request.form["address"]
+        city = request.form["city"]
+        maxCost = request.form["maxCost"]
+        minCost = request.form["minCost"]
+        type = request.form.getlist("catagoriesL")
+
+        results = db.locationSearch(loc, address, city, minCost, maxCost, type);
+        return render_template('locationresults.html', events=results)
 
 
 @app.route("/make_review")

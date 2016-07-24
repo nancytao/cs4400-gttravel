@@ -24,3 +24,4 @@ make single country search go straight to special country page
 tables to alight stuff in search maybe
 make is capital in city search a check mark or a yes no not truee false
 write reviews three tabs for each type of reivew nav-pills
+search locations by country
