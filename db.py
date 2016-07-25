@@ -386,7 +386,7 @@ def getCityScore(city):
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
-def citySearch(city, country, population_min, population_max, lang_list):
+def citySearch(city, country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
 
     if city:  # searching by city, returns just info about that city
@@ -437,7 +437,7 @@ def citySearch(city, country, population_min, population_max, lang_list):
         return result
 
 
-def locationSearch(name, address, city, cost_min, cost_max, type_list):
+def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     cost = cost_min or cost_max
 
     if address:
@@ -529,7 +529,7 @@ def getLocScore(address, city, country):
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list):
+def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, sort):
     cost = cost_max or cost_min
 
     if event:
@@ -606,17 +606,51 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list):
     elif std_discount and cat_list:
         print 26
     elif city:
-        # TODO make this work with multiple returned cities
-        # TODO return all the attributes
         query = "SELECT * FROM Event WHERE City = %s;"
         response = _cursor.execute(query, (city,))
-        return [{'name': _cursor.fetchone()[0]}]
+
+        list1 = []
+        for item in _cursor.fetchall():
+            dicti = {}
+            dicti['name'] = item[0]
+            dicti['date'] = item[1]
+            dicti['starttime'] = item[2]
+            dicti['address'] = item[3]
+            dicti['city'] = item[4]
+            dicti['country'] = item[5]
+            dicti['category'] = item[6]
+            dicti['description'] = item[7]
+            dicti['std_discount'] = 'No' if item[8] else 'Yes'
+            dicti['endtime'] = 'unknown' if item[9] == None else item[9]
+            dicti['cost'] = item[10]
+            dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+            list1.append(dicti)
+
+        return list1
     elif date:
-        # TODO make this work with multiple returned cities
-        # TODO return all the attributes
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
-        return [{'name': _cursor.fetchone()[0]}]
+
+        try:
+            list1 = []
+            for item in _cursor.fetchall():
+                dicti = {}
+                dicti['name'] = item[0]
+                dicti['date'] = item[1]
+                dicti['starttime'] = item[2]
+                dicti['address'] = item[3]
+                dicti['city'] = item[4]
+                dicti['country'] = item[5]
+                dicti['category'] = item[6]
+                dicti['description'] = item[7]
+                dicti['std_discount'] = 'No' if item[8] else 'Yes'
+                dicti['endtime'] = 'unknown' if item[9] == None else item[9]
+                dicti['cost'] = item[10]
+                dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+                list1.append(dicti)
+            return list1
+        except:
+            return []
     elif cost:
         print 29
     elif std_discount:

@@ -16,7 +16,6 @@ def sign_in():
 
     # read the posted values from the UI
     if request.method == "POST":
-        print request.form
         _name = request.form['usr']
         _password = request.form['pwd']
         num = db.login(_name,_password)
@@ -66,7 +65,6 @@ def register():
     """
 
     if request.method == "POST":
-        # print request.form
         name = request.form['username']
         email = request.form['email']
         p1 = request.form['p1']
@@ -286,7 +284,6 @@ def search_events():
     """
 
     if request.method == "POST":
-        print request.form
         event = request.form["event"]
         city = request.form["city"]
         date = request.form["date"]

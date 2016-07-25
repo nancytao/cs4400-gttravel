@@ -1,12 +1,5 @@
 # cs4400-gttravel
 
-## For Cole, From Nancy debugging/suggestions
-sort by in the GUI (order alphabetically, by population, etc)
-no results? - new page? says no results somewhere pls
-Highest rated city
-location - add address, make name a dropdown
-
-
 ## Cole's List
 Notes: Make sure forms are all in one form group
 "<form>" tags for manager to force selection of data fields - see sign up page
