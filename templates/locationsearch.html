@@ -19,16 +19,17 @@
                 {% endfor %}
             </select>
         <br>
-            <label for="city">City:</label>
-            <select name="city" class="form-control" id="city">
-                {% for o in cities %}
+            <label for="address">Address:</label>
+            <select name="address" class="form-control" id="address">
+                {% for o in address %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
+
             <br>
-            <label for="city">Address:</label>
-            <select name="address" class="form-control" id="address">
-                {% for o in address %}
+            <label for="city">City:</label>
+            <select name="city" class="form-control" id="city">
+                {% for o in cities %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
@@ -59,7 +60,7 @@
         <label class="radio-inline"><input value="type" type="radio" name="sort">Type</label>
 
         <br>
-        <button id = "searchLocs" class=" btn btn-default"  type="submit">Search</button>
+        <button id = "searchLocs" class="btn btn-primary"  type="submit">Search</button>
         <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
         <p style="color: red">{{error}}</p>
     </form>

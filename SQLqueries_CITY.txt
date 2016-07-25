@@ -1,0 +1,28 @@
+country and population and lang_list
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND country = %s AND population = %s AND language IN lang_list;
+
+country and population
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND country = %s AND population = %s;
+
+country and lang_list
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND country = %s AND language IN lang_list;
+
+population and lang_list
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND population = %s AND language IN lang_list;
+
+country
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND country = %s;
+
+population
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND population = %s;
+
+lang_list
+
+SELECT * FROM CITY, CITY_LANGUAGE WHERE CITY.city = CITY_LANGUAGE.city AND language IN lang_list;
+

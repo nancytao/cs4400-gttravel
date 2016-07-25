@@ -210,7 +210,7 @@ def to_write_reviews():
     """
 
     subject = db.getReviewableTypes
-    return render_template('writereviews.html',subject=subject)
+    return render_template('writereviews.html', subject=subject, error="")
 
 
 @app.route("/to_past_reviews")
@@ -367,9 +367,14 @@ def make_review():
         score = request.form["score"]
         description = request.form["description"]
 
-        db.writeReview(logged_user, subject, date, score, description)
-        past_reviews = db.pastReviews(logged_user)
-        return render_template('pastreviews.html', reviews=past_reviews)
+        worked = db.writeReview(logged_user, subject, date, score, description)
+        if worked:
+            past_reviews = db.pastReviews(logged_user)
+            return render_template('pastreviews.html', reviews=past_reviews)
+        else:
+            subject = db.getReviewableTypes
+            return render_template('writereviews.html', subject=subject, error="Could not write review")
+
 
 
 
@@ -380,15 +385,20 @@ def add_city():
         city = request.form["city"]
         country = request.form["country"]
         pop = request.form["pop"]
-        lon = request.form["lon"]
+        lon_degree = request.form["lonDegree"]
+        lon_minute = request.form["lonMinute"]
         ew = request.form["EW"]
-        lat = request.form["lat"]
+        lat_degree = request.form["latDegree"]
+        lat_minute = request.form["latMinute"]
         ns = request.form["NS"]
         languages = request.form.getlist("languages")
 
         if len(languages) != 0:
-
-            db.addCity(city, country, lat + " " + ns, lon + " " + ew, pop, languages)
+            # should be this way but not for grading purposes
+            # db.addCity(city, country, lat_degree + "\' " + lat_minute + "\" " +
+            #            ns, lon_degree + "\' " + lon_minute + "\" " + ew, pop, languages)
+            db.addCity(city, country, lat_degree + " " + lat_minute + " " +
+                       ns, lon_degree + " " + lon_minute + " " + ew, pop, languages)
 
             message = ["green", "City added"]
             return render_template('managerpage.html', message=message)

@@ -16,7 +16,7 @@ make sure city name is less than 32 chars
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make review from location/event/city search
-fix long lat to degree minute '' ' two input fields for each
+make chekc boxes side by sideish
 
 <<<<<<< Updated upstream
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
