@@ -301,6 +301,7 @@ SET character_set_client = utf8;
 /*!50001 CREATE VIEW `event_scores` AS SELECT 
  1 AS `Name`,
  1 AS `Date`,
+ 1 AS `Start_time`,
  1 AS `Address`,
  1 AS `City`,
  1 AS `Country`,
@@ -359,7 +360,7 @@ CREATE TABLE `location` (
 
 LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` VALUES ('101 Disney Way','Madrid','Spain',0.00,'park',0,'Retiro Park'),('102 Disney Way','Madrid','Spain',15.00,'museum',1,'The Prado'),('103 Disney Way','Madrid','Spain',13.00,'museum',1,'Royal Palace'),('104 Disney Way','Madrid','Spain',0.00,'other',0,'opera House'),('105 Disney Way','Madrid','Spain',17.00,'museum',1,'Reina Sofia'),('106 Disney Way','Barcelona','Spain',0.00,'other',0,'Arc d\'Triomf'),('107 Disney Way','Barcelona','Spain',0.00,'stadium',0,'Camp Nou'),('108 Disney Way','Barcelona','Spain',15.00,'church',1,'Sagrada Familia'),('109 Disney Way','Barcelona','Spain',8.00,'Park',0,'Parc Guell'),('110 Disney Way','Barcelona','Spain',0.00,'other',0,'Teatre Apolo'),('111 Disney Way','Paris','France',14.00,'other',1,'Eiffel Tower'),('112 Disney Way','Paris','France',25.00,'museum',1,'Louvre'),('113 Disney Way','Paris','France',0.00,'church',0,'Notre Dame'),('114 Disney Way','Paris','France',0.00,'restaurant',0,'Moulin Rouge'),('118 Disney Way','Paris','France',14.00,'church',0,'Church 2');
+INSERT INTO `location` VALUES ('101 Disney Way','Madrid','Spain',0.00,'park',0,'Retiro Park'),('102 Disney Way','Madrid','Spain',15.00,'museum',1,'The Prado'),('103 Disney Way','Madrid','Spain',13.00,'museum',1,'Royal Palace'),('104 Disney Way','Madrid','Spain',0.00,'other',0,'Opera House'),('105 Disney Way','Madrid','Spain',17.00,'museum',1,'Reina Sofia'),('106 Disney Way','Barcelona','Spain',0.00,'other',0,'Arc d\'Triomf'),('107 Disney Way','Barcelona','Spain',0.00,'stadium',0,'Camp Nou'),('108 Disney Way','Barcelona','Spain',15.00,'church',1,'Sagrada Familia'),('109 Disney Way','Barcelona','Spain',8.00,'Park',0,'Parc Guell'),('110 Disney Way','Barcelona','Spain',0.00,'other',0,'Teatre Apolo'),('111 Disney Way','Paris','France',14.00,'other',1,'Eiffel Tower'),('112 Disney Way','Paris','France',25.00,'museum',1,'Louvre'),('113 Disney Way','Paris','France',0.00,'church',0,'Notre Dame'),('114 Disney Way','Paris','France',0.00,'restaurant',0,'Moulin Rouge'),('118 Disney Way','Paris','France',14.00,'church',0,'Church 2');
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +517,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `event_scores` AS (select `event`.`Name` AS `Name`,`event`.`Date` AS `Date`,`event`.`Address` AS `Address`,`event`.`City` AS `City`,`event`.`Country` AS `Country`,avg(`event_review`.`Score`) AS `Average_score` from (`event` join `event_review` on(((`event`.`Name` = `event_review`.`Name`) and (`event`.`Date` = `event_review`.`Date`) and (`event`.`Start_time` = `event_review`.`Start_time`) and (`event`.`Address` = `event_review`.`Address`) and (`event`.`City` = `event_review`.`City`) and (`event`.`Country` = `event_review`.`Country`)))) group by `event`.`Name`,`event`.`Date`,`event`.`Address`,`event`.`City`,`event`.`Country` order by `Average_score` desc) */;
+/*!50001 VIEW `event_scores` AS (select `event`.`Name` AS `Name`,`event`.`Date` AS `Date`,`event`.`Start_time` AS `Start_time`,`event`.`Address` AS `Address`,`event`.`City` AS `City`,`event`.`Country` AS `Country`,avg(`event_review`.`Score`) AS `Average_score` from (`event` join `event_review` on(((`event`.`Name` = `event_review`.`Name`) and (`event`.`Date` = `event_review`.`Date`) and (`event`.`Start_time` = `event_review`.`Start_time`) and (`event`.`Address` = `event_review`.`Address`) and (`event`.`City` = `event_review`.`City`) and (`event`.`Country` = `event_review`.`Country`)))) group by `event`.`Name`,`event`.`Date`,`event`.`Start_time`,`event`.`Address`,`event`.`City`,`event`.`Country` order by `Average_score` desc) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -584,4 +585,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-24 20:15:34
+-- Dump completed on 2016-07-25 10:39:24
