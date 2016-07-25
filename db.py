@@ -229,6 +229,49 @@ def aboutCountry(country):
     return result
 
 
+def aboutCity(city):
+    query = 'SELECT * FROM city WHERE City = %s;'
+    response = _cursor.execute(query, (city,))
+
+    result = {}
+    result['name'] = item[0]
+    result['country'] = item[1]
+    result['gps'] = item[2] + ", " + item[3]
+    result['population'] = item[4]
+    result['languages'] = getLanguagesCity(city)
+    result['score'] = getCityScore(city)
+    return result
+
+def getLocInCity(city):
+    query = "SELECT * FROM location WHERE city = %s;"
+    response = _cursor.execute(query, (city,))
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['name'] = item[6]
+        dicti['type'] = item[4]
+        dicti['cost'] = item[3]
+        dicti['score'] = getLocScore(item[0], item[1], item[2])
+        result.append(dicti)
+    return result
+
+
+def getCityReviews(city):
+    query = "SELECT * FROM city_review NATURAL JOIN city WHERE City = %s;"
+    response = _cursor.execute(query, (city,))
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['username'] = item[2]
+        dicti['date'] = item[3]
+        dicti['score'] = item[4]
+        dicti['description'] = item[5]
+        result.append(dicti)
+    return result
+
+
 def getCountryCities(country):
     query = "SELECT City, Population FROM city WHERE Country = %s;"
     response = _cursor.execute(query, (country,))
