@@ -24,7 +24,8 @@ def sign_in():
         if num == 1:
             countries = db.getCountries()
             languages = db.getLanguagesMgr()
-            return render_template('managerpage.html', countries=countries, languages=languages)
+            message = ["green", ""]
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages)
         elif num == 2:
             global logged_user
             logged_user = _name
@@ -208,7 +209,9 @@ def to_write_reviews():
     """
     Takes users to write reviews page
     """
-    return render_template('writereviews.html')
+
+    subject = db.getReviewableTypes
+    return render_template('writereviews.html',subject=subject)
 
 
 @app.route("/to_past_reviews")
@@ -216,7 +219,8 @@ def to_past_reviews():
     """
     Takes users to past reviews page
     """
-    return render_template('pastreviews.html')
+    past_reviews = db.pastReviews(logged_user)
+    return render_template('pastreviews.html', reviews=past_reviews)
 
 
 @app.route("/to_country_results", methods=["POST", "GET"])
@@ -304,11 +308,11 @@ def search_locations():
         minCost = request.form["minCost"]
         type = request.form.getlist("catagoriesL")
 
-        results = db.locationSearch(loc, address, city, minCost, maxCost, type);
+        results = db.locationSearch(loc, address, city, minCost, maxCost, type)
         return render_template('locationresults.html', locations=results)
 
 
-@app.route("/make_review")
+@app.route("/make_review", methods=["POST", "GET"])
 def make_review():
     """
     takes user to past reveiws
@@ -316,8 +320,40 @@ def make_review():
     adds new review to database
     gets and loads table from database
     """
-    return render_template('pastreviews.html')
+    if request.method == "POST":
+        subject = request.form["subject"]
+        date = request.form["date"]
+        score = request.form["score"]
+        description = request.form["description"]
 
+        db.writeReview(logged_user, subject, date, score, description)
+        past_reviews = db.pastReviews(logged_user)
+        return render_template('pastreviews.html', reviews=past_reviews)
+
+
+
+
+@app.route("/add_city", methods=["POST", "GET"])
+def add_city():
+    if request.method == "POST":
+        city = request.form["city"]
+        country = request.form["country"]
+        pop = request.form["pop"]
+        lon = request.form["lon"]
+        ew = request.form["EW"]
+        lat = request.form["lat"]
+        ns = request.form["NS"]
+        languages = request.form.getlist("languages")
+
+        if len(languages) != 0:
+
+            db.addCity(city, country, lat + " " + ns, lon + " " + ew, pop, languages)
+
+            message = ["green", "City added"]
+            return render_template('managerpage.html', message=message)
+        else:
+            message = ["red", "Select a Language"]
+            return render_template('managerpage.html', message=message)
 
 if __name__ == '__main__':
     app.run()

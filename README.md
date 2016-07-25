@@ -25,3 +25,7 @@ tables to alight stuff in search maybe
 make is capital in city search a check mark or a yes no not truee false
 write reviews three tabs for each type of reivew nav-pills
 search locations by country
+give submit buttons styling
+make sure city name is less than 32 chars
+break up reveiws and search by individual by nav-pills
+make entire website nav-pills
