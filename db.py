@@ -240,6 +240,8 @@ def getCountryCities(country):
         dicti['population'] = item[1]
         dicti['languages'] = getLanguagesCity(item[0])
         dicti['score'] = getCityScore(item[0])
+        result.append(dicti)
+    return result
 
 
 def countrySearch(country, population_min, population_max, lang_list, sort):
