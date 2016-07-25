@@ -22,7 +22,8 @@
         <tbody>
         {% for o in countries %}
           <tr>
-                <td>{{ o["name"] }}</td>
+
+                <td><a href="{{ url_for('to_country_page', country=o['name']) }}">{{ o["name"] }}</a></td>
                 <td>{{ o["population"] }}</td>
                 <td>{{ o["capitals"] }}</td>
                 <td>{{ o["languages"] }}</td>
