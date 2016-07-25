@@ -19,16 +19,17 @@
                 {% endfor %}
             </select>
         <br>
-            <label for="city">City:</label>
-            <select name="city" class="form-control" id="city">
-                {% for o in cities %}
+            <label for="address">Address:</label>
+            <select name="address" class="form-control" id="address">
+                {% for o in address %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
+
             <br>
-            <label for="city">Address:</label>
-            <select name="address" class="form-control" id="address">
-                {% for o in address %}
+            <label for="city">City:</label>
+            <select name="city" class="form-control" id="city">
+                {% for o in cities %}
                     <option value="{{ o }}" SELECTED>{{ o }}</option>
                 {% endfor %}
             </select>
