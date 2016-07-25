@@ -210,8 +210,8 @@ def to_write_reviews():
     Takes users to write reviews page
     """
 
-    subject = db.getReviewableTypes
-    return render_template('writereviews.html',subject=subject)
+    subject = db.getReviewableTypes()
+    return render_template('writereviews.html', subject=subject)
 
 
 @app.route("/to_past_reviews")
