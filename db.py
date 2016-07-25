@@ -158,10 +158,11 @@ def getReviewableTypes():
 
 
 def getEvents():
-    _cursor.execute("SELECT Name, Date, Address, City, Country FROM event;")
+    _cursor.execute("SELECT Name, Date, Start_time, Address, City, Country FROM event;")
     my_list = []
     for item in _cursor.fetchall():
-        my_list.append(item[0] + ", " + item[2] + ", " + item[3] + ", " + item[4] + ", " + str(item[1]))
+        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", " + str(item[1]) + ", " + str(item[2])
+        my_list.append(string)
     my_list.append("")
     return my_list
 
@@ -217,7 +218,7 @@ def writeReview(username, reviewableid, review_date, score, review):
 def countrySearch(country, population_min, population_max, lang_list):
     population = population_max or population_min
     cri = False
-    if "Any additional language" in lang_list:
+    if lang_list and "Any additional language" in lang_list:
         cri = True
         lang_list.remove('Any additional language')
 
@@ -260,7 +261,7 @@ def countrySearch(country, population_min, population_max, lang_list):
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
-            put['population'] = item[1]
+            put['population'] = item[2]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
@@ -274,13 +275,13 @@ def countrySearch(country, population_min, population_max, lang_list):
 
         response = ""
 
-        if population_min != "" and population_max != "":
+        if population_min and population_max:
             query = query + "Population >= %s AND Population <= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_min, population_max))
-        elif population_min == "" and population_max != "":
+        elif population_max:
             query = query + "Population <= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_max,))
-        elif population_min != "" and population_max == "":
+        elif population_min:
             query = query + "Population >= %s ORDER BY Population DESC;"
             response = _cursor.execute(query, (population_min,))
 
@@ -309,6 +310,7 @@ def countrySearch(country, population_min, population_max, lang_list):
         result = []
         for item in _cursor.fetchall():
             put = {}
+            print item
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
@@ -527,22 +529,12 @@ def getLocScore(address, city, country):
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list):
-    cost = cost_max or cost_min
-
-    # def getEvents():
-    # _cursor.execute("SELECT Name, Date, Address, City, Country FROM event;")
-    # my_list = []
-    # for item in _cursor.fetchall():
-    #     my_list.append(item[0] + " at " + item[2] + ", " + item[3] + ", " + item[4] + " on " + str(item[1]))
-    # my_list.append("")
-    # return my_list
-
+def eventSearch(event, city, date, std_discount, cat_list):
     if event:
         # TODO make this work
         eventarr = [x.strip() for x in event.split(',')]
         query = "SELECT * FROM Event WHERE Name = %s AND Address = %s AND City = %s"
-        query += " AND Country = %s AND Date = %s;"
+        query += " AND Country = %s AND Date = %s AND Start_time = %s;"
         response = _cursor.execute(query, tuple(eventarr))
 
         item = _cursor.fetchone()
@@ -592,5 +584,5 @@ setupConnection()
 #     print row
 
 # print citySearch(None, None, None, None, None)
-
+countrySearch(None, None, None, ['French'])
 closeConnection()
