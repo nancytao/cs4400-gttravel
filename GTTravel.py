@@ -210,8 +210,8 @@ def to_write_reviews():
     Takes users to write reviews page
     """
 
-    subject = db.getReviewableTypes()
-    return render_template('writereviews.html', subject=subject)
+    subject = db.getReviewableTypes
+    return render_template('writereviews.html',subject=subject)
 
 
 @app.route("/to_past_reviews")
@@ -277,6 +277,8 @@ def search_events():
         event = request.form["event"]
         city = request.form["city"]
         date = request.form["date"]
+        maxCost = request.form["maxCost"]
+        minCost = request.form["minCost"]
         catagory = request.form.getlist("catagoriesE")
 
         discount = None
@@ -286,7 +288,7 @@ def search_events():
             discount = discount == "Yes"
         print discount
 
-        results = db.eventSearch(event, city, date, discount, catagory)
+        results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory)
 
         return render_template('eventresults.html', events=results)
 

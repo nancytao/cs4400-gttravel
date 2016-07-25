@@ -380,7 +380,7 @@ def getCityScore(city):
     query = "SELECT Average_score FROM city_scores WHERE City = %s;"
     response = _cursor.execute(query, (city,))
     fetch = _cursor.fetchone()
-    return fetch[0] if fetch else "no reviews"
+    return fetch[0] if fetch else "N/A"
 
 
 # returns specific city in format [city, country, latitude, longitude,
@@ -525,11 +525,11 @@ def getLocScore(address, city, country):
             "AND City = %s AND Country = %s;"
     response = _cursor.execute(query, (address, city, country))
     fetch = _cursor.fetchone()
-    return fetch[0] if fetch else "no reviews"
+    return fetch[0] if fetch else "N/A"
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, date, std_discount, cat_list):
+def eventSearch(event, city, cost_min, cost_max, date, std_discount, cat_list):
     if event:
         # TODO make this work
         eventarr = [x.strip() for x in event.split(',')]
@@ -548,7 +548,8 @@ def eventSearch(event, city, date, std_discount, cat_list):
         dicti['category'] = item[6]
         dicti['description'] = item[7]
         dicti['std_discount'] = 'No' if item[8] else 'Yes'
-        dicti['endttime'] = 'unknown' if item[9] == None else item[9]
+        dicti['endtime'] = 'unknown' if item[9] == None else item[9]
+        dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
         return [dicti]
     elif city:
@@ -571,7 +572,7 @@ def getEventScore(name, date, starttime, address, city):
             " AND Start_time = %s AND Address = %s AND City = %s;"
     response = _cursor.execute(query, (name, date, starttime, address, city))
     fetch = _cursor.fetchone()
-    return fetch[0] if fetch else "no reviews"
+    return fetch[0] if fetch else "N/A"
 
 
 
@@ -584,5 +585,5 @@ setupConnection()
 #     print row
 
 # print citySearch(None, None, None, None, None)
-countrySearch(None, None, None, ['French'])
+
 closeConnection()
