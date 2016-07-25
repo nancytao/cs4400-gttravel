@@ -8,8 +8,19 @@ logged_user = ""
 
 @app.route("/to_country_page/<country>")
 def to_country_page(country):
-    return render_template("country.html", country=country)
-    # render_template("countrypage.html")
+    info = db.aboutCountry(country)
+    cities = db.getCountryCities(country)
+
+    return render_template("country.html", country=country, info=info, cities=cities)
+
+
+@app.route("/to_city_page/<city>")
+def to_city_page(city):
+    info = db.aboutCity(city)
+    locations = db.getCityLocations(city)
+    reviews = db.getCityReviews(city)
+
+    return render_template("city.html", city=city, info=info, locations=locations, reviews=reviews)
 
 
 @app.route('/sign_in', methods=['POST', 'GET'])

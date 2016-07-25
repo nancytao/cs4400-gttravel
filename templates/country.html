@@ -3,17 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>{{country}}</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body style="padding: 3% 5% 5% 5%; width: 80%">
     <h1>{{country}}</h1>
     <p>
-        Name:<br>
-        Capital City:<br>
-        Population:<br>
-        Languages:<br>
-        Cities:<br>
+        Name: {{info["name"]}}<br>
+        Capital City: {{info["capitals"]}}<br>
+        Population: {{info["population"]}}<br>
+        Languages: {{info["languages"]}}<br>
     </p>
-
-</head>
-<body>
+    Cities:<br>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+              <td>Name</td>
+              <td>Population</td>
+              <td>Languages</td>
+              <td>Score</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for o in cities %}
+          <tr>
+                <td>{{ o["city"] }}</td>
+                <td>{{ o["population"] }}</td>
+                <td>{{ o["languages"] }}</td>
+                <td>{{ o["score"] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    <a class=" btn btn-default" href="/to_country_search" role="button">Go Back</a>
 
 </body>
 </html>
