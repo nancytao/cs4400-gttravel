@@ -12,7 +12,7 @@ location - add address, make name a dropdown
 ## Cole's List
 Notes: Make sure forms are all in one form group
 "<form>" tags for manager to force selection of data fields - see sign up page
-check long lat with prof
+check long lat with prof - "is it a period"
 Add more searches ie location by country, event by location
 add to homescreen a message box that says register successful and such
 make location and event search a drop down
