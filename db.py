@@ -157,11 +157,15 @@ def getReviewableTypes():
     return my_list
 
 
+def timedeltaToDateTime(timdel):
+    return str((datetime.min + timdel).time())
+
+
 def getEvents():
     _cursor.execute("SELECT Name, Date, Start_time, Address, City, Country FROM event;")
     my_list = []
     for item in _cursor.fetchall():
-        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", " + str(item[1]) + ", " + str(item[2])
+        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", " + str(item[1]) + ", " + timedeltaToDateTime(item[2])
         my_list.append(string)
     my_list.append("")
     return my_list
@@ -212,45 +216,60 @@ def pastReviews(username):
 
 
 def writeReview(username, reviewableid, review_date, score, review):
-    try:
-        # query = 'INSERT INTO '
+    reviewableid = [x.strip() for x in reviewableid.split(',')]
+    noFields = len(reviewableid)
 
-        reviewableid = [x.strip() for x in reviewableid.split(',')]
-        for item in reviewableid:
-            print item
+    # city reviews
+    if noFields == 1:
+        query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
+        _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
 
-        noFields = len(reviewableid)
+    # location reviews
+    elif noFields == 3:
+        query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
+        _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
 
-        # city reviews
-        if noFields == 1:
-            query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
-            _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
+    # event reviews
+    elif noFields > 3:
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + reviewableid[0]
+        query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+        _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
 
-        # location reviews
-        elif noFields == 3:
-            query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
-            _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
+    _database.commit()
+    return True
+    # try:
+    #     reviewableid = [x.strip() for x in reviewableid.split(',')]
+    #     noFields = len(reviewableid)
 
-        # event reviews
-        elif noFields > 3:
-            query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
-            print reviewableid[2] + ", " + reviewableid[3]
-            _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+    #     # city reviews
+    #     if noFields == 1:
+    #         query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
+    #         _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
 
-        _database.commit()
-        return True
+    #     # location reviews
+    #     elif noFields == 3:
+    #         query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
+    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
 
-    except:
-        return False
+    #     # event reviews
+    #     elif noFields > 3:
+    #         query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[4], timedeltaToDateTime(reviewableid[5]), reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+
+    #     _database.commit()
+    #     return True
+
+    # except:
+    #     return False
 
 def aboutCountry(country):
     query = "SELECT * FROM country WHERE Country = %s;"
     response = _cursor.execute(query, (country,))
     fetch = _cursor.fetchone()
+
     result = {}
     result['name'] = fetch[0]
     result['population'] = fetch[1]
-
     result['capitals'] = getCapitals(country)
     result['languages'] = getLanguagesCountry(country)
 
@@ -852,7 +871,7 @@ def getEventInfo(tuplelist):
         dicti['category'] = item[6]
         dicti['description'] = item[7]
         dicti['std_discount'] = 'Yes' if item[8] else 'No'
-        dicti['endtime'] = 'unknown' if item[9] == None else item[9]
+        dicti['endtime'] = 'unknown' if item[9] == None else str(item[9])
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
         list1.append(dicti)
@@ -873,7 +892,7 @@ def getCityCountry(city):
     fetch = _cursor.fetchone()
     # country = fetch[0].strip()
     # country = str(country)
-    return fetch[0] if fetch else "N/A" 
+    return fetch[0] if fetch else "N/A"
 
 ## testing
 setupConnection()

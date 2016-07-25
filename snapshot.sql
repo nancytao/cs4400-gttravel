@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS `gttravel`
+DROP DATABASE IF EXISTS `gttravel`;
 
 CREATE DATABASE  IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `gttravel`;
@@ -266,7 +266,7 @@ DROP TABLE IF EXISTS `event_review`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_review` (
   `Username` varchar(16) NOT NULL,
-  `Name` varchar(32) NOT NULL,
+  `Name` varchar(40) NOT NULL,
   `Date` date NOT NULL,
   `Start_time` time NOT NULL,
   `Address` varchar(64) NOT NULL,
