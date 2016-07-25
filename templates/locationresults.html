@@ -31,7 +31,7 @@
                 <td>{{ o["country"] }}</td>
                 <td>{{ o["cost"] }}</td>
                 <td>{{ o["type"] }}</td>
-                <td>{{ o["std_discount"] }}</td>
+                <td>{{ "Yes" if o["std_discount"] == 1 else "No"}}</td>
                 <td>{{ o["score"] }}</td>
                 <!--<td>Button</td>-->
 

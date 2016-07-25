@@ -454,7 +454,8 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
             dicti['cost'] = item[3]
             dicti['type'] = item[4]
             dicti['std_discount'] = item[5]
-            dicti['score'] = getLocScore()
+            dicti['score'] = getLocScore(item[0], item[1], item[2])
+        return [dicti]
     elif name and city and cost and type_list:
         print 1
     # elif name and country and cost and type_list:
@@ -539,21 +540,6 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         response = _cursor.execute(query, tuple(eventarr))
 
         return getEventInfo(_cursor.fetchall())
-        # item = _cursor.fetchone()
-        # dicti = {}
-        # dicti['name'] = item[0]
-        # dicti['date'] = item[1]
-        # dicti['starttime'] = item[2]
-        # dicti['address'] = item[3]
-        # dicti['city'] = item[4]
-        # dicti['country'] = item[5]
-        # dicti['category'] = item[6]
-        # dicti['description'] = item[7]
-        # dicti['std_discount'] = 'No' if item[8] else 'Yes'
-        # dicti['endtime'] = 'unknown' if item[9] == None else item[9]
-        # dicti['cost'] = item[10]
-        # dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
-        # return [dicti]
     elif city and date and cost and std_discount and cat_list:
         query = ""
 
