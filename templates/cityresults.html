@@ -24,7 +24,7 @@
         <tbody>
         {% for o in cities %}
           <tr>
-                <td><a href="{{ url_for('to_city_page', country=o['city']) }}">{{ o["city"] }}</a></td>
+                <td><a href="{{ url_for('to_city_page', city=o['city']) }}">{{ o["city"] }}</a></td>
                 <td>{{ o["country"] }}</td>
                 <td>{{ o["latitude"] }}</td>
                 <td>{{ o["longitude"] }}</td>

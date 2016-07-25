@@ -233,6 +233,7 @@ def aboutCity(city):
     query = 'SELECT * FROM city WHERE City = %s;'
     response = _cursor.execute(query, (city,))
 
+    item = _cursor.fetchone()
     result = {}
     result['name'] = item[0]
     result['country'] = item[1]
@@ -242,7 +243,7 @@ def aboutCity(city):
     result['score'] = getCityScore(city)
     return result
 
-def getLocInCity(city):
+def getCityLocations(city):
     query = "SELECT * FROM location WHERE city = %s;"
     response = _cursor.execute(query, (city,))
 
@@ -494,7 +495,19 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
 
-        return getLocInfo(_cursor.fetchall())
+        result = []
+        for item in _cursor.fetchall():
+            dicti = {}
+            dicti['city'] = item[0]
+            dicti['country'] = item[1]
+            dicti['latitude'] = item[2]
+            dicti['longitude'] = item[3]
+            dicti['population'] = item[4]
+            dicti['iscapital'] = isCapital(item[0])
+            dicti['languages'] = getLanguagesCity(item[0])
+            dicti['score'] = getCityScore(item[0])
+            result.append(dicti)
+        return result
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
