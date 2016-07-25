@@ -209,7 +209,7 @@ def to_write_reviews():
     Takes users to write reviews page
     """
 
-    subject = db.getReviewableTypes
+    subject = db.getReviewableTypes()
     return render_template('writereviews.html', subject=subject, error="")
 
 
