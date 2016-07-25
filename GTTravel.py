@@ -6,6 +6,12 @@ app.debug = True
 logged_user = ""
 
 
+@app.route("/to_country_page/<country>")
+def to_country_page(country):
+    return render_template("country.html", country=country)
+    # render_template("countrypage.html")
+
+
 @app.route('/sign_in', methods=['POST', 'GET'])
 def sign_in():
     """
@@ -372,11 +378,8 @@ def make_review():
             past_reviews = db.pastReviews(logged_user)
             return render_template('pastreviews.html', reviews=past_reviews)
         else:
-            subject = db.getReviewableTypes
+            subject = db.getReviewableTypes()
             return render_template('writereviews.html', subject=subject, error="Could not write review")
-
-
-
 
 
 @app.route("/add_city", methods=["POST", "GET"])
@@ -408,3 +411,4 @@ def add_city():
 
 if __name__ == '__main__':
     app.run()
+
