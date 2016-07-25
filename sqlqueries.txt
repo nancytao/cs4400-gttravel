@@ -1,0 +1,114 @@
+city, date, cost, std_discount, cat_list 
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, std_discount = TRUE, %s IN cat_list;
+
+date, cost, std_discount, cat_list 
+
+SELECT * FROM EVENTS WHERE date = %s, cost = %s, std_discount = TRUE, %s IN cat_list;
+
+city, cost, std_discount, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, cost = %s, std_discount = TRUE, %s IN cat_list;
+
+city, date, std_discount, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, std_discount = TRUE, %s IN cat_list;
+
+city, date, cost, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, cost = %s, %s IN cat_list;
+
+city, date, cost, std_discount 
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, cost = %s, std_discount = TRUE;
+
+city, date, cost
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, cost = %s;
+
+city, date, std_discount
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, std_discount = TRUE;
+
+city, date, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s, %s IN cat_list;
+
+city, cost, std_discount
+
+SELECT * FROM EVENTS WHERE city = %s, cost = %s, std_discount = TRUE;
+
+city, cost, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, cost = %s, %s IN cat_list;
+
+city, std_discount, cat_list 
+SELECT * FROM EVENTS WHERE city = %s, std_discount = TRUE, %s IN cat_list;
+
+date, cost, std_discount
+
+SELECT * FROM EVENTS WHERE date = %s, cost = %s, std_discount = TRUE;
+
+date, cost, cat_list
+
+SELECT * FROM EVENTS WHERE date = %s, cost = %s, %s IN cat_list;
+
+date, std_discount, cat_list 
+
+SELECT * FROM EVENTS WHERE date = %s, std_discount = TRUE, %s IN cat_list;
+
+cost, std_discount, cat_list 
+
+SELECT * FROM EVENTS WHERE cost = %s, std_discount = TRUE, %s IN cat_list;
+
+city, date
+
+SELECT * FROM EVENTS WHERE city = %s, date = %s;
+
+city, cost
+
+SELECT * FROM EVENTS WHERE city = %s, cost = %s;
+
+city, std_discount
+
+SELECT * FROM EVENTS WHERE city = %s, std_discount = TRUE;
+
+city, cat_list
+
+SELECT * FROM EVENTS WHERE city = %s, %s IN cat_list;
+
+date, cost
+
+SELECT * FROM EVENTS WHERE date = %s, cost = %s;
+
+date, std_discount
+
+SELECT * FROM EVENTS WHERE date = %s, std_discount = TRUE;
+
+date, cat_list 
+
+SELECT * FROM EVENTS WHERE date = %s, %s IN cat_list;
+cost, std_discount
+
+SELECT * FROM EVENTS WHERE cost = %s, std_discount = TRUE;
+
+cost, cat_list
+
+SELECT * FROM EVENTS WHERE cost = %s, %s IN cat_list;
+
+std_discount, cat_list 
+
+SELECT * FROM EVENTS WHERE std_discount = TRUE, %s IN cat_list;
+
+cost
+
+SELECT * FROM EVENTS WHERE cost = %s;
+
+std_discount
+
+SELECT * FROM EVENTS WHERE std_discount = TRUE;
+
+cat_list
+
+SELECT * FROM EVENTS WHERE %s IN cat_list;
+
