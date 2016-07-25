@@ -1,7 +1,6 @@
 # cs4400-gttravel
 
 location search, add stddiscount
-radio button for highest rated and lowest rated
 
 ## Cole's List
 Skip table - make sure event/location works - location by name? currently address/city
@@ -19,11 +18,8 @@ make chekc boxes side by sideish
 
 ##
 cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
-
-
-***********Sort by in tables!!!!!!!****************** A Must!!!!
+*Sort by in tables*
 =======
-!!!! catch invalid dates!!!!!
 
 ##inputs from class
 All the SQL queries that are used in the GUI should be included in the text file that has to be turned in.

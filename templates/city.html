@@ -37,6 +37,7 @@
         {% endfor %}
         </tbody>
     </table>
+        <p style="color: red">{{m1}}</p>
     <br>
     Reviews:
     <br>
@@ -60,6 +61,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <p style="color: red">{{m2}}</p>
     <a class=" btn btn-primary" href="{{ url_for('to_write_reviews_single', subject=info['name']) }}" role="button">Write Review</a>
     <a class=" btn btn-default" href="/to_city_search" role="button">Go Back</a>
 
