@@ -215,7 +215,7 @@ def writeReview(username, reviewableid, review_date, score, review):
     print "stop"
 
 
-def countrySearch(country, population_min, population_max, lang_list):
+def countrySearch(country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
     cri = False
     if lang_list and "Any additional language" in lang_list:
@@ -538,7 +538,102 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query += " AND Country = %s AND Date = %s AND Start_time = %s;"
         response = _cursor.execute(query, tuple(eventarr))
 
-        item = _cursor.fetchone()
+        return getEventInfo(_cursor.fetchall())
+        # item = _cursor.fetchone()
+        # dicti = {}
+        # dicti['name'] = item[0]
+        # dicti['date'] = item[1]
+        # dicti['starttime'] = item[2]
+        # dicti['address'] = item[3]
+        # dicti['city'] = item[4]
+        # dicti['country'] = item[5]
+        # dicti['category'] = item[6]
+        # dicti['description'] = item[7]
+        # dicti['std_discount'] = 'No' if item[8] else 'Yes'
+        # dicti['endtime'] = 'unknown' if item[9] == None else item[9]
+        # dicti['cost'] = item[10]
+        # dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+        # return [dicti]
+    elif city and date and cost and std_discount and cat_list:
+        query = ""
+
+        return getEventInfo(_cursor.fetchall())
+    elif date and cost and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and cost and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and cost and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and cost and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and cost:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and cost and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif city and cost and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif date and cost and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif date and cost and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif date and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif cost and std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city and date:
+        return getEventInfo(_cursor.fetchall())
+    elif city and cost:
+        return getEventInfo(_cursor.fetchall())
+    elif city and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif city and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif date and cost:
+        return getEventInfo(_cursor.fetchall())
+    elif date and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif date and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif cost and std_discount:
+        return getEventInfo(_cursor.fetchall())
+    elif cost and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif std_discount and cat_list:
+        return getEventInfo(_cursor.fetchall())
+    elif city:
+        query = "SELECT * FROM Event WHERE City = %s;"
+        response = _cursor.execute(query, (city,))
+
+        return getEventInfo(_cursor.fetchall())
+    elif date:
+        query = "SELECT * FROM Event WHERE Date = %s;"
+        response = _cursor.execute(query, (date,))
+
+        try:
+            return getEventInfo(_cursor.fetchall())
+        except:
+            return []
+    elif cost:
+        print 29
+    elif std_discount:
+        print 30
+    elif cat_list:
+        print 31
+    else:
+        print "shouldn't be here - event search"  # sanity check
+
+
+def getEventInfo(tuplelist):
+    list1 = []
+    for item in tuplelist:
         dicti = {}
         dicti['name'] = item[0]
         dicti['date'] = item[1]
@@ -552,113 +647,9 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         dicti['endtime'] = 'unknown' if item[9] == None else item[9]
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
-        return [dicti]
-    elif city and date and cost and std_discount and cat_list:
-        print 1
-    elif date and cost and std_discount and cat_list:
-        print 2
-    elif city and cost and std_discount and cat_list:
-        print 3
-    elif city and date and std_discount and cat_list:
-        print 4
-    elif city and date and cost and cat_list:
-        print 5
-    elif city and date and cost and std_discount:
-        print 6
-    elif city and date and cost:
-        print 7
-    elif city and date and std_discount:
-        print 8
-    elif city and date and cat_list:
-        print 9
-    elif city and cost and std_discount:
-        print 10
-    elif city and cost and cat_list:
-        print 11
-    elif city and std_discount and cat_list:
-        print 12
-    elif date and cost and std_discount:
-        print 13
-    elif date and cost and cat_list:
-        print 14
-    elif date and std_discount and cat_list:
-        print 15
-    elif cost and std_discount and cat_list:
-        print 16
-    elif city and date:
-        print 17
-    elif city and cost:
-        print 18
-    elif city and std_discount:
-        print 19
-    elif city and cat_list:
-        print 20
-    elif date and cost:
-        print 21
-    elif date and std_discount:
-        print 22
-    elif date and cat_list:
-        print 23
-    elif cost and std_discount:
-        print 24
-    elif cost and cat_list:
-        print 25
-    elif std_discount and cat_list:
-        print 26
-    elif city:
-        query = "SELECT * FROM Event WHERE City = %s;"
-        response = _cursor.execute(query, (city,))
+        list1.append(dicti)
+    return list1
 
-        list1 = []
-        for item in _cursor.fetchall():
-            dicti = {}
-            dicti['name'] = item[0]
-            dicti['date'] = item[1]
-            dicti['starttime'] = item[2]
-            dicti['address'] = item[3]
-            dicti['city'] = item[4]
-            dicti['country'] = item[5]
-            dicti['category'] = item[6]
-            dicti['description'] = item[7]
-            dicti['std_discount'] = 'No' if item[8] else 'Yes'
-            dicti['endtime'] = 'unknown' if item[9] == None else item[9]
-            dicti['cost'] = item[10]
-            dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
-            list1.append(dicti)
-
-        return list1
-    elif date:
-        query = "SELECT * FROM Event WHERE Date = %s;"
-        response = _cursor.execute(query, (date,))
-
-        try:
-            list1 = []
-            for item in _cursor.fetchall():
-                dicti = {}
-                dicti['name'] = item[0]
-                dicti['date'] = item[1]
-                dicti['starttime'] = item[2]
-                dicti['address'] = item[3]
-                dicti['city'] = item[4]
-                dicti['country'] = item[5]
-                dicti['category'] = item[6]
-                dicti['description'] = item[7]
-                dicti['std_discount'] = 'No' if item[8] else 'Yes'
-                dicti['endtime'] = 'unknown' if item[9] == None else item[9]
-                dicti['cost'] = item[10]
-                dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
-                list1.append(dicti)
-            return list1
-        except:
-            return []
-    elif cost:
-        print 29
-    elif std_discount:
-        print 30
-    elif cat_list:
-        print 31
-    else:
-        print "shouldn't be here - event search"  # sanity check
 
 # doesn't work, lmao
 def getEventScore(name, date, starttime, address, city):
