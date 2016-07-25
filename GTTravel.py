@@ -253,8 +253,8 @@ def to_write_reviews_single(subject):
     Takes users to write reviews page
     """
 
-    subject = subject
-    return render_template('writereviews.html', subject=subject, error="")
+    subject = [subject]
+    return render_template('/writereviews.html', subject=subject, error="")
 
 
 @app.route("/to_past_reviews")
@@ -397,7 +397,7 @@ def search_locations():
             return render_template('locationsearch.html', locations=locations, address=address,
                                    cities=cities, loc_cat=loc_cat, error=error)
         elif address != "":
-            return to_country_page(address)
+            return to_location_page(address)
         else:
             results = db.locationSearch(loc, address, city, minCost, maxCost, type, sort)
             return render_template('locationresults.html', locations=results)
