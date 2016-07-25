@@ -773,6 +773,8 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
 
         return getEventInfo(_cursor.fetchall())
     elif date and cost and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  cost = %s AND  std_discount = TRUE AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and cost and std_discount and cat_list:
         query = "SELECT * FROM EVENT WHERE city = %s "
@@ -790,50 +792,206 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
 
         return getEventInfo(_cursor.fetchall())
     elif city and date and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  std_discount = TRUE AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and cost and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  cost = %s AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and cost and std_discount:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  cost = %s AND  std_discount = TRUE;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and cost:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  cost = %s;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and std_discount:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  std_discount = TRUE;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and cost and std_discount:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  cost = %s AND  std_discount = TRUE;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and cost and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  cost = %s AND  %s IN cat_list;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  std_discount = TRUE AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif date and cost and std_discount:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  cost = %s AND  std_discount = TRUE;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif date and cost and cat_list:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  cost = %s AND  %s IN cat_list;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif date and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  std_discount = TRUE AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif cost and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE cost = %s AND  std_discount = TRUE AND  %s IN cat_list;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and date:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and cost:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  cost = %s;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and std_discount:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  std_discount = TRUE;"
+
         return getEventInfo(_cursor.fetchall())
     elif city and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif date and cost:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  cost = %s;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif date and std_discount:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  std_discount = TRUE;"
+
         return getEventInfo(_cursor.fetchall())
     elif date and cat_list:
+        query = "SELECT * FROM EVENT WHERE date = %s AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif cost and std_discount:
+        query = "SELECT * FROM EVENT WHERE cost = %s AND  std_discount = TRUE;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif cost and cat_list:
+        query = "SELECT * FROM EVENT WHERE cost = %s AND  %s IN cat_list;"
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE std_discount = TRUE AND  %s IN cat_list;"
+
         return getEventInfo(_cursor.fetchall())
     elif city:
         query = "SELECT * FROM Event WHERE City = %s;"
@@ -844,16 +1002,21 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
 
-        try:
-            return getEventInfo(_cursor.fetchall())
-        except:
-            return []
+        
+        return getEventInfo(_cursor.fetchall())
+
     elif cost:
-        print 29
+        query = "SELECT * FROM EVENT WHERE cost = %s;"
+
+        return getEventInfo(_cursor.fetchall())
     elif std_discount:
-        print 30
+        query = "SELECT * FROM EVENT WHERE std_discount = TRUE;"
+
+        return getEventInfo(_cursor.fetchall())
     elif cat_list:
-        print 31
+        query = "SELECT * FROM EVENT WHERE %s IN cat_list;"
+
+        return getEventInfo(_cursor.fetchall())
     else:
         print "shouldn't be here - event search"  # sanity check
 
