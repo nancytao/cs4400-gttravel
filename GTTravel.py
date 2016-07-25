@@ -211,8 +211,8 @@ def to_write_reviews():
     Takes users to write reviews page
     """
 
-    subject = db.getReviewableTypes()
-    return render_template('writereviews.html', subject=subject)
+    subject = db.getReviewableTypes
+    return render_template('writereviews.html',subject=subject)
 
 
 @app.route("/to_past_reviews")
@@ -300,6 +300,8 @@ def search_events():
             discount = request.form["discount"]
             discount = discount == "Yes"
 
+
+        results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory)
         if maxCost != "" and minCost != "" and float(maxCost) < float(minCost):
             error = "Cost min is greater than cost max"
             events = db.getEvents()

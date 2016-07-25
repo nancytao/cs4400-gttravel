@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `gttravel`
+
 CREATE DATABASE  IF NOT EXISTS `gttravel` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `gttravel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
@@ -138,7 +140,7 @@ DROP TABLE IF EXISTS `city_scores`;
 /*!50001 DROP VIEW IF EXISTS `city_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `city_scores` AS SELECT 
+/*!50001 CREATE VIEW `city_scores` AS SELECT
  1 AS `City`,
  1 AS `Country`,
  1 AS `Average_score`*/;
@@ -298,7 +300,7 @@ DROP TABLE IF EXISTS `event_scores`;
 /*!50001 DROP VIEW IF EXISTS `event_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `event_scores` AS SELECT 
+/*!50001 CREATE VIEW `event_scores` AS SELECT
  1 AS `Name`,
  1 AS `Date`,
  1 AS `Start_time`,
@@ -404,7 +406,7 @@ DROP TABLE IF EXISTS `location_scores`;
 /*!50001 DROP VIEW IF EXISTS `location_scores`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `location_scores` AS SELECT 
+/*!50001 CREATE VIEW `location_scores` AS SELECT
  1 AS `Address`,
  1 AS `City`,
  1 AS `Country`,
@@ -442,7 +444,7 @@ DROP TABLE IF EXISTS `multlangcities`;
 /*!50001 DROP VIEW IF EXISTS `multlangcities`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `multlangcities` AS SELECT 
+/*!50001 CREATE VIEW `multlangcities` AS SELECT
  1 AS `City`,
  1 AS `Country`*/;
 SET character_set_client = @saved_cs_client;
@@ -455,7 +457,7 @@ DROP TABLE IF EXISTS `multlangcountries`;
 /*!50001 DROP VIEW IF EXISTS `multlangcountries`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `multlangcountries` AS SELECT 
+/*!50001 CREATE VIEW `multlangcountries` AS SELECT
  1 AS `Country`*/;
 SET character_set_client = @saved_cs_client;
 
