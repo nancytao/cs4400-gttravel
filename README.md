@@ -25,4 +25,6 @@ make review from location/event/city search
 
 ##inputs from class
 All the SQL queries that are used in the GUI should be included in the text file that has to be turned in.
+all the 10 given queries and the extra query have to be implemented in the GUI.
+
 >>>>>>> Stashed changes
