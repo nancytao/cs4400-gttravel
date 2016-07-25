@@ -291,17 +291,17 @@ def aboutLocation(address):
 
 def aboutEvent(key):
     eventarr = [x.strip() for x in key.split(',')]
-    query = "SELECT * FROM event WHERE Name = %s AND Date = %s AND Start_time = %s"
-    query += " AND Address = %s AND City = %s;"
-    response = _cursor.execute(query, eventarr)
+    query = "SELECT * FROM Event WHERE Name = %s AND Address = %s AND City = %s"
+    query += " AND Country = %s AND Date = %s AND Start_time = %s;"
 
+    response = _cursor.execute(query, tuple(eventarr))
     item = _cursor.fetchone()
     dicti = {}
     dicti['name'] = item[0]
-    dicti['date'] = item[1]
-    dicti['starttime'] = item[2]
-    dicti['location'] = item[3] + ", " + item[4]
-    dicti['endtime'] = item[9]
+    dicti['date'] = str(item[1])
+    dicti['starttime'] = str(item[2])
+    dicti['location'] = item[3] + ", " + item[4] + ", " + item[5]
+    dicti['endtime'] = str(item[9])
     dicti['cost'] = item[10]
     dicti['std_discount'] = "Yes" if item[8] else "No"
     dicti['category'] = item[6]
@@ -312,8 +312,8 @@ def aboutEvent(key):
 
 def getEventReviews(key):
     eventarr = [x.strip() for x in key.split(',')]
-    query = "SELECT * FROM event_review WHERE Name = %s AND Date = %s AND Start_time = %s"
-    query += " AND Address = %s AND City = %s;"
+    query = "SELECT * FROM event_review WHERE Name = %s AND Address = %s AND City = %s"
+    query += " AND Country = %s AND Date = %s AND Start_time = %s;"
     response = _cursor.execute(query, eventarr)
 
     result = []

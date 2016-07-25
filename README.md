@@ -4,10 +4,10 @@ location search, add stddiscount
 radio button for highest rated and lowest rated
 
 ## Cole's List
-write reviews from page
 make sure city name is less than 32 chars
-Straight to page for location - make sure event works
+Skip table - make sure event/location works - location by name? currently address/city
 
+add load current date to calender
 Add more searches ie location by country, event by location
 add to homescreen a message box that says register successful and such
 tables to alight stuff in search maybe
