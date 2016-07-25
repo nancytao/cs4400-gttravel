@@ -129,13 +129,15 @@ def getAddresses():
     my_list = []
     for item in _cursor.fetchall():
         my_list.append(item[0] + ", " + item[1] + ", " + item[2])
-    my_list.append[""]
+    my_list.append("")
     return my_list
 
 
 def getLocNames():
     _cursor.execute("SELECT Name FROM location;")
-    return tupleListToList(_cursor.fetchall())
+    my_list = tupleListToList(_cursor.fetchall())
+    my_list.append("")
+    return my_list
 
 
 def getLocTypes():
@@ -148,11 +150,18 @@ def getEventCategories():
     return tupleListToList(_cursor.fetchall())
 
 
+def getReviewableTypes():
+    my_list = getCities() + getAddresses() + getEvents()
+    my_list.remove("")
+    my_list.remove("")
+    return my_list
+
+
 def getEvents():
     _cursor.execute("SELECT Name, Date, Address, City, Country FROM event;")
     my_list = []
     for item in _cursor.fetchall():
-        my_list.append(item[0] + " at " + item[2] + ", " + item[3] + ", " + item[4] + " on " + str(item[1]))
+        my_list.append(item[0] + ", " + item[2] + ", " + item[3] + ", " + item[4] + ", " + str(item[1]))
     my_list.append("")
     return my_list
 
@@ -199,6 +208,10 @@ def pastReviews(username):
         reviews.append(list1)
 
     return reviews
+
+
+def writeReview(username, reviewableid, review_date, score, review):
+    print "stop"
 
 
 def countrySearch(country, population_min, population_max, lang_list):
@@ -415,7 +428,7 @@ def citySearch(city, country, population_min, population_max, lang_list):
             dicti['latitude'] = item[2]
             dicti['longitude'] = item[3]
             dicti['population'] = item[4]
-            dicti['iscapital'] = isCapital(item[0])
+            dicti['iscapital'] = 'No' if isCapital(item[0]) else 'Yes'
             dicti['languages'] = getLanguagesCity(item[0])
             dicti['score'] = getCityScore(item[0])
             result.append(dicti)
@@ -499,8 +512,8 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list):
             dicti['country'] = item[2]
             dicti['cost'] = item[3]
             dicti['type'] = item[4]
-            dicti['std_discount'] = item[5]
-            dicti['score'] = getLocScore()
+            dicti['std_discount'] = 'No' if item[5] else 'Yes'
+            dicti['score'] = getLocScore(item[0], item[1], item[2])
             result.append(dicti)
         return result
 
@@ -509,28 +522,66 @@ def getLocScore(address, city, country):
     query = "SELECT Average_score FROM location_scores WHERE Address = %s "\
             "AND City = %s AND Country = %s;"
     response = _cursor.execute(query, (address, city, country))
-    return tupleListToList(_cursor.fetchall())
+    fetch = _cursor.fetchone()
+    return fetch[0] if fetch else "no reviews"
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, d8, cost_min, cost_max, std_discount, cat_list):
-    cost =  cost_max or cost_min
+def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list):
+    cost = cost_max or cost_min
+
+    # def getEvents():
+    # _cursor.execute("SELECT Name, Date, Address, City, Country FROM event;")
+    # my_list = []
+    # for item in _cursor.fetchall():
+    #     my_list.append(item[0] + " at " + item[2] + ", " + item[3] + ", " + item[4] + " on " + str(item[1]))
+    # my_list.append("")
+    # return my_list
 
     if event:
         # TODO make this work
-        query = "SELECT * FROM Event WHERE Name = %s AND City = %s AND Date = %s;"
+        eventarr = [x.strip() for x in event.split(',')]
+        query = "SELECT * FROM Event WHERE Name = %s AND Address = %s AND City = %s"
+        query += " AND Country = %s AND Date = %s;"
+        response = _cursor.execute(query, tuple(eventarr))
+
+        item = _cursor.fetchone()
+        dicti = {}
+        dicti['name'] = item[0]
+        dicti['date'] = item[1]
+        dicti['starttime'] = item[2]
+        dicti['address'] = item[3]
+        dicti['city'] = item[4]
+        dicti['country'] = item[5]
+        dicti['category'] = item[6]
+        dicti['description'] = item[7]
+        dicti['std_discount'] = 'No' if item[8] else 'Yes'
+        dicti['endttime'] = 'unknown' if item[9] == None else item[9]
+        dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+        return [dicti]
     elif city:
         # TODO make this work with multiple returned cities
         # TODO return all the attributes
         query = "SELECT * FROM Event WHERE City = %s;"
         response = _cursor.execute(query, (city,))
         return [{'name': _cursor.fetchone()[0]}]
-    elif d8:
+    elif date:
         # TODO make this work with multiple returned cities
         # TODO return all the attributes
         query = "SELECT * FROM Event WHERE Date = %s;"
-        response = _cursor.execute(query, (d8,))
+        response = _cursor.execute(query, (date,))
         return [{'name': _cursor.fetchone()[0]}]
+
+
+# doesn't work, lmao
+def getEventScore(name, date, starttime, address, city):
+    query = "SELECT Average_score FROM event_scores WHERE Name = %s AND Date = %s"\
+            " AND Start_time = %s AND Address = %s AND City = %s;"
+    response = _cursor.execute(query, (name, date, starttime, address, city))
+    fetch = _cursor.fetchone()
+    return fetch[0] if fetch else "no reviews"
+
+
 
 ## testing
 setupConnection()
@@ -542,5 +593,4 @@ setupConnection()
 
 # print citySearch(None, None, None, None, None)
 
-print eventSearch(None, 'Barcelona', '08/01/2016', None, None, None, None)
 closeConnection()
