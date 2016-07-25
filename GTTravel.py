@@ -237,6 +237,7 @@ def search_country():
         maxPop = request.form["maxPop"]
         minPop = request.form["minPop"]
         languages = request.form.getlist("languages")
+        sort = request.form["sort"]
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
             countries = db.getCountries()
             languages = db.getLanguages()
@@ -244,7 +245,7 @@ def search_country():
             return render_template('countrysearchtemplate.html', option_list=countries,
                                    option_list2=languages, error=error)
         else:
-            results = db.countrySearch(name, minPop, maxPop, languages)
+            results = db.countrySearch(name, minPop, maxPop, languages, sort)
             return render_template('countryresults.html', countries=results)
 
 
@@ -261,6 +262,7 @@ def search_city():
         country = request.form["country"]
         maxPop = request.form["maxPop"]
         minPop = request.form["minPop"]
+        sort = request.form["sort"]
 
         languages = request.form.getlist("languages")
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
@@ -273,7 +275,7 @@ def search_city():
                                    countries=countries, languages=languages, error=error)
 
         else:
-            results = db.citySearch(city, country, minPop, maxPop, languages)
+            results = db.citySearch(city, country, minPop, maxPop, languages, sort)
             return render_template('cityresults.html', cities=results)
 
 
@@ -293,6 +295,7 @@ def search_events():
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
         catagory = request.form.getlist("catagoriesE")
+        sort = request.form["sort"]
 
         discount = None
 
@@ -300,8 +303,6 @@ def search_events():
             discount = request.form["discount"]
             discount = discount == "Yes"
 
-
-        results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory)
         if maxCost != "" and minCost != "" and float(maxCost) < float(minCost):
             error = "Cost min is greater than cost max"
             events = db.getEvents()
@@ -311,7 +312,7 @@ def search_events():
             return render_template('eventsearch.html', events=events, cities=cities, event_cat=event_cat, error=error)
 
         else:
-            results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory)
+            results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory, sort)
             return render_template('eventresults.html', events=results)
 
 
@@ -329,6 +330,7 @@ def search_locations():
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
         type = request.form.getlist("catagoriesL")
+        sort = request.form["sort"]
 
         if maxCost != "" and minCost != "" and float(maxCost) < float(minCost):
             error = "Cost min is greater than cost max"
@@ -341,7 +343,7 @@ def search_locations():
                                    cities=cities, loc_cat=loc_cat, error=error)
 
         else:
-            results = db.locationSearch(loc, address, city, minCost, maxCost, type)
+            results = db.locationSearch(loc, address, city, minCost, maxCost, type, sort)
             return render_template('locationresults.html', locations=results)
 
 
