@@ -29,7 +29,9 @@
         <tbody>
         {% for o in events %}
           <tr>
-                <td>{{ o["name"] }}</td>
+                <td><a href="{{ url_for('to_event_page', event=o['name'] +
+                 ',' + o['date']+ ',' + o['starttime']+ ',' +
+                  o['address']+ ',' + o['city']) }}">{{ o["name"] }}</a></td>
                 <td>{{ o["date"] }}</td>
                 <td>{{ o["starttime"] }}</td>
                 <td>{{ o["endtime"] }}</td>

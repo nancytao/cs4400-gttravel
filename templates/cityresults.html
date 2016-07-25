@@ -29,7 +29,7 @@
                 <td>{{ o["latitude"] }}</td>
                 <td>{{ o["longitude"] }}</td>
                 <td>{{ o["population"] }}</td>
-                <td>{{ o["iscapital"] }}</td>
+                <td>{{ "Yes" if o["iscapital"] else "No" }}</td>
                 <td>{{ o["languages"] }}</td>
                 <td>{{ o["score"] }}</td>
           </tr>

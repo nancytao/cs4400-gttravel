@@ -23,6 +23,23 @@ def to_city_page(city):
     return render_template("city.html", city=city, info=info, locations=locations, reviews=reviews)
 
 
+@app.route("/to_location_page/<loc>")
+def to_location_page(loc):
+    info = db.aboutLocation(loc)
+    events = db.getLocationEvents(loc)
+    reviews = db.getLocationReviews(loc)
+
+    return render_template("location.html", info=info, events=events, reviews=reviews)
+
+
+@app.route("/to_event_page/<event>")
+def to_event_page(event):
+    info = db.aboutEvent(event)
+    reviews = db.getEventReviews(event)
+
+    return render_template("event.html", info=info, reviews=reviews)
+
+
 @app.route('/sign_in', methods=['POST', 'GET'])
 def sign_in():
     """
