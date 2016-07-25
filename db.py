@@ -529,7 +529,7 @@ def getLocScore(address, city, country):
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, cost_min, cost_max, date, std_discount, cat_list):
+def eventSearch(event, city, date, min_cost, max_cost, std_discount, cat_list):
     if event:
         # TODO make this work
         eventarr = [x.strip() for x in event.split(',')]
