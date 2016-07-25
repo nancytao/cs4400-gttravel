@@ -212,8 +212,35 @@ def pastReviews(username):
 
 
 def writeReview(username, reviewableid, review_date, score, review):
-    print "stop"
+    try:
+        # query = 'INSERT INTO '
 
+        #reviewableid.split(',')
+        reviewableid = [x.strip() for x in reviewableid.split(',')]
+        for item in reviewableid:
+            print item
+        # reviewableid = ['city', 'country', 'date', 'start_time', 'address', 'score']
+        # noFields = 3
+        noFields = len(reviewableid)
+
+        if noFields == 1:
+            query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
+            _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
+
+        elif noFields == 3:
+            query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
+            _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
+
+        elif noFields > 3:
+            query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+            print reviewableid[2] + ", " + reviewableid[3]
+            _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+
+        _database.commit()
+        return True
+
+    except:
+        return False
 
 def countrySearch(country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
@@ -645,11 +672,18 @@ def getEventScore(name, date, starttime, address, city):
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
 
-
+def getCityCountry(city):
+    query = "SELECT Country FROM city WHERE City = %s"
+    response = _cursor.execute(query, (city,))
+    fetch = _cursor.fetchone()
+    # country = fetch[0].strip()
+    # country = str(country)
+    return fetch[0] if fetch else "N/A" 
 
 ## testing
 setupConnection()
 
+#print writeReview()
 # code for SELECT for testing :)
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():
