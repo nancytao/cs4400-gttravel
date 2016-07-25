@@ -4,7 +4,6 @@ location search, add stddiscount
 radio button for highest rated and lowest rated
 
 ## Cole's List
-make sure city name is less than 32 chars
 Skip table - make sure event/location works - location by name? currently address/city
 
 add load current date to calender
@@ -16,6 +15,10 @@ search locations by country
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make chekc boxes side by sideish
+
+
+##
+cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
 
 
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
