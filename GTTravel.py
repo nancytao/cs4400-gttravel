@@ -17,10 +17,16 @@ def to_country_page(country):
 @app.route("/to_city_page/<city>")
 def to_city_page(city):
     info = db.aboutCity(city)
+    m1 = ""
+    m2 = ""
     locations = db.getCityLocations(city)
     reviews = db.getCityReviews(city)
+    if len(locations) == 0:
+        m1 = "There are no locations in this city"
+    if len(reviews) == 0:
+        m2 = "There are no reviews for this city"
 
-    return render_template("city.html", city=city, info=info, locations=locations, reviews=reviews)
+    return render_template("city.html", city=city, info=info, locations=locations, reviews=reviews, m1=m1, m2=m2)
 
 
 @app.route("/to_location_page/<loc>")
@@ -28,16 +34,24 @@ def to_location_page(loc):
     info = db.aboutLocation(loc)
     events = db.getLocationEvents(loc)
     reviews = db.getLocationReviews(loc)
+    m1 = ""
+    m2 = ""
+    if len(events) == 0:
+        m1 = "This location has no events"
+    if len(events) == 0:
+        m1 = "This location has no reviews"
 
-    return render_template("location.html", info=info, events=events, reviews=reviews)
+    return render_template("location.html", info=info, events=events, reviews=reviews, m1=m1, m2=m2)
 
 
 @app.route("/to_event_page/<event>")
 def to_event_page(event):
     info = db.aboutEvent(event)
+    m1 = ""
     reviews = db.getEventReviews(event)
-
-    return render_template("event.html", info=info, reviews=reviews)
+    if len(reviews) == 0:
+        m1 = "There are no reviews for this event"
+    return render_template("event.html", info=info, reviews=reviews, m1=m1)
 
 
 @app.route('/sign_in', methods=['POST', 'GET'])
@@ -263,7 +277,10 @@ def to_past_reviews():
     Takes users to past reviews page
     """
     past_reviews = db.pastReviews(logged_user)
-    return render_template('pastreviews.html', reviews=past_reviews)
+    if len(past_reviews) == 0:
+        return render_template('pastreviews.html', reviews=past_reviews, message="You have no past reviews")
+    else:
+        return render_template('pastreviews.html', reviews=past_reviews, message="")
 
 
 @app.route("/to_country_results", methods=["POST", "GET"])
@@ -293,7 +310,12 @@ def search_country():
             return to_country_page(name)
         else:
             results = db.countrySearch(name, minPop, maxPop, languages, sort)
-            return render_template('countryresults.html', countries=results)
+            if len(results) == 0:
+                return render_template('countryresults.html',
+                                       countries=results, message="No countires match your search")
+            else:
+                return render_template('countryresults.html', countries=results, message="")
+
 
 
 @app.route("/to_city_results", methods=["POST", "GET"])
@@ -326,7 +348,10 @@ def search_city():
             return to_city_page(city)
         else:
             results = db.citySearch(city, country, minPop, maxPop, languages, sort)
-            return render_template('cityresults.html', cities=results)
+            if len(results) == 0:
+                return render_template('cityresults.html', cities=results, message="No cities match your search")
+            else:
+                return render_template('cityresults.html', cities=results, message="")
 
 
 @app.route("/to_event_results", methods=["POST", "GET"])
@@ -366,7 +391,10 @@ def search_events():
             return to_event_page(event)
         else:
             results = db.eventSearch(event, city, date, minCost, maxCost, discount, category, sort)
-            return render_template('eventresults.html', events=results)
+            if len(results) == 0:
+                return render_template('eventresults.html', events=results, message="No events matching your search")
+            else:
+                return render_template('eventresults.html', events=results, message="")
 
 
 @app.route("/to_location_results", methods=["POST", "GET"])
@@ -400,7 +428,11 @@ def search_locations():
             return to_location_page(address)
         else:
             results = db.locationSearch(loc, address, city, minCost, maxCost, type, sort)
-            return render_template('locationresults.html', locations=results)
+            if len(results) == 0:
+                return render_template('locationresults.html',
+                                       locations=results, message="No locations matched your search")
+            else:
+                return render_template('locationresults.html', locations=results, message="")
 
 
 @app.route("/make_review", methods=["POST", "GET"])

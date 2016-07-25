@@ -26,7 +26,7 @@
             <input name="score" type="number" class="form-control" id="score" min="0" max="5" required>
 
             <label for="description">Description</label>
-            <input name="description" type="text" class="form-control" id="description" maxlength="5000" required>
+            <textarea name="description" type="text" class="form-control" id="description" style="height: 150px; width: 300px" maxlength="5000" required> </textarea>
 
             <br>
 
@@ -36,7 +36,7 @@
             <button id = "writeReview" class="btn btn-primary"  type="submit">Submit</button>
             <a class=" btn btn-default" href="/to_home" role="button">Go Back</a>
         </form>
-        <p id="feedback">{{error}}</p>
+        <p id="feedback" style="color:red">{{error}}</p>
 
     </div>
 </div>
