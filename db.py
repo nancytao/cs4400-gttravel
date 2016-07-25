@@ -215,22 +215,23 @@ def writeReview(username, reviewableid, review_date, score, review):
     try:
         # query = 'INSERT INTO '
 
-        #reviewableid.split(',')
         reviewableid = [x.strip() for x in reviewableid.split(',')]
         for item in reviewableid:
             print item
-        # reviewableid = ['city', 'country', 'date', 'start_time', 'address', 'score']
-        # noFields = 3
+
         noFields = len(reviewableid)
 
+        # city reviews
         if noFields == 1:
             query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
             _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
 
+        # location reviews
         elif noFields == 3:
             query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
             _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
 
+        # event reviews
         elif noFields > 3:
             query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
             print reviewableid[2] + ", " + reviewableid[3]
