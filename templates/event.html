@@ -41,7 +41,6 @@
         {% endfor %}
         </tbody>
     </table>
-    name location date starttime
     <a class=" btn btn-primary" href="{{ url_for('to_write_reviews_single', subject=info['name'] + ', ' +
         info['location'] + ', ' + info['date'] + ', ' + info['starttime'] ) }}" role="button">Write Review</a>
     <a class=" btn btn-default" href="/to_event_search" role="button">Go Back</a>

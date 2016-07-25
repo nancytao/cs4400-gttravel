@@ -4,7 +4,6 @@ location search, add stddiscount
 radio button for highest rated and lowest rated
 
 ## Cole's List
-make sure city name is less than 32 chars
 Skip table - make sure event/location works - location by name? currently address/city
 
 add load current date to calender
