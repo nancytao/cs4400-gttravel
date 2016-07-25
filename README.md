@@ -18,6 +18,8 @@ make chekc boxes side by sideish
 
 ##
 cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
+locationSearch - need to filter by type, and sort by high/low ratings
+
 *Sort by in tables*
 =======
 
