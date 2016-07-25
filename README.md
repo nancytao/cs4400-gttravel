@@ -1,15 +1,6 @@
 # cs4400-gttravel
 
-## For Cole, From Nancy debugging/suggestions
-sort by in the GUI (order alphabetically, by population, etc)
-no results? - new page? says no results somewhere pls
-Highest rated city
-location - add address, make name a dropdown
-
-
 ## Cole's List
-Notes: Make sure forms are all in one form group
-"<form>" tags for manager to force selection of data fields - see sign up page
 check long lat with prof - "is it a period"
 Add more searches ie location by country, event by location
 add to homescreen a message box that says register successful and such
@@ -26,5 +17,4 @@ make sure city name is less than 32 chars
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make review from location/event/city search
-!!!! catch invalid dates!!!!!
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
