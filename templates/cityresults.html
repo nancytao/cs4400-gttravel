@@ -24,12 +24,12 @@
         <tbody>
         {% for o in cities %}
           <tr>
-                <td>{{ o["city"] }}</td>
+                <td><a href="{{ url_for('to_city_page', city=o['city']) }}">{{ o["city"] }}</a></td>
                 <td>{{ o["country"] }}</td>
                 <td>{{ o["latitude"] }}</td>
                 <td>{{ o["longitude"] }}</td>
                 <td>{{ o["population"] }}</td>
-                <td>{{ o["iscapital"] }}</td>
+                <td>{{ "Yes" if o["iscapital"] else "No" }}</td>
                 <td>{{ o["languages"] }}</td>
                 <td>{{ o["score"] }}</td>
           </tr>

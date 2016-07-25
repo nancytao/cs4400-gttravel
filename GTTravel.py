@@ -8,8 +8,36 @@ logged_user = ""
 
 @app.route("/to_country_page/<country>")
 def to_country_page(country):
-    return render_template("country.html", country=country)
-    # render_template("countrypage.html")
+    info = db.aboutCountry(country)
+    cities = db.getCountryCities(country)
+
+    return render_template("country.html", country=country, info=info, cities=cities)
+
+
+@app.route("/to_city_page/<city>")
+def to_city_page(city):
+    info = db.aboutCity(city)
+    locations = db.getCityLocations(city)
+    reviews = db.getCityReviews(city)
+
+    return render_template("city.html", city=city, info=info, locations=locations, reviews=reviews)
+
+
+@app.route("/to_location_page/<loc>")
+def to_location_page(loc):
+    info = db.aboutLocation(loc)
+    events = db.getLocationEvents(loc)
+    reviews = db.getLocationReviews(loc)
+
+    return render_template("location.html", info=info, events=events, reviews=reviews)
+
+
+@app.route("/to_event_page/<event>")
+def to_event_page(event):
+    info = db.aboutEvent(event)
+    reviews = db.getEventReviews(event)
+
+    return render_template("event.html", info=info, reviews=reviews)
 
 
 @app.route('/sign_in', methods=['POST', 'GET'])
@@ -244,12 +272,15 @@ def search_country():
         sort = None
         if "sort" in request.form:
             sort = request.form["sort"]
+
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
             countries = db.getCountries()
             languages = db.getLanguages()
             error = "Population min is greater than population max"
             return render_template('countrysearchtemplate.html', option_list=countries,
                                    option_list2=languages, error=error)
+        elif name != "":
+            return to_country_page(name)
         else:
             results = db.countrySearch(name, minPop, maxPop, languages, sort)
             return render_template('countryresults.html', countries=results)
@@ -281,7 +312,8 @@ def search_city():
 
             return render_template('citysearch.html', cities=cities,
                                    countries=countries, languages=languages, error=error)
-
+        elif city != "":
+            return to_city_page(city)
         else:
             results = db.citySearch(city, country, minPop, maxPop, languages, sort)
             return render_template('cityresults.html', cities=results)
@@ -320,7 +352,8 @@ def search_events():
             event_cat = db.getEventCategories()
 
             return render_template('eventsearch.html', events=events, cities=cities, event_cat=event_cat, error=error)
-
+        elif event != "":
+            return to_event_page(event)
         else:
             results = db.eventSearch(event, city, date, minCost, maxCost, discount, category, sort)
             return render_template('eventresults.html', events=results)

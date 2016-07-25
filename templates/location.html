@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{info["name"]}}</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body style="padding: 3% 5% 5% 5%; width: 80%">
+    <h1>{{info["name"]}}</h1>
+    <p>
+        Name: {{info["name"]}}<br>
+        Address: {{info["address"]}}<br>
+        Cost: {{info["cost"]}}<br>
+        Student Discount: {{info["std_discount"]}}<br>
+        Type: {{info["category"]}}<br>
+        Avg Score: {{info["score"]}}<br>
+    </p>
+    <br>
+    Events:<br>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+              <td>Event</td>
+              <td>Date</td>
+              <td>Time</td>
+              <td>Category</td>
+              <td>Score</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for o in events %}
+          <tr>
+                <td>{{ o["event"] }}</td>
+                <td>{{ o["date"] }}</td>
+                <td>{{ o["time"] }}</td>
+                <td>{{ o["category"] }}</td>
+                <td>{{ o["score"] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    Reviews:
+    <br>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+              <td>Username</td>
+              <td>Date</td>
+              <td>Score</td>
+              <td>Description</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for o in reviews %}
+          <tr>
+                <td>{{ o["username"] }}</td>
+                <td>{{ o["date"] }}</td>
+                <td>{{ o["score"] }}</td>
+                <td>{{ o["description"] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class=" btn btn-default" href="/to_location_search" role="button">Go Back</a>
+
+</body>
+</html>
