@@ -270,10 +270,10 @@ def aboutEvent(key):
     item = _cursor.fetchone()
     dicti = {}
     dicti['name'] = item[0]
-    dicti['date'] = item[1]
-    dicti['starttime'] = item[2]
+    dicti['date'] = str(item[1])
+    dicti['starttime'] = str(item[2])
     dicti['location'] = item[3] + ", " + item[4] + ", " + item[5]
-    dicti['endtime'] = item[9]
+    dicti['endtime'] = str(item[9])
     dicti['cost'] = item[10]
     dicti['std_discount'] = "Yes" if item[8] else "No"
     dicti['category'] = item[6]
