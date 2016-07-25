@@ -47,7 +47,15 @@
                     <input name="catagoriesE" type="checkbox" value="{{ o }}">  {{ o }} <br>
                 {% endfor %}
             </div>
-
+            <br>
+            <b>Sort by</b>
+            <label class="radio-inline"><input value="event" type="radio" name="sort">Event Name</label>
+            <!--
+            <label class="radio-inline"><input value="city" type="radio" name="sort">City Name</label>
+            <label class="radio-inline"><input value="date" type="radio" name="sort">Date</label>
+            -->
+            <label class="radio-inline"><input value="cost" type="radio" name="sort">Cost</label>
+            <label class="radio-inline"><input value="rating" type="radio" name="sort">Rating</label>
         </div>
 
         <button id = "searchEvents" class=" btn btn-default"  type="submit">Search</button>

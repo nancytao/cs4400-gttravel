@@ -1,8 +1,6 @@
 # cs4400-gttravel
 
 ## Cole's List
-Notes: Make sure forms are all in one form group
-"<form>" tags for manager to force selection of data fields - see sign up page
 check long lat with prof - "is it a period"
 Add more searches ie location by country, event by location
 add to homescreen a message box that says register successful and such
@@ -19,5 +17,16 @@ make sure city name is less than 32 chars
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make review from location/event/city search
+fix long lat to degree minute '' ' two input fields for each
+
+<<<<<<< Updated upstream
+***********Sort by in tables!!!!!!!****************** A Must!!!!
+=======
 !!!! catch invalid dates!!!!!
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
+
+##inputs from class
+All the SQL queries that are used in the GUI should be included in the text file that has to be turned in.
+all the 10 given queries and the extra query have to be implemented in the GUI.
+
+>>>>>>> Stashed changes
