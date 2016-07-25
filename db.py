@@ -628,7 +628,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
-    cost = cost_min or cost_max
+    '''cost = cost_min or cost_max
     #std_discount = "TRUE" if std_discount == True else "FALSE"
 
     if address:
@@ -687,7 +687,43 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
         query = "SELECT * FROM location;"
         response = _cursor.execute(query)
 
-        return getLocInfo(_cursor.fetchall())
+        return getLocInfo(_cursor.fetchall()) */'''
+
+    query = 'SELECT * FROM location WHERE'
+
+    if name:
+        query = query + " Name = '" + str(name) + "' AND "
+    if address:
+        query = query + " Address = '" + str(address) + "' AND "
+    if city:
+        query = query + " City = '" + str(city) + "' AND "
+    if cost_min:
+        query = query + " Cost > '" + str(cost_min) + "' AND "
+    if cost_max:
+        query = query + " Cost < '" + str(cost_max) + "' AND "
+
+    print type_list
+    if type_list:
+        pass                 # TODO
+
+    if query[-5:] == ' AND ':
+        query = query[:-5]
+
+    if sort:
+        if sort == 'highest':
+            pass            # TODO
+            query = query + ' ORDER BY '
+        if sort == 'location':
+            query = query + ' ORDER BY Name ASC'
+        if sort == 'lowest':
+            pass            # TODO
+        if sort == 'type':
+            query = query + ' ORDER BY Type ASC'
+
+    _cursor.execute(query)
+    response = _cursor.fetchall()
+    # return response
+    return getLocInfo(response)
 
 
 def getLocInfo(tuplelist):
@@ -867,6 +903,7 @@ def getEventScore(name, date, starttime, address, city):
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
 
+# helper for writeReviews
 def getCityCountry(city):
     query = "SELECT Country FROM city WHERE City = %s"
     response = _cursor.execute(query, (city,))
