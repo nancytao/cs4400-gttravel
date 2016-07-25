@@ -18,6 +18,10 @@ make entire website nav-pills
 make chekc boxes side by sideish
 
 
+##
+cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
+
+
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
 =======
 !!!! catch invalid dates!!!!!
