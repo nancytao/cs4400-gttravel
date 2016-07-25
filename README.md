@@ -30,3 +30,4 @@ make sure city name is less than 32 chars
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make review from location/event/city search
+!!!! catch invalid dates!!!!!
