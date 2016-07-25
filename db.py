@@ -215,6 +215,33 @@ def writeReview(username, reviewableid, review_date, score, review):
     print "stop"
 
 
+def aboutCountry(country):
+    query = "SELECT * FROM country WHERE Country = %s;"
+    response = _cursor.execute(query, (country,))
+    fetch = _cursor.fetchone()
+    result = {}
+    result['name'] = fetch[0]
+    result['population'] = fetch[1]
+
+    result['capitals'] = getCapitals(country)
+    result['languages'] = getLanguagesCountry(country)
+
+    return result
+
+
+def getCountryCities(country):
+    query = "SELECT City, Population FROM city WHERE Country = %s;"
+    response = _cursor.execute(query, (country,))
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['city'] = item[0]
+        dicti['population'] = item[1]
+        dicti['languages'] = getLanguagesCity(item[0])
+        dicti['score'] = getCityScore(item[0])
+
+
 def countrySearch(country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
     cri = False
@@ -538,7 +565,7 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
 
         return getEventInfo(_cursor.fetchall())
     elif city and date and cost and std_discount and cat_list:
-        query = "SELECT * FROM EVENT NATURAL JOIN EVENT_SCORES WHERE city = %s AND  date = %s "
+        query = "SELECT * FROM EVENT WHERE city = %s AND  date = %s "
         query += "AND std_discount = " + std_discount + " AND " + getCatQuery(cat_list)
         if cost_max and cost_min:
             query += " AND Cost >= %s AND Cost <= %s "
@@ -554,6 +581,19 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
     elif date and cost and std_discount and cat_list:
         return getEventInfo(_cursor.fetchall())
     elif city and cost and std_discount and cat_list:
+        query = "SELECT * FROM EVENT WHERE city = %s "
+        query += "AND std_discount = " + std_discount + " AND " + getCatQuery(cat_list)
+
+        if cost_max and cost_min:
+            query += " AND Cost >= %s AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_min, cost_max))
+        elif cost_max:
+            query += " AND Cost <= %s "
+            response = _cursor.execute(query, (city, cost_max))
+        else:  # elif cost_min
+            query += " AND Cost >= %s "
+            response = _cursor.execute(query, (city, cost_min))
+
         return getEventInfo(_cursor.fetchall())
     elif city and date and std_discount and cat_list:
         return getEventInfo(_cursor.fetchall())
@@ -636,7 +676,7 @@ def getEventInfo(tuplelist):
         dicti['country'] = item[5]
         dicti['category'] = item[6]
         dicti['description'] = item[7]
-        dicti['std_discount'] = 'No' if item[8] else 'Yes'
+        dicti['std_discount'] = 'Yes' if item[8] else 'No'
         dicti['endtime'] = 'unknown' if item[9] == None else item[9]
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
@@ -661,7 +701,7 @@ setupConnection()
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():
 #     print row
-print eventSearch(None, 'Barcelona', '2016-07-01', 5, 15, True, ['concert', 'presentation', 'festival', 'race'], None)
+
 # print citySearch(None, None, None, None, None)
 
 closeConnection()
