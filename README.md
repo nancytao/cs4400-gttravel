@@ -17,4 +17,12 @@ make sure city name is less than 32 chars
 break up reveiws and search by individual by nav-pills
 make entire website nav-pills
 make review from location/event/city search
+<<<<<<< Updated upstream
 ***********Sort by in tables!!!!!!!****************** A Must!!!!
+=======
+!!!! catch invalid dates!!!!!
+***********Sort by in tables!!!!!!!****************** A Must!!!!
+
+##inputs from class
+All the SQL queries that are used in the GUI should be included in the text file that has to be turned in.
+>>>>>>> Stashed changes
