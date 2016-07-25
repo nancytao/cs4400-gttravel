@@ -210,7 +210,7 @@ def to_write_reviews():
     """
 
     subject = db.getReviewableTypes
-    return render_template('writereviews.html',subject=subject)
+    return render_template('writereviews.html', subject=subject, error="")
 
 
 @app.route("/to_past_reviews")
@@ -367,9 +367,14 @@ def make_review():
         score = request.form["score"]
         description = request.form["description"]
 
-        db.writeReview(logged_user, subject, date, score, description)
-        past_reviews = db.pastReviews(logged_user)
-        return render_template('pastreviews.html', reviews=past_reviews)
+        worked = db.writeReview(logged_user, subject, date, score, description)
+        if worked:
+            past_reviews = db.pastReviews(logged_user)
+            return render_template('pastreviews.html', reviews=past_reviews)
+        else:
+            subject = db.getReviewableTypes
+            return render_template('writereviews.html', subject=subject, error="Could not write review")
+
 
 
 
