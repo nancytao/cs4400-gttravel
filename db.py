@@ -243,6 +243,95 @@ def aboutCity(city):
     result['score'] = getCityScore(city)
     return result
 
+
+def aboutLocation(address):
+    addressarr = [x.strip() for x in address.split(',')]
+    query = "SELECT * FROM location WHERE Address = %s AND City = %s;"
+    response = _cursor.execute(query, (addressarr[0], addressarr[1]))
+
+    dicti = {}
+    item = _cursor.fetchone()
+    dicti['name'] = item[6]
+    dicti['address'] = item[0] + ", " + item[1] + ", " + item[2]
+    dicti['cost'] = item[3]
+    dicti['std_discount'] = item[5]
+    dicti['category'] = item[4]
+    dicti['score'] = getLocScore(item[0], item[1], item[2])
+
+    return dicti
+
+
+def aboutEvent(key):
+    eventarr = [x.strip() for x in key.split(',')]
+    query = "SELECT * FROM event WHERE Name = %s AND Date = %s AND Start_time = %s"
+    query += " AND Address = %s AND City = %s;"
+    response = _cursor.execute(query, eventarr)
+
+    item = _cursor.fetchone()
+    dicti = {}
+    dicti['name'] = item[0]
+    dicti['date'] = item[1]
+    dicti['starttime'] = item[2]
+    dicti['location'] = item[3] + ", " + item[4]
+    dicti['endtime'] = item[9]
+    dicti['cost'] = item[10]
+    dicti['std_discount'] = "Yes" if item[8] else "No"
+    dicti['category'] = item[6]
+    dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+
+    return dicti
+
+
+def getEventReviews(key):
+    eventarr = [x.strip() for x in key.split(',')]
+    query = "SELECT * FROM event_review WHERE Name = %s AND Date = %s AND Start_time = %s"
+    query += " AND Address = %s AND City = %s;"
+    response = _cursor.execute(query, eventarr)
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['username'] = item[0]
+        dicti['date'] = item[7]
+        dicti['score'] = item[8]
+        dicti['description'] = item[9]
+        result.append(dicti)
+    return result
+
+
+def getLocationEvents(address):
+    addressarr = [x.strip() for x in address.split(',')]
+    query = "SELECT * FROM event WHERE Address = %s AND City = %s;"
+    response = _cursor.execute(query, (addressarr[0], addressarr[1]))
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['event'] = item[0]
+        dicti['date'] = item[1]
+        dicti['time'] = item[2]
+        dicti['category'] = item[6]
+        dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
+        result.append(dicti)
+    return result
+
+
+def getLocationReviews(address):
+    addressarr = [x.strip() for x in address.split(',')]
+    query = "SELECT * FROM location_review WHERE Address = %s AND City = %s;"
+    response = _cursor.execute(query, (addressarr[0], addressarr[1]))
+
+    result = []
+    for item in _cursor.fetchall():
+        dicti = {}
+        dicti['username'] = item[0]
+        dicti['date'] = item[4]
+        dicti['score'] = item[5]
+        dicti['description'] = item[6]
+        result.append(dicti)
+    return result
+
+
 def getCityLocations(city):
     query = "SELECT * FROM location WHERE city = %s;"
     response = _cursor.execute(query, (city,))
@@ -727,8 +816,8 @@ def getEventInfo(tuplelist):
     for item in tuplelist:
         dicti = {}
         dicti['name'] = item[0]
-        dicti['date'] = item[1]
-        dicti['starttime'] = item[2]
+        dicti['date'] = str(item[1])
+        dicti['starttime'] = str(item[2])
         dicti['address'] = item[3]
         dicti['city'] = item[4]
         dicti['country'] = item[5]
