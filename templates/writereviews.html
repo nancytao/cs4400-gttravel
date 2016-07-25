@@ -11,27 +11,31 @@
     <div style="width: 80%" align="left">
 
         <h1>Write a Review</h1>
-        <div class="form-group">
+        <form class="form-group" style="width:20%" action="make_review" method="post" enctype="multipart/form-data">
             <label for="subject">Subject:</label>
-            <input type="text" class="form-control" id="subject">
+            <select name="subject" class="form-control" id="subject" required>
+                {% for o in subject %}
+                    <option value="{{ o }}" SELECTED>{{ o }}</option>
+                {% endfor %}
+            </select>
 
             <label for="date">Date:</label>
-            <input type="date" class="form-control" id="date">
+            <input name="date" type="date" class="form-control" id="date" required>
 
             <label for="score">Score:</label>
-            <input type="number" class="form-control" id="score" min="0" max="10">
+            <input name="score" type="number" class="form-control" id="score" min="0" max="10" required>
 
             <label for="description">Description</label>
-            <input type="text" class="form-control" id="description">
+            <input name="description" type="text" class="form-control" id="description" required>
 
             <br>
 
             <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>
             <button type="button" class="btn btn-default" onclick="makeReview()" style="align-self: right">Submit</button>
             -->
+            <button id = "searchCity" class=" btn btn-default"  type="submit">Submit</button>
             <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
-            <a class=" btn btn-default" href="make_review" role="button">Submit</a>
-        </div>
+        </form>
         <p id="feedback"></p>
 
     </div>

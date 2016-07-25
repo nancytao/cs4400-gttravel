@@ -209,7 +209,9 @@ def to_write_reviews():
     """
     Takes users to write reviews page
     """
-    return render_template('writereviews.html')
+
+    subject = db.getReviewableTypes
+    return render_template('writereviews.html',subject=subject)
 
 
 @app.route("/to_past_reviews")
@@ -217,7 +219,8 @@ def to_past_reviews():
     """
     Takes users to past reviews page
     """
-    return render_template('pastreviews.html')
+    past_reviews = db.pastReviews(logged_user)
+    return render_template('pastreviews.html', reviews=past_reviews)
 
 
 @app.route("/to_country_results", methods=["POST", "GET"])
@@ -309,7 +312,7 @@ def search_locations():
         return render_template('locationresults.html', locations=results)
 
 
-@app.route("/make_review")
+@app.route("/make_review", methods=["POST", "GET"])
 def make_review():
     """
     takes user to past reveiws
@@ -317,7 +320,17 @@ def make_review():
     adds new review to database
     gets and loads table from database
     """
-    return render_template('pastreviews.html')
+    if request.method == "POST":
+        subject = request.form["subject"]
+        date = request.form["date"]
+        score = request.form["score"]
+        description = request.form["description"]
+
+        db.writeReview(logged_user, subject, date, score, description)
+        past_reviews = db.pastReviews(logged_user)
+        return render_template('pastreviews.html', reviews=past_reviews)
+
+
 
 
 @app.route("/add_city", methods=["POST", "GET"])

@@ -10,9 +10,26 @@
 <div align="center">
     <div style="width: 80%" align="left">
 
-        <h1>Past Reviews</h1>
-        <table>
-            <!--Make Table-->
+        <h2>Past Reviews</h2>
+        <table class="table table-hover">
+        <thead>
+          <tr>
+              <td>Subject</td>
+              <td>Date</td>
+              <td>Score</td>
+              <td>Description</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for o in reviews %}
+          <tr>
+                <td>{{ o[0] }}</td>
+                <td>{{ o[1] }}</td>
+                <td>{{ o[2] }}</td>
+                <td>{{ o[3] }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
         </table>
         <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>-->
         <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>-->
