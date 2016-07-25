@@ -529,9 +529,10 @@ def getLocScore(address, city, country):
 
 
 # param std_discount is None if not selected, True if yes, and False if no
-def eventSearch(event, city, date, min_cost, max_cost, std_discount, cat_list):
+def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list):
+    cost = cost_max or cost_min
+
     if event:
-        # TODO make this work
         eventarr = [x.strip() for x in event.split(',')]
         query = "SELECT * FROM Event WHERE Name = %s AND Address = %s AND City = %s"
         query += " AND Country = %s AND Date = %s AND Start_time = %s;"
@@ -552,6 +553,58 @@ def eventSearch(event, city, date, min_cost, max_cost, std_discount, cat_list):
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
         return [dicti]
+    elif city and date and cost and std_discount and cat_list:
+        print 1
+    elif date and cost and std_discount and cat_list:
+        print 2
+    elif city and cost and std_discount and cat_list:
+        print 3
+    elif city and date and std_discount and cat_list:
+        print 4
+    elif city and date and cost and cat_list:
+        print 5
+    elif city and date and cost and std_discount:
+        print 6
+    elif city and date and cost:
+        print 7
+    elif city and date and std_discount:
+        print 8
+    elif city and date and cat_list:
+        print 9
+    elif city and cost and std_discount:
+        print 10
+    elif city and cost and cat_list:
+        print 11
+    elif city and std_discount and cat_list:
+        print 12
+    elif date and cost and std_discount:
+        print 13
+    elif date and cost and cat_list:
+        print 14
+    elif date and std_discount and cat_list:
+        print 15
+    elif cost and std_discount and cat_list:
+        print 16
+    elif city and date:
+        print 17
+    elif city and cost:
+        print 18
+    elif city and std_discount:
+        print 19
+    elif city and cat_list:
+        print 20
+    elif date and cost:
+        print 21
+    elif date and std_discount:
+        print 22
+    elif date and cat_list:
+        print 23
+    elif cost and std_discount:
+        print 24
+    elif cost and cat_list:
+        print 25
+    elif std_discount and cat_list:
+        print 26
     elif city:
         # TODO make this work with multiple returned cities
         # TODO return all the attributes
@@ -564,7 +617,14 @@ def eventSearch(event, city, date, min_cost, max_cost, std_discount, cat_list):
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
         return [{'name': _cursor.fetchone()[0]}]
-
+    elif cost:
+        print 29
+    elif std_discount:
+        print 30
+    elif cat_list:
+        print 31
+    else:
+        print "shouldn't be here - event search"  # sanity check
 
 # doesn't work, lmao
 def getEventScore(name, date, starttime, address, city):
