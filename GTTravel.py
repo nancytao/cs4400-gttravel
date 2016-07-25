@@ -235,7 +235,9 @@ def search_country():
         maxPop = request.form["maxPop"]
         minPop = request.form["minPop"]
         languages = request.form.getlist("languages")
-        sort = request.form["sort"]
+        sort = None
+        if "sort" in request.form:
+            sort = request.form["sort"]
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
             countries = db.getCountries()
             languages = db.getLanguages()
@@ -260,7 +262,9 @@ def search_city():
         country = request.form["country"]
         maxPop = request.form["maxPop"]
         minPop = request.form["minPop"]
-        sort = request.form["sort"]
+        sort = None
+        if "sort" in request.form:
+            sort = request.form["sort"]
 
         languages = request.form.getlist("languages")
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
@@ -291,8 +295,11 @@ def search_events():
         date = request.form["date"]
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
-        catagory = request.form.getlist("catagoriesE")
-        sort = request.form["sort"]
+        category = request.form.getlist("categoriesE")
+
+        sort = None
+        if "sort" in request.form:
+            sort = request.form["sort"]
 
         discount = None
 
@@ -309,7 +316,7 @@ def search_events():
             return render_template('eventsearch.html', events=events, cities=cities, event_cat=event_cat, error=error)
 
         else:
-            results = db.eventSearch(event, city, date, minCost, maxCost, discount, catagory, sort)
+            results = db.eventSearch(event, city, date, minCost, maxCost, discount, category, sort)
             return render_template('eventresults.html', events=results)
 
 
@@ -327,7 +334,9 @@ def search_locations():
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
         type = request.form.getlist("catagoriesL")
-        sort = request.form["sort"]
+        sort = None
+        if "sort" in request.form:
+            sort = request.form["sort"]
 
         if maxCost != "" and minCost != "" and float(maxCost) < float(minCost):
             error = "Cost min is greater than cost max"
