@@ -258,7 +258,8 @@ def to_write_reviews():
     """
 
     subject = db.getReviewableTypes()
-    return render_template('writereviews.html', subject=subject, error="")
+    return render_template('writereviews.html', subject=subject,
+                           date="", score="", description="", error="")
 
 
 @app.route("/to_write_reviews_single/<subject>")
@@ -268,7 +269,7 @@ def to_write_reviews_single(subject):
     """
 
     subject = [subject]
-    return render_template('/writereviews.html', subject=subject, error="")
+    return render_template('/writereviews.html', subject=subject, date="", score="", description="", error="")
 
 
 @app.route("/to_past_reviews")
@@ -281,6 +282,79 @@ def to_past_reviews():
         return render_template('pastreviews.html', reviews=past_reviews, message="You have no past reviews")
     else:
         return render_template('pastreviews.html', reviews=past_reviews, message="")
+
+
+@app.route("/to_edit_review/<review>/")
+def to_edit_review(review):
+    info = [x.strip() for x in review.split(',')]
+    print info
+    if len(info) == 5:
+        subject = [info[0]]  # [info[0] + ", " + info[1]] need to remove the country name for update to work
+        date = info[2]
+        score = info[3]
+        description = info[4]
+    elif len(info) == 6:
+        subject = [info[0]+", " + info[1] + ", "+info[2]]
+        date = info[3]
+        score = info[4]
+        description = info[5]
+    else:
+        subject = [info[0]+", "+info[1]+", "+info[2]+","+info[3]+", "+info[4]+", "+info[5]]
+        date = info[6]
+        score = info[7]
+        description = info[8]
+
+    return render_template("editreviews.html", subject=subject, date=date,
+                           score=score, description=description, error="")
+
+
+@app.route("/update_review", methods=["POST", "GET"])
+def update_review():
+    """
+    takes user to past reveiws
+    gets data from html form
+    adds new review to database
+    gets and loads table from database
+    """
+    if request.method == "POST":
+        subject = request.form["subject"]
+        # subject is single comma seperated value
+        date = request.form["date"]
+        score = request.form["score"]
+        description = request.form["description"]
+
+        worked = db.updateReview(logged_user, subject, date, score, description)
+        if worked:
+            past_reviews = db.pastReviews(logged_user)
+            return render_template('pastreviews.html', reviews=past_reviews)
+        else:
+            # subject = db.getReviewableTypes()
+            return render_template('editreviews.html', subject=subject,
+                                   date=date, score=score, description=description, error="Could not update review")
+
+
+@app.route("/make_review", methods=["POST", "GET"])
+def make_review():
+    """
+    takes user to past reveiws
+    gets data from html form
+    adds new review to database
+    gets and loads table from database
+    """
+    if request.method == "POST":
+        subject = request.form["subject"]
+        date = request.form["date"]
+        score = request.form["score"]
+        description = request.form["description"]
+
+        worked = db.writeReview(logged_user, subject, date, score, description)
+        if worked:
+            past_reviews = db.pastReviews(logged_user)
+            return render_template('pastreviews.html', reviews=past_reviews)
+        else:
+            subject = db.getReviewableTypes()
+            return render_template('writereviews.html', subject=subject,
+                                   date=date, score=score, description=description, error="Could not write review")
 
 
 @app.route("/to_country_results", methods=["POST", "GET"])
@@ -317,7 +391,6 @@ def search_country():
                 return render_template('countryresults.html', countries=results, message="")
 
 
-
 @app.route("/to_city_results", methods=["POST", "GET"])
 def search_city():
     """
@@ -336,6 +409,7 @@ def search_city():
             sort = request.form["sort"]
 
         languages = request.form.getlist("languages")
+
         if maxPop != "" and minPop != "" and int(maxPop) < int(minPop):
             error = "Population min is greater than population max"
             countries = db.getCountries()
@@ -411,6 +485,7 @@ def search_locations():
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
         type = request.form.getlist("categoriesL")
+
         sort = None
         if "sort" in request.form:
             sort = request.form["sort"]
@@ -433,29 +508,6 @@ def search_locations():
                                        locations=results, message="No locations matched your search")
             else:
                 return render_template('locationresults.html', locations=results, message="")
-
-
-@app.route("/make_review", methods=["POST", "GET"])
-def make_review():
-    """
-    takes user to past reveiws
-    gets data from html form
-    adds new review to database
-    gets and loads table from database
-    """
-    if request.method == "POST":
-        subject = request.form["subject"]
-        date = request.form["date"]
-        score = request.form["score"]
-        description = request.form["description"]
-
-        worked = db.writeReview(logged_user, subject, date, score, description)
-        if worked:
-            past_reviews = db.pastReviews(logged_user)
-            return render_template('pastreviews.html', reviews=past_reviews)
-        else:
-            subject = db.getReviewableTypes()
-            return render_template('writereviews.html', subject=subject, error="Could not write review")
 
 
 @app.route("/add_city", methods=["POST", "GET"])
