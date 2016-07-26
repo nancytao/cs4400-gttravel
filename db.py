@@ -1,6 +1,7 @@
 import config
 from datetime import datetime
 import MySQLdb
+import re
 import traceback
 
 
@@ -165,7 +166,8 @@ def getEvents():
     _cursor.execute("SELECT Name, Date, Start_time, Address, City, Country FROM event;")
     my_list = []
     for item in _cursor.fetchall():
-        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", " + str(item[1]) + ", " + timedeltaToDateTime(item[2])
+        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", "
+        string += str(item[1]) + ", " + timedeltaToDateTime(item[2])
         my_list.append(string)
     my_list.append("")
     return my_list
@@ -189,7 +191,7 @@ def pastReviews(username):
         list1 = []
         list1.append(', '.join([row[1], row[2]]))
         for item in row[3:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     # location reviews
@@ -199,7 +201,7 @@ def pastReviews(username):
         list1 = []
         list1.append(', '.join([row[1], row[2], row[3]]))
         for item in row[4:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     # event reviews
@@ -207,9 +209,9 @@ def pastReviews(username):
     response = _cursor.execute(query, (username,))
     for row in _cursor.fetchall():
         list1 = []
-        list1.append(', '.join([row[1], str(row[2]), str(row[3]), row[4], row[5], row[6]]))
+        list1.append(', '.join([row[1], row[4], row[5], row[6], str(row[2]), str(row[3])]))
         for item in row[7:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     return reviews
@@ -231,36 +233,35 @@ def writeReview(username, reviewableid, review_date, score, review):
 
     # event reviews
     elif noFields > 3:
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + reviewableid[0]
         query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
         _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
 
     _database.commit()
     return True
-    # try:
-    #     reviewableid = [x.strip() for x in reviewableid.split(',')]
-    #     noFields = len(reviewableid)
 
-    #     # city reviews
-    #     if noFields == 1:
-    #         query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
 
-    #     # location reviews
-    #     elif noFields == 3:
-    #         query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
+def updateReview(username, rid, review_date, score, description):
+    rid = [x.strip() for x in rid.split(',')]
+    rid_len = len(rid)
 
-    #     # event reviews
-    #     elif noFields > 3:
-    #         query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[4], timedeltaToDateTime(reviewableid[5]), reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+    if rid_len == 1:  # city reviews
+        query = 'UPDATE city_review SET Score = %s, Description = %s WHERE Username = %s '
+        query += 'AND City = %s AND Country = %s AND Date = %s;'
+        _cursor.execute(query, (score, description, username, rid[0], getCityCountry(rid[0]), review_date))
+    elif rid_len == 3:  # location reviews
+        query = 'UPDATE location_review SET Score = %s, Description = %s WHERE Username = %s'
+        query += ' AND Address = %s AND City = %s AND Country = %s AND Date = %s;'
+        _cursor.execute(query, (score, description, username, rid[0], rid[1], rid[2], review_date))
+    elif rid_len > 3:  # event reviews
+        query = 'UPDATE event_review SET Score = %s, Review = %s WHERE '
+        query += 'Username = %s AND Name = %s AND Date = %s AND Start_time = %s '
+        query += 'AND Address = %s AND City = %s AND Country = %s AND Review_date = %s;'
+        tup = (score, description, username, rid[0], rid[4], rid[5], rid[1], rid[2], rid[3], review_date)
+        _cursor.execute(query, tup)
 
-    #     _database.commit()
-    #     return True
+    _database.commit()
+    return True
 
-    # except:
-    #     return False
 
 def aboutCountry(country):
     query = "SELECT * FROM country WHERE Country = %s;"
@@ -509,7 +510,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
         langquery = 'Language = \'' + languages + '\''
         if cri:
             query = "SELECT * FROM multlangcountries NATURAL JOIN "\
-            "(SELECT * FROM (SELECT Country FROM country_language WHERE "
+                    "(SELECT * FROM (SELECT Country FROM country_language WHERE "
             query += langquery + ") q NATURAL JOIN country) p;"
         else:
             query = "SELECT * FROM (SELECT Country FROM country_language WHERE "
@@ -592,6 +593,22 @@ def getCityScore(city):
     return fetch[0] if fetch else "N/A"
 
 
+def getCityInfo(tuplelist):
+    result = []
+    for item in tuplelist:
+        dicti = {}
+        dicti['city'] = item[0]
+        dicti['country'] = item[1]
+        dicti['latitude'] = item[2]
+        dicti['longitude'] = item[3]
+        dicti['population'] = item[4]
+        dicti['iscapital'] = isCapital(item[0])
+        dicti['languages'] = getLanguagesCity(item[0])
+        dicti['score'] = getCityScore(item[0])
+        result.append(dicti)
+    return result
+
+
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
@@ -599,20 +616,10 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
 
     if city:  # searching by city, returns just info about that city
-        dicti = {}
         query = "SELECT * FROM city WHERE City = %s;"
         response = _cursor.execute(query, (city,))
-        result = _cursor.fetchone()
-        dicti['city'] = result[0]
-        dicti['country'] = result[1]
-        dicti['latitude'] = result[2]
-        dicti['longitude'] = result[3]
-        dicti['population'] = result[4]
-        dicti['iscapital'] = isCapital(city)
-        dicti['languages'] = getLanguagesCity(city)
-        dicti['score'] = getCityScore(city)
 
-        return [dicti]
+        return getCityInfo(_cursor.fetchall())
     elif country and population and lang_list:
         print 1
     elif country and population:
@@ -631,19 +638,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
 
-        result = []
-        for item in _cursor.fetchall():
-            dicti = {}
-            dicti['city'] = item[0]
-            dicti['country'] = item[1]
-            dicti['latitude'] = item[2]
-            dicti['longitude'] = item[3]
-            dicti['population'] = item[4]
-            dicti['iscapital'] = isCapital(item[0])
-            dicti['languages'] = getLanguagesCity(item[0])
-            dicti['score'] = getCityScore(item[0])
-            result.append(dicti)
-        return result
+        return getCityInfo(_cursor.fetchall())
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
@@ -713,7 +708,7 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if sort:
         if sort == 'highest':
             query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
-            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC' # AVG Score and GROUP BY prevent duplicates
+            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC'  # AVG Score and GROUP BY prevent duplicates
         if sort == 'location':
             ps = ' ORDER BY l.Name ASC'
         if sort == 'lowest':
@@ -727,8 +722,8 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if name or address or city or cost_min or cost_max or type_list:
         query = query + " WHERE"
     if name:
-        query = query + " l.Name = '" + str(name) + "' AND "
-    if address:         # address takes precedence in searching bc it is primary key
+        query = query + " l.Name = '" + re.escape(str(name)) + "' AND "
+    if address:         # address takes precedence in filters bc primary key
         query = query + " l.Address = '" + str(address) + "' AND "
     if city:
         query = query + " l.City = '" + str(city) + "' AND "
@@ -796,7 +791,7 @@ def getCatQuery(cat_list):
 # param std_discount is None if not selected, True if yes, and False if no
 def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, sort):
     cost = cost_max or cost_min
-    std_discount = "TRUE" if std_discount == True else "FALSE"
+    std_discount = "TRUE" if std_discount is True else "FALSE"
 
     if event:
         eventarr = [x.strip() for x in event.split(',')]
@@ -1049,7 +1044,6 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
 
-
         return getEventInfo(_cursor.fetchall())
 
     elif cost:
@@ -1081,7 +1075,7 @@ def getEventInfo(tuplelist):
         dicti['category'] = item[6]
         dicti['description'] = item[7]
         dicti['std_discount'] = 'Yes' if item[8] else 'No'
-        dicti['endtime'] = 'unknown' if item[9] == None else str(item[9])
+        dicti['endtime'] = 'unknown' if item[9] is None else str(item[9])
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
         list1.append(dicti)
@@ -1096,24 +1090,31 @@ def getEventScore(name, date, starttime, address, city):
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
 
+
+def getRidLoc(address, city, country):
+    return address + ', ' + city + ', '
+
+
+def getRidEvent(name, address, city, country, date, starttime):
+    return name + ', ' + address + ', ' + city + ', ' + country + ', ' + date + ', ' + starttime
+
+
 # helper for writeReviews
 def getCityCountry(city):
     query = "SELECT Country FROM city WHERE City = %s"
     response = _cursor.execute(query, (city,))
     fetch = _cursor.fetchone()
-    # country = fetch[0].strip()
-    # country = str(country)
     return fetch[0] if fetch else "N/A"
 
-## testing
+
+# testing
 setupConnection()
 
-#print writeReview()
+# print writeReview()
 # code for SELECT for testing :)
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():
 #     print row
-
 # print citySearch(None, None, None, None, None)
 
 closeConnection()
