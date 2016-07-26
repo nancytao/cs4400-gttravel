@@ -1,7 +1,5 @@
 # cs4400-gttravel
 
-make it so that users cannoot check "Any additional language unless they selected a lang to begin with "
-
 ## Cole's List
 Skip table - make sure event/location works
 keep form info for error message
@@ -18,8 +16,7 @@ make entire website nav-pills
 make chekc boxes side by sideish
 
 
-##
-cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
+## Varun
 locationSearch - need to filter by type, fix address precedence bug
 
 *Sort by in tables*

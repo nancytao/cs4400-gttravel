@@ -652,6 +652,11 @@ def getCityInfo(tuplelist):
 def citySearch(city, country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
 
+    cri = False
+    if lang_list and "Any additional language" in lang_list:
+        cri = True
+        lang_list.remove('Any additional language')
+
     if city:  # searching by city, returns just info about that city
         query = "SELECT * FROM city WHERE City = %s;"
         response = _cursor.execute(query, (city,))
@@ -664,11 +669,69 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     elif country and lang_list:
         print 3
     elif population and lang_list:
-        print 4
+        languages = '\' OR Language = \''.join(lang_list)
+        langquery = 'Language = \'' + languages + '\''
+        if cri:
+            query = "SELECT * FROM multlangcities NATURAL JOIN "\
+                    "(SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
+            query += langquery + ") q NATURAL JOIN city) p "
+        else:
+            query = "SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
+            query += langquery + ") q NATURAL JOIN city "
+
+        # TODO highest lowest rated
+        if sort == 'city':
+            query += "ORDER BY City;"
+        else:
+            query += "ORDER BY Population DESC;"
+
+        response = _cursor.execute(query)
+        return getCityInfo(_cursor.fetchall())
     elif country:
-        print 5
+        query = "SELECT * FROM city WHERE Country = %s "
+
+        # TODO highest lowest rated
+        if sort == 'city':
+            query += "ORDER BY City;"
+        else:
+            query += "ORDER BY Population DESC;"
+
+        response = _cursor.execute(query, (country,))
+
+        return getCityInfo(_cursor.fetchall())
     elif population:
-        print 6
+        query = "SELECT * FROM city WHERE "
+
+        if population_min and population_max:
+            query = query + "Population >= %s AND Population <= %s ORDER BY "
+
+            if sort == "city":
+                query += "City;"
+            else:
+                query += "Population DESC;"
+
+            response = _cursor.execute(query, (population_min, population_max))
+        elif population_max:
+            query = query + "Population <= %s ORDER BY "
+
+            if sort == "city":
+                query += "City;"
+            else:
+                query += "Population DESC;"
+
+            response = _cursor.execute(query, (population_max,))
+        elif population_min:
+            query = query + "Population >= %s ORDER BY "
+
+            if sort == "city":
+                query += "City;"
+            else:
+                query += "Population DESC;"
+
+            response = _cursor.execute(query, (population_min,))
+
+        return getCityInfo(_cursor.fetchall())
+
     elif lang_list:
         languages = '\' OR Language = \''.join(lang_list)
         langquery = 'Language = \'' + languages + '\''
@@ -680,12 +743,17 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
             query = "SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
             query += langquery + ") q NATURAL JOIN city "
 
-        if sort == 'population':
+        if sort == 'highest':
+            pass  # TODO
+        elif sort == 'lowest':
+            pass  # TODO
+        elif sort == 'population':
             query += "ORDER BY Population DESC;"
         else:
             query += "ORDER BY City;"
 
         response = _cursor.execute(query)
+        return getCityInfo(_cursor.fetchall())
     else:
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
@@ -694,67 +762,6 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
-    '''cost = cost_min or cost_max
-    #std_discount = "TRUE" if std_discount == True else "FALSE"
-
-    if address:
-        addressarr = [x.strip() for x in address.split(',')]
-        query = "SELECT * FROM location WHERE Address = %s AND City = %s AND Country = %s"
-        response = _cursor.execute(query, tuple(addressarr))
-
-        return getLocInfo(_cursor.fetchall())
-    elif name and city and cost and type_list:
-        print 1
-    # elif name and country and cost and type_list:
-    #     print 2
-    elif name and city and cost:
-        print 3
-    elif name and city and type_list:
-        print 3
-    # elif name and country and cost:
-    #     print 3
-    # elif name and country and type_list:
-    #     print 4
-    elif name and cost and type_list:
-        print 3
-    elif city and cost and type_list:
-        print 3
-    # elif country and cost and type_list:
-    #     print 3
-    elif name and city:
-        print 3
-    # elif name and country:
-    #     print 3
-    elif name and cost:
-        print 3
-    elif name and type_list:
-        print 3
-    elif city and cost:
-        print 3
-    elif city and type_list:
-        print 3
-    # elif country and cost:
-    #     print 3
-    # elif country and type_list:
-    #     print 3
-    elif cost and type_list:
-        print 3
-    elif name:
-        print 2
-    elif city:
-        print 3
-    # elif country:
-    #     print 2
-    elif cost:
-        print 3
-    elif type_list:
-        print 3
-    else:
-        query = "SELECT * FROM location;"
-        response = _cursor.execute(query)
-
-        return getLocInfo(_cursor.fetchall()) */'''
-
     query = 'SELECT * FROM location l'
 
     if sort:
