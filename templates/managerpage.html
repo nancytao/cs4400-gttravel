@@ -25,27 +25,29 @@
             <input name="pop" type="number" id="pop" min="1" required>
 
             <br>
-            <div style="display: inline-block">
-                <b>Longitude:</b>
-                <label><input name="lonDegree" type="number" id="lonDegree" min="0" max="180" required> Degrees</label>
-                <label><input name="lonMinute" type="number" id="lonMinute" min="0" max="59" required> Minutes</label>
-            </div>
-            <br><b>Direction</b>
-            <label for="E" class="radio-inline"><input type="radio"  name="EW" value="E" id="E" required> E</label>
-            <label for="W" class="radio-inline"><input type="radio"  name="EW" value="W" id="W" required> W</label>
-
             <br>
 
             <div style="display: inline-block">
                 <b>Latitude:</b>
                 <label><input name="latDegree" type="number" id="latDegree" min="0" max="90" required> Degrees</label>
-                <label><input name="latMinute" type="number" id="latMinute" min="0" max="59" required> Minutes</label>
+                <label><input name="latMinute" type="number" id="latMinute" min="0" max="59" required> Minutes, &nbsp;</label>
+                <b>Direction</b>
+                <label for="N" class="radio-inline"><input type="radio"  name="NS" value="N" id="N" required> N</label>
+                <label for="S" class="radio-inline"><input type="radio"  name="NS" value="S" id="S" required> S</label>
             </div>
-            <br><b>Direction</b>
-            <label for="N" class="radio-inline"><input type="radio"  name="NS" value="N" id="N" required> N</label>
-            <label for="S" class="radio-inline"><input type="radio"  name="NS" value="S" id="S" required> S</label>
+            <br>
+            <br>
 
-
+            <div style="display: inline-block">
+                <b>Longitude:</b>
+                <label><input name="lonDegree" type="number" id="lonDegree" min="0" max="180" required> Degrees</label>
+                <label><input name="lonMinute" type="number" id="lonMinute" min="0" max="59" required> Minutes, &nbsp;</label>
+                <b>Direction</b>
+                <label for="E" class="radio-inline"><input type="radio"  name="EW" value="E" id="E" required> E</label>
+                <label for="W" class="radio-inline"><input type="radio"  name="EW" value="W" id="W" required> W</label>
+            </div>
+            <br>
+            <br>
 
             <div>
                 <b>Languages:</b>
@@ -56,6 +58,7 @@
                 </div>
 
             </div>
+            <br>
             <button id="btnSignIn" class="btn btn-primary" type="submit">Submit</button>
             <a class=" btn btn-danger" href="to_login" role="button">Sign out</a>
         </form>
