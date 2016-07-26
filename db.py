@@ -231,7 +231,6 @@ def writeReview(username, reviewableid, review_date, score, review):
 
     # event reviews
     elif noFields > 3:
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + reviewableid[0]
         query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
         _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
 
@@ -239,36 +238,27 @@ def writeReview(username, reviewableid, review_date, score, review):
     return True
 
 
-def updateReview(username, reviewableid, review_date, score, review):
-    reviewableid = [x.strip() for x in reviewableid.split(',')]
-    noFields = len(reviewableid)
+def updateReview(username, rid, review_date, score, review):
+    rid = [x.strip() for x in rid.split(',')]
+    rid_len = len(rid)
 
-    # city reviews
-    if noFields == 1:
-        query = 'UPDATE city_review SET Score = %s, Description = %s WHERE Username = %s AND City = %s AND Country = %s AND Date = %s;'
-        _cursor.execute(query, (score, review, username, reviewableid[0], getCityCountry(reviewableid[0]), review_date))
+    if rid_len == 1:  # city reviews
+        query = 'UPDATE city_review SET Score = %s, Description = %s WHERE Username = %s '
+        query += 'AND City = %s AND Country = %s AND Date = %s;'
+        _cursor.execute(query, (score, review, username, rid[0], getCityCountry(rid[0]), review_date))
+    elif rid_len == 3:  # location reviews
+        query = 'UPDATE location_review SET Score = %s, Description = %s WHERE Username = %s'
+        query += ' AND Address = %s AND City = %s AND Country = %s AND Date = %s;'
+        _cursor.execute(query, (score, review, username, rid[0], rid[1], rid[2], review_date))
+    elif rid_len > 3:  # event reviews
+        query = 'UPDATE event_review SET Score = %s, Review = %s WHERE '
+        query += 'Username = %s AND Name = %s AND Date = %s AND Start_time = %s '
+        query += 'AND Address = %s AND City = %s AND Country = %s AND Review_date = %s;'
+        tup = (score, review, username, rid[0], rid[4], rid[5], rid[1], rid[2], rid[3], review_date)
+        _cursor.execute(query, tup)
 
-    # location reviews
-    elif noFields == 3:
-        query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
-        _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
-
-    # event reviews
-    elif noFields > 3:
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + reviewableid[0]
-        query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
-        _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
-
-    #_database.commit()
+    _database.commit()
     return True
-
-setupConnection()
-updateReview('nancy', 'Monaco', '2016-07-19', 4, 'Amazing city!!')
-
-query = "SELECT * FROM city_review WHERE Username = %s"
-_cursor.execute(query, ('nancy',))
-print _cursor.fetchall()
-closeConnection()
 
 
 def aboutCountry(country):
@@ -1103,6 +1093,7 @@ def getEventScore(name, date, starttime, address, city):
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
 
+
 # helper for writeReviews
 def getCityCountry(city):
     query = "SELECT Country FROM city WHERE City = %s"
@@ -1112,15 +1103,15 @@ def getCityCountry(city):
     # country = str(country)
     return fetch[0] if fetch else "N/A"
 
+
 ## testing
 setupConnection()
 
-#print writeReview()
+# print writeReview()
 # code for SELECT for testing :)
 # _cursor.execute("SELECT * FROM city_language")
 # for row in _cursor.fetchall():
 #     print row
-
 # print citySearch(None, None, None, None, None)
 
 closeConnection()
