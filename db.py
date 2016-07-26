@@ -489,7 +489,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
         for item in _cursor.fetchall():
             put = {}
             put['name'] = item[0]
-            put['population'] = item[2]
+            put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
