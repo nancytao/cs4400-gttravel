@@ -474,7 +474,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
 
             response = _cursor.execute(query, (population_max,))
         elif population_min:
-            query = query + "Population >= %s ORDER BY Population DESC"
+            query = query + "Population >= %s ORDER BY "
 
             if sort == "country":
                 query += "Country;"
@@ -494,10 +494,11 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
 
-        if cri:
-            return [dict(t) for t in set([tuple(d.items()) for d in result])]
-        else:
-            return result
+        return result
+        # if cri:
+        #     return [dict(t) for t in set([tuple(d.items()) for d in result])]
+        # else:
+        #     return result
     elif population:
         query = "SELECT Country, Population FROM country WHERE "
 
@@ -570,11 +571,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
             put['languages'] = getLanguagesCountry(item[0])
             result.append(put)
 
-        # if cri:
-        #     return [dict(t) for t in set([tuple(d.items()) for d in result])]
-        # else:
-        return result  # TODO: fix problems with duplicates when search for English and Gaelic and country has both
-        # return [dict(t) for t in set([tuple(d.items()) for d in result])]
+        return result
     else:
         query = "SELECT * FROM country;"
         response = _cursor.execute(query)
