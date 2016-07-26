@@ -790,7 +790,59 @@ def getCatQuery(cat_list):
 
 # param std_discount is None if not selected, True if yes, and False if no
 def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, sort):
-    cost = cost_max or cost_min
+    query = "SELECT * FROM event e "
+
+    ps = ''
+    if sort:
+        if sort == "name":
+            ps = "ORDER BY e.Name ASC"
+        if sort == "cost":
+            ps = "ORDER BY e.Cost DESC"
+        if sort == "highest":
+            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL JOIN event_review er "
+            ps = "GROUP BY e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country ORDER BY 12 DESC"
+        if sort == "lowest":
+            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL JOIN event_review er "
+            ps = "GROUP BY e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country ORDER BY 12 ASC"
+
+    if event or city or date or cost_min or cost_max or cat_list or not (std_discount == None):
+        query = query + "WHERE "
+    if event:
+        query = query + " e.Name = '" + re.escape(str(event)) + "' AND "
+    if city:
+        query = query + " e.City = '" + str(city) + "' AND "
+    if date:
+        query = query + " e.Date = '" + str(date) + "' AND "
+    if cost_min:
+        query = query + " e.Cost > '" + str(cost_min) + "' AND "
+    if cost_max:
+        query = query + " e.Cost < '" + str(cost_max) + "' AND "
+    if std_discount == True:
+        query = query + " e.Std_discount = TRUE AND "
+    elif std_discount == False:
+        query = query + " e.Std_discount = FALSE AND "
+
+    catQuery = ''
+    if cat_list:
+        for i in range(len(cat_list)):
+            selectedCat = str(cat_list[i])
+            catQuery = catQuery + " e.Category = '" + selectedCat + "' OR "
+        if catQuery[-4:] == " OR ":
+            catQuery = catQuery[:-4]
+
+    if query[-5:] == ' AND ' and catQuery == '':
+        query = query[:-5]
+
+    query = query + catQuery
+    query = query + ps
+
+    _cursor.execute(query)
+    response = _cursor.fetchall()
+
+    return getEventInfo(response)
+
+
+    '''cost = cost_max or cost_min
     std_discount = "TRUE" if std_discount is True else "FALSE"
 
     if event:
@@ -1059,7 +1111,7 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
 
         return getEventInfo(_cursor.fetchall())
     else:
-        print "shouldn't be here - event search"  # sanity check
+        print "shouldn't be here - event search"  # sanity check'''
 
 
 def getEventInfo(tuplelist):
