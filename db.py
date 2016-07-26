@@ -237,30 +237,39 @@ def writeReview(username, reviewableid, review_date, score, review):
 
     _database.commit()
     return True
-    # try:
-    #     reviewableid = [x.strip() for x in reviewableid.split(',')]
-    #     noFields = len(reviewableid)
 
-    #     # city reviews
-    #     if noFields == 1:
-    #         query = 'INSERT INTO city_review (Username, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (str(username), str(reviewableid[0]), str(getCityCountry(reviewableid[0])), str(review_date), str(score), str(review)))
 
-    #     # location reviews
-    #     elif noFields == 3:
-    #         query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
+def updateReview(username, reviewableid, review_date, score, review):
+    reviewableid = [x.strip() for x in reviewableid.split(',')]
+    noFields = len(reviewableid)
 
-    #     # event reviews
-    #     elif noFields > 3:
-    #         query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
-    #         _cursor.execute(query, (username, reviewableid[0], reviewableid[4], timedeltaToDateTime(reviewableid[5]), reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+    # city reviews
+    if noFields == 1:
+        query = 'UPDATE city_review SET Score = %s, Description = %s WHERE Username = %s AND City = %s AND Country = %s AND Date = %s;'
+        _cursor.execute(query, (score, review, username, reviewableid[0], getCityCountry(reviewableid[0]), review_date))
 
-    #     _database.commit()
-    #     return True
+    # location reviews
+    elif noFields == 3:
+        query = 'INSERT INTO location_review (Username, Address, City, Country, Date, Score, Description) VALUES (%s, %s, %s, %s, %s, %s, %s);'
+        _cursor.execute(query, (username, reviewableid[0], reviewableid[1], reviewableid[2], review_date, score, review))
 
-    # except:
-    #     return False
+    # event reviews
+    elif noFields > 3:
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + reviewableid[0]
+        query = 'INSERT INTO event_review (Username, Name, Date, Start_time, Address, City, Country, Review_date, Score, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+        _cursor.execute(query, (username, reviewableid[0], reviewableid[4], reviewableid[5], reviewableid[1], reviewableid[2], reviewableid[3], review_date, score, review))
+
+    #_database.commit()
+    return True
+
+setupConnection()
+updateReview('nancy', 'Monaco', '2016-07-19', 4, 'Amazing city!!')
+
+query = "SELECT * FROM city_review WHERE Username = %s"
+_cursor.execute(query, ('nancy',))
+print _cursor.fetchall()
+closeConnection()
+
 
 def aboutCountry(country):
     query = "SELECT * FROM country WHERE Country = %s;"
