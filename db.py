@@ -591,6 +591,22 @@ def getCityScore(city):
     return fetch[0] if fetch else "N/A"
 
 
+def getCityInfo(tuplelist):
+    result = []
+    for item in tuplelist:
+        dicti = {}
+        dicti['city'] = item[0]
+        dicti['country'] = item[1]
+        dicti['latitude'] = item[2]
+        dicti['longitude'] = item[3]
+        dicti['population'] = item[4]
+        dicti['iscapital'] = isCapital(item[0])
+        dicti['languages'] = getLanguagesCity(item[0])
+        dicti['score'] = getCityScore(item[0])
+        result.append(dicti)
+    return result
+
+
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
@@ -598,20 +614,10 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     population = population_max or population_min
 
     if city:  # searching by city, returns just info about that city
-        dicti = {}
         query = "SELECT * FROM city WHERE City = %s;"
         response = _cursor.execute(query, (city,))
-        result = _cursor.fetchone()
-        dicti['city'] = result[0]
-        dicti['country'] = result[1]
-        dicti['latitude'] = result[2]
-        dicti['longitude'] = result[3]
-        dicti['population'] = result[4]
-        dicti['iscapital'] = isCapital(city)
-        dicti['languages'] = getLanguagesCity(city)
-        dicti['score'] = getCityScore(city)
 
-        return [dicti]
+        return getCityInfo(_cursor.fetchall())
     elif country and population and lang_list:
         print 1
     elif country and population:
@@ -630,19 +636,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
 
-        result = []
-        for item in _cursor.fetchall():
-            dicti = {}
-            dicti['city'] = item[0]
-            dicti['country'] = item[1]
-            dicti['latitude'] = item[2]
-            dicti['longitude'] = item[3]
-            dicti['population'] = item[4]
-            dicti['iscapital'] = isCapital(item[0])
-            dicti['languages'] = getLanguagesCity(item[0])
-            dicti['score'] = getCityScore(item[0])
-            result.append(dicti)
-        return result
+        return getCityInfo(_cursor.fetchall())
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
