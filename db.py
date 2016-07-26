@@ -238,23 +238,23 @@ def writeReview(username, reviewableid, review_date, score, review):
     return True
 
 
-def updateReview(username, rid, review_date, score, review):
+def updateReview(username, rid, review_date, score, description):
     rid = [x.strip() for x in rid.split(',')]
     rid_len = len(rid)
 
     if rid_len == 1:  # city reviews
         query = 'UPDATE city_review SET Score = %s, Description = %s WHERE Username = %s '
         query += 'AND City = %s AND Country = %s AND Date = %s;'
-        _cursor.execute(query, (score, review, username, rid[0], getCityCountry(rid[0]), review_date))
+        _cursor.execute(query, (score, description, username, rid[0], getCityCountry(rid[0]), review_date))
     elif rid_len == 3:  # location reviews
         query = 'UPDATE location_review SET Score = %s, Description = %s WHERE Username = %s'
         query += ' AND Address = %s AND City = %s AND Country = %s AND Date = %s;'
-        _cursor.execute(query, (score, review, username, rid[0], rid[1], rid[2], review_date))
+        _cursor.execute(query, (score, description, username, rid[0], rid[1], rid[2], review_date))
     elif rid_len > 3:  # event reviews
         query = 'UPDATE event_review SET Score = %s, Review = %s WHERE '
         query += 'Username = %s AND Name = %s AND Date = %s AND Start_time = %s '
         query += 'AND Address = %s AND City = %s AND Country = %s AND Review_date = %s;'
-        tup = (score, review, username, rid[0], rid[4], rid[5], rid[1], rid[2], rid[3], review_date)
+        tup = (score, description, username, rid[0], rid[4], rid[5], rid[1], rid[2], rid[3], review_date)
         _cursor.execute(query, tup)
 
     _database.commit()
@@ -1099,8 +1099,6 @@ def getCityCountry(city):
     query = "SELECT Country FROM city WHERE City = %s"
     response = _cursor.execute(query, (city,))
     fetch = _cursor.fetchone()
-    # country = fetch[0].strip()
-    # country = str(country)
     return fetch[0] if fetch else "N/A"
 
 
