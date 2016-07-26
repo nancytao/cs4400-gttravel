@@ -717,9 +717,9 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if city:
         query = query + " City = '" + str(city) + "' AND "
     if cost_min:
-        query = query + " Cost > '" + str(cost_min) + "' AND "
+        query = query + " Cost >= '" + str(cost_min) + "' AND "
     if cost_max:
-        query = query + " Cost < '" + str(cost_max) + "' AND "
+        query = query + " Cost <= '" + str(cost_max) + "' AND "
 
     print type_list
     if type_list:
@@ -743,6 +743,12 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     response = _cursor.fetchall()
     # return response
     return getLocInfo(response)
+
+
+def getTypeQuery(type_list):
+    query = '\' OR Type = \''.join(type_list)
+    query = '(Type = \'' + query + '\')'
+    return query
 
 
 def getLocInfo(tuplelist):
@@ -773,13 +779,6 @@ def getCatQuery(cat_list):
     query = '\' OR Category = \''.join(cat_list)
     query = '(Category = \'' + query + '\')'
     return query
-
-
-def getSort(stri):
-    if stri == "Rating":
-        return " ORDER BY Average_score DESC"
-    else:
-        return ""
 
 
 # param std_discount is None if not selected, True if yes, and False if no
@@ -1038,7 +1037,7 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
 
-        
+
         return getEventInfo(_cursor.fetchall())
 
     elif cost:
