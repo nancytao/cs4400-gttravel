@@ -1,6 +1,7 @@
 import config
 from datetime import datetime
 import MySQLdb
+import re
 import traceback
 
 
@@ -208,7 +209,7 @@ def pastReviews(username):
     response = _cursor.execute(query, (username,))
     for row in _cursor.fetchall():
         list1 = []
-        list1.append(', '.join([row[1], str(row[2]), str(row[3]), row[4], row[5], row[6]]))
+        list1.append(', '.join([row[1], row[4], row[5], row[6], str(row[2]), str(row[3])]))
         for item in row[7:]:
             list1.append(str(item))
         reviews.append(list1)
@@ -721,7 +722,7 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if name or address or city or cost_min or cost_max:
         query = query + " WHERE"
     if name:
-        query = query + " l.Name = '" + str(name) + "' AND "
+        query = query + " l.Name = '" + re.escape(str(name)) + "' AND "
     if address:         # TODO: why does address take precedence in searching
         query = query + " l.Address = '" + str(address) + "' AND "
     if city:
