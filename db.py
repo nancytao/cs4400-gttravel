@@ -717,36 +717,46 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
 
         return getLocInfo(_cursor.fetchall()) */'''
 
-    query = 'SELECT * FROM location WHERE'
+    query = 'SELECT * FROM location l'
 
+    if sort:
+        if sort == 'highest':
+            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
+            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC' # AVG Score and GROUP BY prevent duplicates
+        if sort == 'location':
+            ps = ' ORDER BY l.Name ASC'
+        if sort == 'lowest':
+            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
+            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 ASC'
+        if sort == 'type':
+            ps = ' ORDER BY l.Type ASC'
+    else:
+        ps = ''
+
+    if name or address or city or cost_min or cost_max:
+        query = query + " WHERE"
     if name:
-        query = query + " Name = '" + str(name) + "' AND "
-    if address:
-        query = query + " Address = '" + str(address) + "' AND "
+        query = query + " l.Name = '" + str(name) + "' AND "
+    if address:         # TODO: why does address take precedence in searching
+        query = query + " l.Address = '" + str(address) + "' AND "
     if city:
-        query = query + " City = '" + str(city) + "' AND "
+        query = query + " l.City = '" + str(city) + "' AND "
     if cost_min:
+        query = query + " l.Cost > '" + str(cost_min) + "' AND "
+    if cost_max:
+        query = query + " l.Cost < '" + str(cost_max) + "' AND "
         query = query + " Cost >= '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " Cost <= '" + str(cost_max) + "' AND "
 
     print type_list
     if type_list:
-        pass                 # TODO
+        pass                 # TODO: type_list empty
 
     if query[-5:] == ' AND ':
         query = query[:-5]
 
-    if sort:
-        if sort == 'highest':
-            pass            # TODO
-            query = query + ' ORDER BY '
-        if sort == 'location':
-            query = query + ' ORDER BY Name ASC'
-        if sort == 'lowest':
-            pass            # TODO
-        if sort == 'type':
-            query = query + ' ORDER BY Type ASC'
+    query = query + ps
 
     _cursor.execute(query)
     response = _cursor.fetchall()

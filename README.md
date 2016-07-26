@@ -18,6 +18,8 @@ make chekc boxes side by sideish
 
 ##
 cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
+locationSearch - need to filter by type, fix address precedence bug
+
 *Sort by in tables*
 =======
 
