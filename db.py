@@ -190,7 +190,7 @@ def pastReviews(username):
         list1 = []
         list1.append(', '.join([row[1], row[2]]))
         for item in row[3:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     # location reviews
@@ -200,7 +200,7 @@ def pastReviews(username):
         list1 = []
         list1.append(', '.join([row[1], row[2], row[3]]))
         for item in row[4:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     # event reviews
@@ -210,7 +210,7 @@ def pastReviews(username):
         list1 = []
         list1.append(', '.join([row[1], str(row[2]), str(row[3]), row[4], row[5], row[6]]))
         for item in row[7:]:
-            list1.append(item)
+            list1.append(str(item))
         reviews.append(list1)
 
     return reviews
