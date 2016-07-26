@@ -510,7 +510,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
         langquery = 'Language = \'' + languages + '\''
         if cri:
             query = "SELECT * FROM multlangcountries NATURAL JOIN "\
-            "(SELECT * FROM (SELECT Country FROM country_language WHERE "
+                    "(SELECT * FROM (SELECT Country FROM country_language WHERE "
             query += langquery + ") q NATURAL JOIN country) p;"
         else:
             query = "SELECT * FROM (SELECT Country FROM country_language WHERE "
@@ -708,7 +708,7 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if sort:
         if sort == 'highest':
             query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
-            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC' # AVG Score and GROUP BY prevent duplicates
+            ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC'  # AVG Score and GROUP BY prevent duplicates
         if sort == 'location':
             ps = ' ORDER BY l.Name ASC'
         if sort == 'lowest':
@@ -789,7 +789,7 @@ def getCatQuery(cat_list):
 # param std_discount is None if not selected, True if yes, and False if no
 def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, sort):
     cost = cost_max or cost_min
-    std_discount = "TRUE" if std_discount == True else "FALSE"
+    std_discount = "TRUE" if std_discount is True else "FALSE"
 
     if event:
         eventarr = [x.strip() for x in event.split(',')]
@@ -1042,7 +1042,6 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = "SELECT * FROM Event WHERE Date = %s;"
         response = _cursor.execute(query, (date,))
 
-
         return getEventInfo(_cursor.fetchall())
 
     elif cost:
@@ -1074,7 +1073,7 @@ def getEventInfo(tuplelist):
         dicti['category'] = item[6]
         dicti['description'] = item[7]
         dicti['std_discount'] = 'Yes' if item[8] else 'No'
-        dicti['endtime'] = 'unknown' if item[9] == None else str(item[9])
+        dicti['endtime'] = 'unknown' if item[9] is None else str(item[9])
         dicti['cost'] = item[10]
         dicti['score'] = getEventScore(item[0], item[1], item[2], item[3], item[4])
         list1.append(dicti)
@@ -1106,7 +1105,7 @@ def getCityCountry(city):
     return fetch[0] if fetch else "N/A"
 
 
-## testing
+# testing
 setupConnection()
 
 # print writeReview()
