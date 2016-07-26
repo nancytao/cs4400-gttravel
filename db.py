@@ -720,7 +720,6 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
 
     #_cursor.execute(query)
     finalQuery = "SELECT * FROM ((" + query + ") q1 NATURAL JOIN (" + langQuery + ") q2 ) " + ps
-    #print finalQuery
 
     _cursor.execute(finalQuery)
     response = _cursor.fetchall() #TODO return correct shit
