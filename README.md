@@ -16,8 +16,10 @@ make entire website nav-pills
 make chekc boxes side by sideish
 
 
+
 ## Varun
-locationSearch - need to filter by type, fix address precedence bug
+cannot add reviews for events with start time of form x:xx:xx instead of xx:xx:xx
+
 
 *Sort by in tables*
 =======
