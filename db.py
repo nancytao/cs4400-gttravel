@@ -706,7 +706,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
             if anyLang:
                 langQuery = "SELECT * FROM ((" + langQuery + ") l1 NATURAL JOIN (" + anyLangQuery + ") l2 ) "
         else:
-            langQuery = anyLangQuery
+            langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl "
         #_cursor.execute(langQuery)
         #responseTwo = _cursor.fetchall()
     else:
