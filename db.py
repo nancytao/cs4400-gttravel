@@ -447,7 +447,7 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
     elif population and lang_list:
         languages = '\' OR Language = \''.join(lang_list)
         langquery = 'Language = \'' + languages + '\''
-        innerquery = "(SELECT * FROM country_language WHERE " + langquery + ") q "
+        innerquery = "(SELECT DISTINCT Country FROM country_language WHERE " + langquery + ") q "
 
         query = "SELECT * FROM " + innerquery + "NATURAL JOIN country"
         if cri:
@@ -495,10 +495,6 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
             result.append(put)
 
         return result
-        # if cri:
-        #     return [dict(t) for t in set([tuple(d.items()) for d in result])]
-        # else:
-        #     return result
     elif population:
         query = "SELECT Country, Population FROM country WHERE "
 
@@ -558,7 +554,6 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
         else:
             query += "ORDER BY Country;"
 
-        print
         response = _cursor.execute(query)
 
         result = []
@@ -675,7 +670,22 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     elif population:
         print 6
     elif lang_list:
-        print 7
+        languages = '\' OR Language = \''.join(lang_list)
+        langquery = 'Language = \'' + languages + '\''
+        if cri:
+            query = "SELECT * FROM multlangcities NATURAL JOIN "\
+                    "(SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
+            query += langquery + ") q NATURAL JOIN city) p "
+        else:
+            query = "SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
+            query += langquery + ") q NATURAL JOIN city "
+
+        if sort == 'population':
+            query += "ORDER BY Population DESC;"
+        else:
+            query += "ORDER BY City;"
+
+        response = _cursor.execute(query)
     else:
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
@@ -1126,14 +1136,6 @@ def getEventScore(name, date, starttime, address, city):
     response = _cursor.execute(query, (name, date, starttime, address, city))
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
-
-
-def getRidLoc(address, city, country):
-    return address + ', ' + city + ', '
-
-
-def getRidEvent(name, address, city, country, date, starttime):
-    return name + ', ' + address + ', ' + city + ', ' + country + ', ' + date + ', ' + starttime
 
 
 # helper for writeReviews
