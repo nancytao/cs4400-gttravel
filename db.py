@@ -689,7 +689,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
 
     langQuery = ''
     if lang_list:
-        langQuery = " SELECT cl.City, cl.Country FROM city_language cl WHERE cl.Language = '"
+        langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl WHERE cl.Language = '"
         for i in range(len(lang_list)):
             selectedLang = str(lang_list[i])
             if i < (len(lang_list) - 1):
