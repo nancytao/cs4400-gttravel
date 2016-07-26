@@ -688,16 +688,27 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
         query = query + "c.population < '" + str(population_max) + "' AND "
 
     langQuery = ''
+    anyLang = False
     if lang_list:
-        langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl WHERE cl.Language = '"
-        for i in range(len(lang_list)):
-            selectedLang = str(lang_list[i])
-            if i < (len(lang_list) - 1):
-                langQuery = langQuery + str(selectedLang) + "' OR cl.Language = '"
-            else:
-                langQuery = langQuery + str(selectedLang) + "' "
-        _cursor.execute(langQuery)
-        responseTwo = _cursor.fetchall()
+        if 'Any additional language' in lang_list:
+            anyLang = True
+            lang_list.remove('Any additional language')
+            anyLangQuery = "SELECT * FROM multlangcities "
+
+        if len(lang_list) > 0:
+            langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl WHERE cl.Language = '"
+            for i in range(len(lang_list)):
+                selectedLang = str(lang_list[i])
+                if i < (len(lang_list) - 1):
+                    langQuery = langQuery + str(selectedLang) + "' OR cl.Language = '"
+                else:
+                    langQuery = langQuery + str(selectedLang) + "' "
+            if anyLang:
+                langQuery = "SELECT * FROM ((" + langQuery + ") l1 NATURAL JOIN (" + anyLangQuery + ") l2 ) "
+        else:
+            langQuery = anyLangQuery
+        #_cursor.execute(langQuery)
+        #responseTwo = _cursor.fetchall()
     else:
         langQuery = "SELECT DISTINCT City FROM city_language"
 
