@@ -526,6 +526,9 @@ def add_city():
         ns = request.form["NS"]
         languages = request.form.getlist("languages")
 
+        countries = db.getCountries()
+        languages2 = db.getLanguagesMgr()
+
         if len(languages) != 0:
             # should be this way but not for grading purposes
             # db.addCity(city, country, lat_degree + "\' " + lat_minute + "\" " +
@@ -534,10 +537,10 @@ def add_city():
                        ns, lon_degree + " " + lon_minute + " " + ew, pop, languages)
 
             message = ["green", "City added"]
-            return render_template('managerpage.html', message=message)
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages2)
         else:
             message = ["red", "Select a Language"]
-            return render_template('managerpage.html', message=message)
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages2)
 
 if __name__ == '__main__':
     app.run()

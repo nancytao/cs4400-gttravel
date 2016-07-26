@@ -645,12 +645,84 @@ def getCityInfo(tuplelist):
         result.append(dicti)
     return result
 
+'''def getCityInfoTwo(tuplelist):
+    result = []
+    for item in tuplelist:
+        dicti = {}
+        dicti['city'] = item[0]
+        dicti['country'] = item[1]
+        dicti['latitude'] = item[2]
+        dicti['longitude'] = item[3]
+        dicti['population'] = item[4]
+        dicti['iscapital']'''
 
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
 def citySearch(city, country, population_min, population_max, lang_list, sort):
-    population = population_max or population_min
+
+    query = 'SELECT * FROM city c '
+
+    ps = ''
+    if sort:
+        if sort == 'highest':
+            query = "SELECT  City, Country, latitude, longitude, population, AVG(cr.Score) FROM city  NATURAL JOIN city_review cr "
+            ps = " GROUP BY City, Country ORDER BY 6 DESC"
+        if sort == 'lowest':
+            query = "SELECT c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL JOIN city_review cr "
+            ps = " GROUP BY City, Country ORDER BY 6 ASC"
+        if sort == 'population':
+            ps = " ORDER BY population DESC "
+        if sort == 'city':
+            ps = " ORDER BY City ASC "
+
+    if city or country or population_min or population_max:
+        query = query + "WHERE "
+    if city:
+        query = query + "c.City = '" + str(city) + "' AND "
+    if country:
+        query = query + "c.Country = '" + str(country) + "' AND "
+    if population_min:
+        query = query + "c.population > '" + str(population_min) + "' AND "
+    if population_max:
+        query = query + "c.population < '" + str(population_max) + "' AND "
+
+    langQuery = ''
+    if lang_list:
+        langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl WHERE cl.Language = '"
+        for i in range(len(lang_list)):
+            selectedLang = str(lang_list[i])
+            if i < (len(lang_list) - 1):
+                langQuery = langQuery + str(selectedLang) + "' OR cl.Language = '"
+            else:
+                langQuery = langQuery + str(selectedLang) + "' "
+        _cursor.execute(langQuery)
+        responseTwo = _cursor.fetchall()
+    else:
+        langQuery = "SELECT DISTINCT City FROM city_language"
+
+    if query[-5:] == ' AND ':
+        query = query[:-5]
+
+    #query = query + langQuery
+    query = query + ps
+
+    #_cursor.execute(query)
+    finalQuery = "SELECT * FROM ((" + query + ") q1 NATURAL JOIN (" + langQuery + ") q2 ) " + ps
+    #print finalQuery
+
+    _cursor.execute(finalQuery)
+    response = _cursor.fetchall() #TODO return correct shit
+
+    #for i in response:
+    #    print i
+    #print response
+    #print responseTwo
+
+    #finalQuery = _cursor.execute()
+    #return getCityInfo(responseTwo)
+    return getCityInfo(response)
+    '''population = population_max or population_min
 
     cri = False
     if lang_list and "Any additional language" in lang_list:
@@ -758,7 +830,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
         query = "SELECT * FROM city;"
         response = _cursor.execute(query)
 
-        return getCityInfo(_cursor.fetchall())
+        return getCityInfo(_cursor.fetchall())'''
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
