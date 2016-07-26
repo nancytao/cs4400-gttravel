@@ -1,5 +1,7 @@
-from flask import Flask, render_template, json, request, Response
+from datetime import date
 import db
+from flask import Flask, render_template, json, request, Response
+
 
 app = Flask(__name__)
 app.debug = True
@@ -20,8 +22,10 @@ def to_city_page(city):
     m1 = ""
     m2 = ""
     locations = db.getCityLocations(city)
+    print locations
     reviews = db.getCityReviews(city)
     if len(locations) == 0:
+        print "hello"
         m1 = "There are no locations in this city"
     if len(reviews) == 0:
         m2 = "There are no reviews for this city"
@@ -38,8 +42,8 @@ def to_location_page(loc):
     m2 = ""
     if len(events) == 0:
         m1 = "This location has no events"
-    if len(events) == 0:
-        m1 = "This location has no reviews"
+    if len(reviews) == 0:
+        m2 = "This location has no reviews"
 
     return render_template("location.html", info=info, events=events, reviews=reviews, m1=m1, m2=m2)
 
@@ -66,7 +70,7 @@ def sign_in():
     if request.method == "POST":
         _name = request.form['usr']
         _password = request.form['pwd']
-        num = db.login(_name,_password)
+        num = db.login(_name, _password)
 
         if num == 1:
             countries = db.getCountries()
@@ -259,7 +263,7 @@ def to_write_reviews():
 
     subject = db.getReviewableTypes()
     return render_template('writereviews.html', subject=subject,
-                           date="", score="", description="", error="")
+                           date=date.today(), score="", description="", error="")
 
 
 @app.route("/to_write_reviews_single/<subject>")
@@ -287,7 +291,6 @@ def to_past_reviews():
 @app.route("/to_edit_review/<review>/")
 def to_edit_review(review):
     info = [x.strip() for x in review.split(',')]
-    print info
     if len(info) == 5:
         subject = [info[0]]  # [info[0] + ", " + info[1]] need to remove the country name for update to work
         date = info[2]
@@ -449,7 +452,6 @@ def search_events():
             sort = request.form["sort"]
 
         discount = None
-
         if "discount" in request.form:
             discount = request.form["discount"]
             discount = discount == "Yes"
@@ -524,6 +526,9 @@ def add_city():
         ns = request.form["NS"]
         languages = request.form.getlist("languages")
 
+        countries = db.getCountries()
+        languages2 = db.getLanguagesMgr()
+
         if len(languages) != 0:
             # should be this way but not for grading purposes
             # db.addCity(city, country, lat_degree + "\' " + lat_minute + "\" " +
@@ -532,11 +537,10 @@ def add_city():
                        ns, lon_degree + " " + lon_minute + " " + ew, pop, languages)
 
             message = ["green", "City added"]
-            return render_template('managerpage.html', message=message)
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages2)
         else:
             message = ["red", "Select a Language"]
-            return render_template('managerpage.html', message=message)
+            return render_template('managerpage.html', message=message, countries=countries, languages=languages2)
 
 if __name__ == '__main__':
     app.run()
-
