@@ -787,9 +787,9 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if city:
         query = query + " l.City = '" + str(city) + "' AND "
     if cost_min:
-        query = query + " l.Cost > '" + str(cost_min) + "' AND "
+        query = query + " l.Cost >= '" + str(cost_min) + "' AND "
     if cost_max:
-        query = query + " l.Cost < '" + str(cost_max) + "' AND "
+        query = query + " l.Cost <= '" + str(cost_max) + "' AND "
 
     typeQuery = ''
     if type_list:
@@ -864,7 +864,7 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
             query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL JOIN event_review er "
             ps = "GROUP BY e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country ORDER BY 12 ASC"
 
-    if event or city or date or cost_min or cost_max or cat_list or not (std_discount == None):
+    if event or city or date or cost_min or cost_max or cat_list or not (std_discount is None):
         query = query + "WHERE "
     if event:
         query = query + " e.Name = '" + re.escape(str(event)) + "' AND "
@@ -876,9 +876,9 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = query + " e.Cost >= '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " e.Cost <= '" + str(cost_max) + "' AND "
-    if std_discount == True:
+    if std_discount is True:
         query = query + " e.Std_discount = TRUE AND "
-    elif std_discount == False:
+    elif std_discount is False:
         query = query + " e.Std_discount = FALSE AND "
 
     catQuery = ''
