@@ -1,6 +1,6 @@
 # cs4400-gttravel
 
-location search, add stddiscount
+make it so that users cannoot check "Any additional language unless they selected a lang to begin with "
 
 ## Cole's List
 Skip table - make sure event/location works
