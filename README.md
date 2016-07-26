@@ -3,7 +3,9 @@
 location search, add stddiscount
 
 ## Cole's List
-Skip table - make sure event/location works - location by name? currently address/city
+Skip table - make sure event/location works
+keep form info for error message
+city no locations no message showing
 
 add load current date to calender
 Add more searches ie location by country, event by location

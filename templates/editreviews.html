@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Write a Review</title>
-    <script src="../Scripts/reviews.js"></script>
+    <title>Edit Review</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
-<div align="center">
+    <div align="center">
     <div style="width: 80%" align="left">
 
-        <h1>Write a Review</h1>
-        <form class="form-group" style="width:20%" action="make_review" method="post" enctype="multipart/form-data">
+        <h1>Edit a Review</h1>
+        <form class="form-group" style="width:20%" action="/update_review" method="post" enctype="multipart/form-data">
             <label for="subject">Subject:</label>
             <select name="subject" class="form-control" id="subject" required>
                 {% for o in subject %}
@@ -34,8 +33,8 @@
             <!-- <button type="button" class="btn btn-default" onclick="toHome()">Go Back</button>
             <button type="button" class="btn btn-default" onclick="makeReview()" style="align-self: right">Submit</button>
             -->
-            <button id = "writeReview" class="btn btn-primary"  type="submit">Create Review</button>
-            <a class=" btn btn-default" href="/to_home" role="button">Go Back</a>
+            <button id = "writeReview" class="btn btn-primary"  type="submit">Update Review</button>
+            <a class=" btn btn-default" href="/to_past_reviews" role="button">Go Back</a>
         </form>
         <p id="feedback" style="color:red">{{error}}</p>
 
