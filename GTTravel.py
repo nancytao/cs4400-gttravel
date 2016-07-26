@@ -133,7 +133,7 @@ def register():
             reg = db.register(name, email, p1, is_man)
 
             if reg == 0 and is_man:
-                return render_template("managerpage.html")
+                return render_template("managerpage.html", message="")
             elif reg == 0:
                 global logged_user
                 logged_user = name
