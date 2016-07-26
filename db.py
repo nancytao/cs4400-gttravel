@@ -733,9 +733,15 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if city:
         query = query + " l.City = '" + str(city) + "' AND "
     if cost_min:
+<<<<<<< HEAD
         query = query + " l.Cost > '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " l.Cost < '" + str(cost_max) + "' AND "
+=======
+        query = query + " Cost >= '" + str(cost_min) + "' AND "
+    if cost_max:
+        query = query + " Cost <= '" + str(cost_max) + "' AND "
+>>>>>>> a9606e3c2f7c9cf0ed7b762088add775f7b2bfea
 
     print type_list
     if type_list:
@@ -750,6 +756,12 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     response = _cursor.fetchall()
     # return response
     return getLocInfo(response)
+
+
+def getTypeQuery(type_list):
+    query = '\' OR Type = \''.join(type_list)
+    query = '(Type = \'' + query + '\')'
+    return query
 
 
 def getLocInfo(tuplelist):
@@ -780,13 +792,6 @@ def getCatQuery(cat_list):
     query = '\' OR Category = \''.join(cat_list)
     query = '(Category = \'' + query + '\')'
     return query
-
-
-def getSort(stri):
-    if stri == "Rating":
-        return " ORDER BY Average_score DESC"
-    else:
-        return ""
 
 
 # param std_discount is None if not selected, True if yes, and False if no
