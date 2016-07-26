@@ -287,7 +287,6 @@ def to_past_reviews():
 @app.route("/to_edit_review/<review>/")
 def to_edit_review(review):
     info = [x.strip() for x in review.split(',')]
-    print info
     if len(info) == 5:
         subject = [info[0]]  # [info[0] + ", " + info[1]] need to remove the country name for update to work
         date = info[2]
