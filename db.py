@@ -165,7 +165,8 @@ def getEvents():
     _cursor.execute("SELECT Name, Date, Start_time, Address, City, Country FROM event;")
     my_list = []
     for item in _cursor.fetchall():
-        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", " + str(item[1]) + ", " + timedeltaToDateTime(item[2])
+        string = item[0] + ", " + item[3] + ", " + item[4] + ", " + item[5] + ", "
+        string += str(item[1]) + ", " + timedeltaToDateTime(item[2])
         my_list.append(string)
     my_list.append("")
     return my_list
@@ -1086,6 +1087,14 @@ def getEventScore(name, date, starttime, address, city):
     response = _cursor.execute(query, (name, date, starttime, address, city))
     fetch = _cursor.fetchone()
     return fetch[0] if fetch else "N/A"
+
+
+def getRidLoc(address, city, country):
+    return address + ', ' + city + ', '
+
+
+def getRidEvent(name, address, city, country, date, starttime):
+    return name + ', ' + address + ', ' + city + ', ' + country + ', ' + date + ', ' + starttime
 
 
 # helper for writeReviews
