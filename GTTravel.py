@@ -107,7 +107,7 @@ def to_register():
     """
     Takes user to register page
     """
-    return render_template('register.html')
+    return render_template('register.html', error="")
 
 
 @app.route("/register", methods=["POST", "GET"])

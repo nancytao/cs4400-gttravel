@@ -666,7 +666,7 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     ps = ''
     if sort:
         if sort == 'highest':
-            query = "SELECT  City, Country, latitude, longitude, population, AVG(cr.Score) FROM city  NATURAL JOIN city_review cr "
+            query = "SELECT  c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL JOIN city_review cr "
             ps = " GROUP BY City, Country ORDER BY 6 DESC"
         if sort == 'lowest':
             query = "SELECT c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL JOIN city_review cr "
@@ -720,7 +720,6 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
 
     #_cursor.execute(query)
     finalQuery = "SELECT * FROM ((" + query + ") q1 NATURAL JOIN (" + langQuery + ") q2 ) " + ps
-    #print finalQuery
 
     _cursor.execute(finalQuery)
     response = _cursor.fetchall() #TODO return correct shit
