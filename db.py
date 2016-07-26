@@ -720,7 +720,7 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
         ps = ''
 
     if name or address or city or cost_min or cost_max or type_list:
-        query = query + " WHERE"
+        query = query + " WHERE "
     if name:
         query = query + " l.Name = '" + re.escape(str(name)) + "' AND "
     if address:         # address takes precedence in filters bc primary key
@@ -736,11 +736,11 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if type_list:
         for i in range(len(type_list)):
             selectedType = str(type_list[i])
-            typeQuery = typeQuery + " l.Type = '" + selectedType + "' OR "
+            typeQuery = typeQuery + " l.Type = '" + re.escape(selectedType) + "' OR "
         if typeQuery[-4:] == ' OR ':
             typeQuery = typeQuery[:-4]
 
-    if query[-5:] == ' AND ':
+    if query[-5:] == ' AND ' and typeQuery == '':
         query = query[:-5]
 
     query = query + typeQuery
