@@ -410,7 +410,7 @@ def search_locations():
         city = request.form["city"]
         maxCost = request.form["maxCost"]
         minCost = request.form["minCost"]
-        type = request.form.getlist("catagoriesL")
+        type = request.form.getlist("categoriesL")
         sort = None
         if "sort" in request.form:
             sort = request.form["sort"]
