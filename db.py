@@ -733,15 +733,12 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
     if city:
         query = query + " l.City = '" + str(city) + "' AND "
     if cost_min:
-<<<<<<< HEAD
         query = query + " l.Cost > '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " l.Cost < '" + str(cost_max) + "' AND "
-=======
         query = query + " Cost >= '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " Cost <= '" + str(cost_max) + "' AND "
->>>>>>> a9606e3c2f7c9cf0ed7b762088add775f7b2bfea
 
     print type_list
     if type_list:
