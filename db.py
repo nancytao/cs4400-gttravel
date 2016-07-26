@@ -520,7 +520,6 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
         result = []
         for item in _cursor.fetchall():
             put = {}
-            print item
             put['name'] = item[0]
             put['population'] = item[1]
             put['capitals'] = getCapitals(item[0])
@@ -731,9 +730,6 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
         query = query + " l.Cost > '" + str(cost_min) + "' AND "
     if cost_max:
         query = query + " l.Cost < '" + str(cost_max) + "' AND "
-        query = query + " Cost >= '" + str(cost_min) + "' AND "
-    if cost_max:
-        query = query + " Cost <= '" + str(cost_max) + "' AND "
 
     print type_list
     if type_list:
