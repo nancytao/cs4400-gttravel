@@ -19,7 +19,7 @@
             </select>
 
             <label for="date">Date:</label>
-            <input name="date" type="date" class="form-control" id="date" value='{{date}}' required>
+            <input name="date" type="date" class="form-control" id="date" value='{{date}}' min='{{date}}' max='{{date}}' required>
 
             <label for="score">Score:</label>
             <input name="score" type="number" class="form-control" id="score" min="0" max="5" value='{{score}}' required>
