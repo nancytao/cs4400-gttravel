@@ -645,31 +645,20 @@ def getCityInfo(tuplelist):
         result.append(dicti)
     return result
 
-'''def getCityInfoTwo(tuplelist):
-    result = []
-    for item in tuplelist:
-        dicti = {}
-        dicti['city'] = item[0]
-        dicti['country'] = item[1]
-        dicti['latitude'] = item[2]
-        dicti['longitude'] = item[3]
-        dicti['population'] = item[4]
-        dicti['iscapital']'''
 
 # returns specific city in format [city, country, latitude, longitude,
 #       population, is_capital, [languages]]
 # returns
 def citySearch(city, country, population_min, population_max, lang_list, sort):
-
     query = 'SELECT * FROM city c '
 
     ps = ''
     if sort:
         if sort == 'highest':
-            query = "SELECT  c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL JOIN city_review cr "
+            query = "SELECT  c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL LEFT OUTER JOIN city_review cr "
             ps = " GROUP BY City, Country ORDER BY 6 DESC"
         if sort == 'lowest':
-            query = "SELECT c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL JOIN city_review cr "
+            query = "SELECT c.City, c.Country, c.latitude, c.longitude, c.population, AVG(cr.Score) FROM city c NATURAL LEFT OUTER JOIN city_review cr "
             ps = " GROUP BY City, Country ORDER BY 6 ASC"
         if sort == 'population':
             ps = " ORDER BY population DESC "
@@ -683,9 +672,9 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
     if country:
         query = query + "c.Country = '" + str(country) + "' AND "
     if population_min:
-        query = query + "c.population > '" + str(population_min) + "' AND "
+        query = query + "c.population >= '" + str(population_min) + "' AND "
     if population_max:
-        query = query + "c.population < '" + str(population_max) + "' AND "
+        query = query + "c.population <= '" + str(population_max) + "' AND "
 
     langQuery = ''
     anyLang = False
@@ -707,140 +696,20 @@ def citySearch(city, country, population_min, population_max, lang_list, sort):
                 langQuery = "SELECT * FROM ((" + langQuery + ") l1 NATURAL JOIN (" + anyLangQuery + ") l2 ) "
         else:
             langQuery = " SELECT DISTINCT cl.City, cl.Country FROM city_language cl "
-        #_cursor.execute(langQuery)
-        #responseTwo = _cursor.fetchall()
     else:
         langQuery = "SELECT DISTINCT City FROM city_language"
 
     if query[-5:] == ' AND ':
         query = query[:-5]
 
-    #query = query + langQuery
     query = query + ps
 
-    #_cursor.execute(query)
     finalQuery = "SELECT * FROM ((" + query + ") q1 NATURAL JOIN (" + langQuery + ") q2 ) " + ps
 
     _cursor.execute(finalQuery)
-    response = _cursor.fetchall() #TODO return correct shit
+    response = _cursor.fetchall()
 
-    #for i in response:
-    #    print i
-    #print response
-    #print responseTwo
-
-    #finalQuery = _cursor.execute()
-    #return getCityInfo(responseTwo)
     return getCityInfo(response)
-    '''population = population_max or population_min
-
-    cri = False
-    if lang_list and "Any additional language" in lang_list:
-        cri = True
-        lang_list.remove('Any additional language')
-
-    if city:  # searching by city, returns just info about that city
-        query = "SELECT * FROM city WHERE City = %s;"
-        response = _cursor.execute(query, (city,))
-
-        return getCityInfo(_cursor.fetchall())
-    elif country and population and lang_list:
-        print 1
-    elif country and population:
-        print 2
-    elif country and lang_list:
-        print 3
-    elif population and lang_list:
-        languages = '\' OR Language = \''.join(lang_list)
-        langquery = 'Language = \'' + languages + '\''
-        if cri:
-            query = "SELECT * FROM multlangcities NATURAL JOIN "\
-                    "(SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
-            query += langquery + ") q NATURAL JOIN city) p "
-        else:
-            query = "SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
-            query += langquery + ") q NATURAL JOIN city "
-
-        # TODO highest lowest rated
-        if sort == 'city':
-            query += "ORDER BY City;"
-        else:
-            query += "ORDER BY Population DESC;"
-
-        response = _cursor.execute(query)
-        return getCityInfo(_cursor.fetchall())
-    elif country:
-        query = "SELECT * FROM city WHERE Country = %s "
-
-        # TODO highest lowest rated
-        if sort == 'city':
-            query += "ORDER BY City;"
-        else:
-            query += "ORDER BY Population DESC;"
-
-        response = _cursor.execute(query, (country,))
-
-        return getCityInfo(_cursor.fetchall())
-    elif population:
-        query = "SELECT * FROM city WHERE "
-
-        if population_min and population_max:
-            query = query + "Population >= %s AND Population <= %s ORDER BY "
-
-            if sort == "city":
-                query += "City;"
-            else:
-                query += "Population DESC;"
-
-            response = _cursor.execute(query, (population_min, population_max))
-        elif population_max:
-            query = query + "Population <= %s ORDER BY "
-
-            if sort == "city":
-                query += "City;"
-            else:
-                query += "Population DESC;"
-
-            response = _cursor.execute(query, (population_max,))
-        elif population_min:
-            query = query + "Population >= %s ORDER BY "
-
-            if sort == "city":
-                query += "City;"
-            else:
-                query += "Population DESC;"
-
-            response = _cursor.execute(query, (population_min,))
-
-        return getCityInfo(_cursor.fetchall())
-
-    elif lang_list:
-        languages = '\' OR Language = \''.join(lang_list)
-        langquery = 'Language = \'' + languages + '\''
-        if cri:
-            query = "SELECT * FROM multlangcities NATURAL JOIN "\
-                    "(SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
-            query += langquery + ") q NATURAL JOIN city) p "
-        else:
-            query = "SELECT * FROM (SELECT DISTINCT City FROM city_language WHERE "
-            query += langquery + ") q NATURAL JOIN city "
-
-        if sort == 'highest':
-            pass  # TODO
-        elif sort == 'lowest':
-            pass  # TODO
-        elif sort == 'population':
-            query += "ORDER BY Population DESC;"
-        else:
-            query += "ORDER BY City;"
-
-        response = _cursor.execute(query)
-        return getCityInfo(_cursor.fetchall())
-    else:
-        query = "SELECT * FROM city;"
-        response = _cursor.execute(query)
-
-        return getCityInfo(_cursor.fetchall())'''
 
 
 def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
@@ -848,12 +717,12 @@ def locationSearch(name, address, city, cost_min, cost_max, type_list, sort):
 
     if sort:
         if sort == 'highest':
-            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
+            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL LEFT OUTER JOIN location_review lr'
             ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 DESC'  # AVG Score and GROUP BY prevent duplicates
         if sort == 'location':
             ps = ' ORDER BY l.Name ASC'
         if sort == 'lowest':
-            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL JOIN location_review lr'
+            query = 'SELECT l.Address, l.City, l.Country, l.Cost, l.Type, l.Std_discount, l.Name, AVG(lr.Score) FROM location l NATURAL LEFT OUTER JOIN location_review lr'
             ps = ' GROUP BY l.Address, l.City, l.Country ORDER BY 8 ASC'
         if sort == 'type':
             ps = ' ORDER BY l.Type ASC'
@@ -940,10 +809,10 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         if sort == "cost":
             ps = "ORDER BY e.Cost DESC"
         if sort == "highest":
-            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL JOIN event_review er "
+            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL LEFT OUTER JOIN event_review er "
             ps = "GROUP BY e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country ORDER BY 12 DESC"
         if sort == "lowest":
-            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL JOIN event_review er "
+            query = "SELECT e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country, e.Category, e.Description, e.Std_discount, e.End_time, e.Cost, AVG(er.Score) FROM event e NATURAL LEFT OUTER JOIN event_review er "
             ps = "GROUP BY e.Name, e.Date, e.Start_time, e.Address, e.City, e.Country ORDER BY 12 ASC"
 
     if event or city or date or cost_min or cost_max or cat_list or not (std_discount is None):
