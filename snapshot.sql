@@ -128,7 +128,7 @@ CREATE TABLE `city_review` (
 
 LOCK TABLES `city_review` WRITE;
 /*!40000 ALTER TABLE `city_review` DISABLE KEYS */;
-INSERT INTO `city_review` VALUES ('cole','Paris','France','2016-07-18',3,'Could do better'),('mehul','Monaco','Monaco','2016-07-19',2,'It was ok'),('nancy','Monaco','Monaco','2016-07-19',1,'It was ok'),('nancy','Paris','France','2016-07-12',5,'It was ok'),('varun','Metz','France','2016-07-19',3,'It is not nice'),('varun','Monaco','Monaco','2016-07-19',3,'It was ok');
+INSERT INTO `city_review` VALUES ('cole','Paris','France','2016-07-18',3,'Could do better'),('mehul','Monaco','Monaco','2016-07-19',2,'It was ok'),('nancy','Brussels','Belgium','2016-07-26',4,'Sprouts amirite? It\'s lit. '),('nancy','Dublin','Ireland','2016-07-27',5,'Dubstep '),('nancy','Metz','France','2016-07-27',5,'It was Nice to have Metz you. <3 '),('nancy','Monaco','Monaco','2016-07-19',2,'It was ok '),('nancy','Paris','France','2016-07-12',5,'Paris is almost as beautiful as my life will be after I finish this project. '),('varun','Metz','France','2016-07-19',3,'It is not nice'),('varun','Monaco','Monaco','2016-07-19',3,'It was ok');
 /*!40000 ALTER TABLE `city_review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ DROP TABLE IF EXISTS `event_review`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_review` (
   `Username` varchar(16) NOT NULL,
-  `Name` varchar(40) NOT NULL,
+  `Name` varchar(50) NOT NULL,
   `Date` date NOT NULL,
   `Start_time` time NOT NULL,
   `Address` varchar(64) NOT NULL,
@@ -288,7 +288,7 @@ CREATE TABLE `event_review` (
 
 LOCK TABLES `event_review` WRITE;
 /*!40000 ALTER TABLE `event_review` DISABLE KEYS */;
-INSERT INTO `event_review` VALUES ('cole','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Event 2','2016-12-01','13:00:00','118 Disney Way','Paris','France','2016-07-13',5,'It was ok'),('mehul','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',2,'Finding Dory is a treasure honestly.'),('nancy','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',5,'Finding Dory is a treasure honestly.'),('varun','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',3,'Finding Dory is a treasure honestly.'),('varun','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',2,'Finding Dory is a treasure honestly.');
+INSERT INTO `event_review` VALUES ('cole','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',1,'Finding Dory is a treasure honestly.'),('cole','Event 2','2016-12-01','13:00:00','118 Disney Way','Paris','France','2016-07-13',4,'It was slightly better than ok.'),('mehul','Brother Bear Live','2016-05-06','15:00:00','110 Disney Way','Barcelona','Spain','2016-07-13',2,'Finding Dory is a treasure honestly.'),('nancy','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',5,'Finding Dory is a treasure honestly.'),('nancy','Beauty and the Beast Sing Along','2016-04-25','18:00:00','106 Disney Way','Barcelona','Spain','2016-07-26',5,'It\'s beautiful. \r\nIt\'s beastly.  '),('nancy','Beauty and the Beast Sing Along','2016-07-01','20:00:00','106 Disney Way','Barcelona','Spain','2016-07-25',5,'Singing is gr9.'),('nancy','Race to See the Floating Lanterns','2016-03-22','06:00:00','111 Disney Way','Paris','France','2016-07-25',4,'Lanterns were lit. Almost as lit as this project. '),('varun','Animating Finding Dory','2016-08-01','19:30:00','109 Disney Way','Barcelona','Spain','2016-07-13',3,'Finding Dory is a treasure honestly.'),('varun','Brother Bear Live','2016-06-01','15:00:00','114 Disney Way','Paris','France','2016-07-13',2,'Finding Dory is a treasure honestly.');
 /*!40000 ALTER TABLE `event_review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -394,7 +394,7 @@ CREATE TABLE `location_review` (
 
 LOCK TABLES `location_review` WRITE;
 /*!40000 ALTER TABLE `location_review` DISABLE KEYS */;
-INSERT INTO `location_review` VALUES ('cole','118 Disney Way','Paris','France','2016-07-13',1,'It was ok'),('mehul','106 Disney Way','Barcelona','Spain','2016-07-19',2,'It was ok'),('nancy','106 Disney Way','Barcelona','Spain','2016-07-19',1,'It was ok'),('varun','110 Disney Way','Barcelona','Spain','2016-07-19',3,'It was ok');
+INSERT INTO `location_review` VALUES ('cole','118 Disney Way','Paris','France','2016-07-13',1,'It was ok'),('mehul','106 Disney Way','Barcelona','Spain','2016-07-19',2,'It was ok'),('nancy','106 Disney Way','Barcelona','Spain','2016-07-19',1,'It was ok'),('nancy','109 Disney Way','Barcelona','Spain','2016-07-25',2,'This is a place.'),('varun','110 Disney Way','Barcelona','Spain','2016-07-19',3,'It was ok');
 /*!40000 ALTER TABLE `location_review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -484,7 +484,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('cole','cole.a.bowers@gmail.com','password',0),('manager','thebossman@gttravel.com','password',1),('mehul','mehulm@gmail.com','password',0),('nancy','nancy.tao42@gmail.com','password',0),('varun','varungupt-a@gmail.com','password',0);
+INSERT INTO `users` VALUES ('cole','cole.a.bowers@gmail.com','password',0),('manager','thebossman@gttravel.com','password',1),('manny','manny@gttravel.com','password',1),('mehul','mehulm@gmail.com','password',0),('nancy','nancy.tao42@gmail.com','password',0),('normaluser','normaluser@gmail.com','password',0),('varun','varungupt-a@gmail.com','password',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,4 +587,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-25 10:39:24
+-- Dump completed on 2016-07-27  1:57:41

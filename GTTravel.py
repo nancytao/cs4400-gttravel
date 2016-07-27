@@ -389,7 +389,7 @@ def search_country():
             results = db.countrySearch(name, minPop, maxPop, languages, sort)
             if len(results) == 0:
                 return render_template('countryresults.html',
-                                       countries=results, message="No countires match your search")
+                                       countries=results, message="No countries match your search")
             else:
                 return render_template('countryresults.html', countries=results, message="")
 

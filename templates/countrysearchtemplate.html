@@ -2,6 +2,7 @@
 {% block content %}
 <!--use tables to align everything-->
     <form class="form-group" action="to_country_results" method="post">
+        <p style="color: red"  id="feedback">{{error}}</p>
 
         <label for="country">Country:</label>
         <select name="country" class="form-control" id="country">
@@ -33,7 +34,7 @@
 
         <button id = "searchCountry" class="btn btn-primary"  type="submit">Search</button>
         <a class=" btn btn-default" href="to_home" role="button">Go Back</a>
-        <p style="color: red"  id="feedback">{{error}}</p>
+
 
     </form>
 
