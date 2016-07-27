@@ -568,7 +568,11 @@ def countrySearch(country, population_min, population_max, lang_list, sort):
 
         return result
     else:
-        query = "SELECT * FROM country;"
+        query = "SELECT * FROM country"
+        if sort == 'population':
+            query = query + " ORDER BY population DESC"
+        else:
+            query = query + " ORDER BY country"
         response = _cursor.execute(query)
 
         result = []
@@ -954,6 +958,10 @@ def eventSearch(event, city, date, cost_min, cost_max, std_discount, cat_list, s
         query = query + " e.City = '" + str(city) + "' AND "
     if date:
         query = query + " e.Date = '" + str(date) + "' AND "
+    if std_discount == '3':
+        cost_min = False
+        cost_max = False
+        query = query + " (e.Cost = '0' OR e.Std_discount = TRUE) AND "
     if cost_min:
         query = query + " e.Cost >= '" + str(cost_min) + "' AND "
     if cost_max:

@@ -4,7 +4,7 @@ from flask import Flask, render_template, json, request, Response
 
 
 app = Flask(__name__)
-app.debug = True
+#app.debug = True
 logged_user = ""
 
 
@@ -454,7 +454,10 @@ def search_events():
         discount = None
         if "discount" in request.form:
             discount = request.form["discount"]
-            discount = discount == "Yes"
+            if discount == '3':
+                discount = '3'
+            else:
+                discount = discount == "Yes"
 
         if maxCost != "" and minCost != "" and float(maxCost) < float(minCost):
             error = "Cost min is greater than cost max"
