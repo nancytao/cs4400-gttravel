@@ -1,11 +1,20 @@
 # cs4400-gttravel
 
-snapshot.sql contains the data export of the database. Run this script to get a snapshot of our database.
+This application is designed to be a database of European cities and countries and various things you can do in them, supported by a robust reviewing system. This webapp is powered by Flask and was developed by Cole Bowers, Varun Gupta, Mehul Mohagaonkar, and Nancy Tao.
 
-### Non-exhaustive list of things you could need to run this
-* Flask
-* MySQL Server 5.7
-* flask-mysqldb
-* Python 2.7.9
+`snapshot.sql` contains the data export of the database. Run this script in MySQL to build the database. 
 
-Run by using "python GTTravel.py"
+### Running this webapp
+This is only supported in Python 2.7. 
+```
+git clone https://github.com/nancytao/cs4400-gttravel.git
+cd cs4400-gttravel
+pip install -r requirements.txt 
+```
+This application expects a `config.py` file in the root directory that contains the password of the root user of your MySQL database setup. You should create this file and write the following in it.
+```
+password = "your_password"
+```
+Replace `your_password` with your password. 
+
+Once everything is set up, run `python GTTravel.py` to start a webserver on port 5000. 
