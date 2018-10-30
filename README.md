@@ -1,7 +1,7 @@
 # cs4400-gttravel
 
 This application is designed to be a database of European cities and countries and various things you can do in them, supported by a robust reviewing system. This webapp is powered by Flask and was developed by Cole Bowers, Varun Gupta, Mehul Mohagaonkar, and Nancy Tao.
-This was made for CS4400: Intro to Databases as a final project during a study abroad trip in Barcelona. The theme was inspired by all the travelling we did.
+This was made for CS4400: Intro to Databases as a final project during a study abroad trip in Barcelona during the summer of 2016. The theme was inspired by all the travelling we did.
 
 `snapshot.sql` contains the data export of the database. Run this script in MySQL to build the database. 
 
